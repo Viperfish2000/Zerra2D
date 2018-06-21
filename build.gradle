@@ -11,6 +11,7 @@ apply plugin: "java"
 
 project.ext.lwjglVersion = "3.1.2"
 project.ext.log4jVersion = "2.8.1"
+project.ext.jomlVersion = "1.9.9"
 
 repositories {
     mavenCentral()
@@ -38,6 +39,9 @@ dependencies {
 	compile "org.lwjgl:lwjgl-openal:${lwjglVersion}:natives-windows"
 	compile "org.lwjgl:lwjgl-openal:${lwjglVersion}:natives-linux"
 	compile "org.lwjgl:lwjgl-openal:${lwjglVersion}:natives-osx"
+	
+	// JAVA OPENGL MATH LIBRARY
+	compile "org.joml:joml:${jomlVersion}"
 	
 	// JAVAX
 	compile "com.google.code.findbugs:jsr305:3.0.2"
