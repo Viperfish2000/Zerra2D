@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 public abstract class GameObject {
 
 	private int x, y;
+	private String unlocalizedName;
 
 	public abstract void tick();
 	public abstract void render(Graphics g);
@@ -25,5 +26,11 @@ public abstract class GameObject {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+	public String getUnlocalizedName() {
+		return unlocalizedName;
+	}
+	public void setUnlocalizedName(String unlocalizedName) {
+		this.unlocalizedName = unlocalizedName;
 	}
 }
