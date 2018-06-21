@@ -1,7 +1,5 @@
 package com.zerra.game.world.tile;
 
-import java.awt.Graphics;
-
 import org.joml.Vector2f;
 
 import com.zerra.util.ResourceLocation;
@@ -18,10 +16,6 @@ public class TileBase extends Tile {
 
 	@Override
 	public void update() {
-	}
-
-	@Override
-	public void render(Graphics g) {
 	}
 
 	@Override

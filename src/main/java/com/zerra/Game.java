@@ -128,6 +128,7 @@ public class Game implements Runnable {
 	private void cleanUp() {
 		Loader.cleanUp();
 		renderer.cleanUp();
+		System.exit(0);
 	}
 
 	public float getRenderPartialTicks() {

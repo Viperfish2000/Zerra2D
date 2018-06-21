@@ -1,42 +1,15 @@
 package com.zerra.game.world.tile;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
-import com.zerra.Game;
+import org.joml.Vector2f;
 
 public class TileRock extends TileBase {
 
-	public static BufferedImage image;
-
-	public TileRock(int x, int y) {
+	public TileRock(float x, float y) {
 		super(x, y);
-		if (image == null) {
-			try {
-				TileRock.image = ImageIO.read(new File("rock.png"));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 
 	@Override
-	public void update() {
-		super.update();
-	}
-
-	@Override
-	public void render(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
-
-		if (this.getY() < Game.HEIGHT - 32 && this.getY() > 0 - 32 && this.getX() < Game.WIDTH && this.getX() > 0 - 32) {
-			g.drawImage(image, 32, 32, null);
-		}
+	public Vector2f getTextureCoords() {
+		return new Vector2f(0, 1);
 	}
 }

@@ -20,8 +20,6 @@ public abstract class Tile {
 
 	public abstract void update();
 
-	public abstract void render(Graphics g);
-
 	public abstract Vector2f getTextureCoords();
 
 	public AxisAlignedBB getCollisionBox() {

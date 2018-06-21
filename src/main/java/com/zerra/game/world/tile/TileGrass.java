@@ -1,39 +1,15 @@
 package com.zerra.game.world.tile;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
-import com.zerra.Game;
+import org.joml.Vector2f;
 
 public class TileGrass extends TileBase {
-	
-	public static BufferedImage image;
 
-	public TileGrass(int x, int y) {
+	public TileGrass(float x, float y) {
 		super(x, y);
-		
-		try {
-			TileGrass.image = ImageIO.read(new File("grass.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public Vector2f getTextureCoords() {
+		return new Vector2f(0, 0);
 	}
-	
-	@Override
-	public void render(Graphics g) {
-		if(this.getY() < Game.HEIGHT - 32 && this.getY() > 0 - 32 && this.getX() < Game.WIDTH && this.getX() > 0 - 32) {
-			g.drawImage(image, 32, 32, null);
-		}
-	}
-
-	
 }

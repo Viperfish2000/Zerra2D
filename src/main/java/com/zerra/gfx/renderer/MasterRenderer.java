@@ -8,8 +8,8 @@ import java.util.Map;
 import org.joml.Matrix4f;
 
 import com.zerra.game.world.tile.Tile;
-import com.zerra.gfx.ICamera;
 import com.zerra.gfx.shader.TileShader;
+import com.zerra.object.ICamera;
 import com.zerra.util.Display;
 import com.zerra.util.ResourceLocation;
 

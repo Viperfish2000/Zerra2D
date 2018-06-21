@@ -15,9 +15,9 @@ import org.lwjgl.opengl.GL31;
 
 import com.zerra.Game;
 import com.zerra.game.world.tile.Tile;
-import com.zerra.gfx.ICamera;
 import com.zerra.gfx.shader.TileShader;
 import com.zerra.model.Model;
+import com.zerra.object.ICamera;
 import com.zerra.util.Loader;
 import com.zerra.util.Maths;
 import com.zerra.util.ResourceLocation;
@@ -25,7 +25,7 @@ import com.zerra.util.ResourceLocation;
 public class TileRenderer {
 
 	private static final float[] POSITIONS = new float[] { 0, 1, 0, 0, 1, 1, 1, 0 };
-	private static final int MAX_INSTANCES = 1000;
+	private static final int MAX_INSTANCES = 100000;
 	private static final int INSTANCE_DATA_LENGTH = 18;
 
 	private static final FloatBuffer buffer = BufferUtils.createFloatBuffer(MAX_INSTANCES * INSTANCE_DATA_LENGTH);

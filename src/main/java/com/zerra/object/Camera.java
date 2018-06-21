@@ -4,7 +4,6 @@ import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import com.zerra.Game;
-import com.zerra.gfx.ICamera;
 import com.zerra.util.Display;
 
 public class Camera extends GLObject implements ICamera {
@@ -41,11 +40,21 @@ public class Camera extends GLObject implements ICamera {
 	}
 
 	@Override
+	public Vector3f getLastPosition() {
+		return lastPosition;
+	}
+
+	@Override
 	public Vector3f getRotation() {
 		renderRotation.x = lastRotation.x + (rotation.x - lastRotation.x) * Game.getInstance().getRenderPartialTicks();
 		renderRotation.y = lastRotation.y + (rotation.y - lastRotation.y) * Game.getInstance().getRenderPartialTicks();
 		renderRotation.z = lastRotation.z + (rotation.z - lastRotation.z) * Game.getInstance().getRenderPartialTicks();
 		return renderRotation;
+	}
+
+	@Override
+	public Vector3f getLastRotation() {
+		return lastRotation;
 	}
 
 	public float getPitch() {

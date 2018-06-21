@@ -34,7 +34,7 @@ public class FrustumCullingFilter {
 
 	public void filterTiles(List<Tile> tiles) {
 		for (Tile tile : tiles) {
-			tile.setRemoved(!insideFrustum(tile.getX(), tile.getY(), 0, 16));
+			tile.setRemoved(!insideFrustum(tile.getX() + 8, tile.getY() + 8, 0, 16));
 		}
 	}
 
