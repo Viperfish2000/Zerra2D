@@ -7,8 +7,9 @@ import com.zerra.util.Maths;
 
 public class TileShader extends ShaderProgram {
 
-	private int location_viewMatrix;
+	private int location_projectionMatrix;
 	private int location_transformationMatrix;
+	private int location_viewMatrix;
 
 	public TileShader() {
 		super("tile");
@@ -21,15 +22,20 @@ public class TileShader extends ShaderProgram {
 
 	@Override
 	protected void getAllUniformLocations() {
-		location_viewMatrix = super.getUniformLocation("viewMatrix");
+		location_projectionMatrix = super.getUniformLocation("projectionMatrix");
 		location_transformationMatrix = super.getUniformLocation("transformationMatrix");
+		location_viewMatrix = super.getUniformLocation("viewMatrix");
 	}
 
-	public void loadViewMatrix(ICamera camera) {
-		super.loadMatrix(location_viewMatrix, Maths.createViewMatrix(camera));
+	public void loadProjectionMatrix(Matrix4f matrix) {
+		super.loadMatrix(location_projectionMatrix, matrix);
 	}
 
 	public void loadTransformationMatrix(Matrix4f matrix) {
 		super.loadMatrix(location_transformationMatrix, matrix);
+	}
+
+	public void loadViewMatrix(ICamera camera) {
+		super.loadMatrix(location_viewMatrix, Maths.createViewMatrix(camera));
 	}
 }

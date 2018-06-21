@@ -123,6 +123,10 @@ public class Game implements Runnable {
 		Loader.cleanUp();
 		renderer.cleanUp();
 	}
+	
+	public float getRenderPartialTicks() {
+		return TIMER.renderPartialTicks;
+	}
 
 	public TextureManager getTextureManager() {
 		return textureManager;
