@@ -2,7 +2,7 @@ package com.zerra.game.world.tile;
 
 import java.awt.Graphics;
 
-import org.joml.Vector4f;
+import org.joml.Vector2f;
 
 import com.zerra.util.ResourceLocation;
 
@@ -19,13 +19,13 @@ public abstract class Tile {
 	public abstract void tick();
 
 	public abstract void render(Graphics g);
-	
-	public abstract Vector4f getTextureCoords();
+
+	public abstract Vector2f getTextureCoords();
 
 	public ResourceLocation getTexture() {
 		return texture;
 	}
-	
+
 	public float getX() {
 		return x;
 	}

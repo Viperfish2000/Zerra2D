@@ -129,4 +129,15 @@ public class Display {
 	public static boolean isKeyPressed(int key) {
 		return GLFW.glfwGetKey(windowID, key) == GLFW.GLFW_PRESS;
 	}
+	
+	public static void setTitle(String title) {
+		GLFW.glfwSetWindowTitle(windowID, title);
+		Display.title = title;
+	}
+	
+	public static void setSize(int width, int height) {
+		GLFW.glfwSetWindowSize(windowID, width, height);
+		Display.width = width;
+		Display.height = height;
+	}
 }

@@ -8,13 +8,14 @@ import java.util.Map;
 import org.joml.Matrix4f;
 
 import com.zerra.game.world.tile.Tile;
+import com.zerra.gfx.ICamera;
 import com.zerra.gfx.shader.TileShader;
 import com.zerra.util.Display;
 import com.zerra.util.ResourceLocation;
 
 public class MasterRenderer {
 
-	private static final float scale = 4;
+	private static final float scale = 3;
 	private static final Matrix4f projectionMatrix = new Matrix4f().ortho(0, Display.getWidth() / scale, Display.getHeight() / scale, 0, 0.3f, 1000f);
 
 	private TileShader tileShader;
@@ -28,8 +29,8 @@ public class MasterRenderer {
 		this.tiles = new HashMap<ResourceLocation, List<Tile>>();
 	}
 
-	public void render(List<Tile> tiles) {
-		this.tileRenderer.render(this.tiles);
+	public void render(ICamera camera) {
+		this.tileRenderer.render(this.tiles, camera);
 
 		this.tiles.clear();
 	}

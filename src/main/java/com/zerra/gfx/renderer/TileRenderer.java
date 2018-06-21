@@ -14,15 +14,17 @@ import org.lwjgl.opengl.GL31;
 
 import com.zerra.Game;
 import com.zerra.game.world.tile.Tile;
+import com.zerra.gfx.ICamera;
 import com.zerra.gfx.shader.TileShader;
 import com.zerra.model.Model;
 import com.zerra.util.Loader;
+import com.zerra.util.Maths;
 import com.zerra.util.ResourceLocation;
 
 public class TileRenderer {
 
-	private static final float[] POSITIONS = new float[] { -0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, -0.5f };
-	private static final int MAX_INSTANCES = 100;
+	private static final float[] POSITIONS = new float[] { 0, 1, 0, 0, 1, 1, 1, 0 };
+	private static final int MAX_INSTANCES = 1000;
 	private static final int INSTANCE_DATA_LENGTH = 18;
 
 	private static final FloatBuffer buffer = BufferUtils.createFloatBuffer(MAX_INSTANCES * INSTANCE_DATA_LENGTH);
@@ -47,7 +49,29 @@ public class TileRenderer {
 		Loader.storeInstancedDataInAttributeList(quad.getVaoID(), vboID, 5, 2, INSTANCE_DATA_LENGTH, 16);
 	}
 
-	public void render(Map<ResourceLocation, List<Tile>> tiles) {
+	public void render(Map<ResourceLocation, List<Tile>> tiles, ICamera camera) {
+		this.prepare();
+		for (ResourceLocation texture : tiles.keySet()) {
+			this.bindTexture(texture);
+			List<Tile> batch = tiles.get(texture);
+			pointer = 0;
+			float[] vboData = new float[batch.size() * INSTANCE_DATA_LENGTH];
+			for (Tile tile : batch) {
+				this.updateModelViewMatrix(tile.getX(), tile.getY(), 0, 16, Maths.createViewMatrix(camera), vboData);
+				this.updateTextureCoords(tile, vboData);
+			}
+			Loader.updateVboData(vboID, vboData, buffer);
+			GL31.glDrawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount(), batch.size());
+		}
+		this.unbind();
+	}
+
+	private void bindTexture(ResourceLocation texture) {
+		Game.getInstance().getTextureManager().bind(texture);
+		shader.loadNumberOfRows(16);
+	}
+
+	private void prepare() {
 		shader.start();
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
@@ -56,21 +80,10 @@ public class TileRenderer {
 		GL20.glEnableVertexAttribArray(2);
 		GL20.glEnableVertexAttribArray(3);
 		GL20.glEnableVertexAttribArray(5);
-
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		for (ResourceLocation texture : tiles.keySet()) {
-			List<Tile> batch = tiles.get(texture);
-			Game.getInstance().getTextureManager().bind(texture);
-			for (Tile tile : batch) {
-				//TODO: Change this.
-				this.updateModelViewMatrix(0, 0, 0, 0, null, null);
-			}
-			GL31.glDrawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount(), batch.size());
-		}
+	}
 
-		// shader.loadTransformationMatrix(Maths.createTransformationMatrix(0, 0, -2, 0, 0, 0, 2, 2, 1));
-		// GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
-
+	private void unbind() {
 		GL20.glDisableVertexAttribArray(5);
 		GL20.glDisableVertexAttribArray(4);
 		GL20.glDisableVertexAttribArray(3);
@@ -83,30 +96,21 @@ public class TileRenderer {
 
 	private void updateModelViewMatrix(float x, float y, float rotation, float scale, Matrix4f viewMatrix, float[] vboData) {
 		Matrix4f modelMatrix = new Matrix4f();
-		modelMatrix.translate(x, y, 0, modelMatrix);
+		modelMatrix.translate(x, y, -1, modelMatrix);
 		modelMatrix.rotate((float) Math.toRadians(rotation), 0, 0, 1, modelMatrix);
 		modelMatrix.scale(scale, modelMatrix);
 		Matrix4f modelViewMatrix = viewMatrix.mul(modelMatrix, modelMatrix);
 		storeMatrixData(modelViewMatrix, vboData);
 	}
 
+	private void updateTextureCoords(Tile tile, float[] data) {
+		data[pointer++] = 0;
+		data[pointer++] = 0;
+	}
+
 	private void storeMatrixData(Matrix4f matrix, float[] data) {
-		data[pointer++] = matrix.m00();
-		data[pointer++] = matrix.m01();
-		data[pointer++] = matrix.m02();
-		data[pointer++] = matrix.m03();
-		data[pointer++] = matrix.m10();
-		data[pointer++] = matrix.m11();
-		data[pointer++] = matrix.m12();
-		data[pointer++] = matrix.m13();
-		data[pointer++] = matrix.m20();
-		data[pointer++] = matrix.m21();
-		data[pointer++] = matrix.m22();
-		data[pointer++] = matrix.m23();
-		data[pointer++] = matrix.m30();
-		data[pointer++] = matrix.m31();
-		data[pointer++] = matrix.m32();
-		data[pointer++] = matrix.m33();
+		matrix.get(data, pointer);
+		pointer += 16;
 	}
 
 	public void cleanUp() {

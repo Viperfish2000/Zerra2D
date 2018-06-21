@@ -2,7 +2,7 @@ package com.zerra.game.world.tile;
 
 import java.awt.Graphics;
 
-import org.joml.Vector4f;
+import org.joml.Vector2f;
 
 import com.zerra.util.ResourceLocation;
 
@@ -25,7 +25,7 @@ public class TileBase extends Tile {
 	}
 
 	@Override
-	public Vector4f getTextureCoords() {
-		return null;
+	public Vector2f getTextureCoords() {
+		return new Vector2f();
 	}
 }

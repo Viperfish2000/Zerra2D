@@ -1,18 +1,16 @@
 package com.zerra;
 
-import java.util.Arrays;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.joml.Vector4f;
+import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 
 import com.zerra.game.manager.EntityManager;
-import com.zerra.game.world.tile.Tile;
 import com.zerra.game.world.tile.TileBase;
 import com.zerra.gfx.GlWrapper;
 import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.gfx.texture.TextureManager;
+import com.zerra.object.Camera;
 import com.zerra.util.Display;
 import com.zerra.util.Loader;
 import com.zerra.util.Timer;
@@ -28,6 +26,7 @@ public class Game implements Runnable {
 
 	private TextureManager textureManager;
 	private MasterRenderer renderer;
+	private Camera camera;
 
 	private boolean running;
 
@@ -57,6 +56,7 @@ public class Game implements Runnable {
 
 		textureManager = new TextureManager();
 		renderer = new MasterRenderer();
+		camera = new Camera();
 	}
 
 	@Override
@@ -88,7 +88,8 @@ public class Game implements Runnable {
 
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				logger.info("World Finished Loading: " + /* Game.worldFinishedLoading + */" --- FPS: " + frames);
+				// logger.info("World Finished Loading: " + Game.worldFinishedLoading + " --- fps: " + frames);
+				Display.setTitle("test | fps: " + frames);
 				frames = 0;
 			}
 			try {
@@ -105,19 +106,25 @@ public class Game implements Runnable {
 	}
 
 	private void render() {
-		renderer.render(Arrays.asList(new Tile[] { new TileBase(0, 0) {
-			@Override
-			public Vector4f getTextureCoords() {
-				return new Vector4f(0, 0, 16, 16);
+		// TODO this is temporary code. Remove. Plz
+		for (int i = 0; i < 16; i++) {
+			for (int j = 0; j < 16; j++) {
+				renderer.renderTile(new TileBase(i * 16, j * 16) {
+					@Override
+					public Vector2f getTextureCoords() {
+						return new Vector2f(0, 0);
+					}
+				});
 			}
-		} }));
+		}
+		renderer.render(camera);
 	}
 
 	private void cleanUp() {
 		Loader.cleanUp();
 		renderer.cleanUp();
 	}
-	
+
 	public float getRenderPartialTicks() {
 		return TIMER.renderPartialTicks;
 	}
@@ -128,6 +135,10 @@ public class Game implements Runnable {
 
 	public MasterRenderer getRenderer() {
 		return renderer;
+	}
+
+	public Camera getCamera() {
+		return camera;
 	}
 
 	public static Logger logger() {
