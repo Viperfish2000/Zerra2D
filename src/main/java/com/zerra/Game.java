@@ -102,7 +102,7 @@ public class Game implements Runnable {
 	}
 
 	private void update() {
-
+		camera.update();
 	}
 
 	private void render() {
