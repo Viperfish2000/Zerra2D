@@ -1,4 +1,6 @@
 package com.zerra.util;
 
-public interface IStringSerializable extends ISerializable<String> {
+public interface IStringSerializable {
+	
+	String getName();
 }
