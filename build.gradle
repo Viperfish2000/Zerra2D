@@ -27,6 +27,9 @@ dependencies {
 	
 	// LWJGL GLFW
 	compile "org.lwjgl:lwjgl-glfw:${lwjglVersion}"
+	compile "org.lwjgl:lwjgl-glfw:${lwjglVersion}:natives-windows"
+	compile "org.lwjgl:lwjgl-glfw:${lwjglVersion}:natives-linux"
+	compile "org.lwjgl:lwjgl-glfw:${lwjglVersion}:natives-osx"
 	
 	// LWJGL OPENGL
 	compile "org.lwjgl:lwjgl-opengl:${lwjglVersion}"
