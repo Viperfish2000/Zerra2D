@@ -1,15 +1,19 @@
 #version 140
 
 in vec2 position;
-in vec2 textureCoords;
+in mat4 modelViewMatrix;
+in vec2 textureOffset;
 
 out vec2 pass_TextureCoords;
 
 uniform mat4 projectionMatrix;
-uniform mat4 transformationMatrix;
-uniform mat4 viewMatrix;
+uniform float numberOfRows;
 
 void main() {
-	gl_Position = projectionMatrix * transformationMatrix * vec4(position, 0.0, 1.0);
-	pass_TextureCoords = textureCoords;
+	gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 0.0, 1.0);
+
+	vec2 textureCoords = position;
+	textureCoords.y - 1.0 - textureCoords.y;
+	textureCoords /= numberOfRows;
+	pass_TextureCoords = textureCoords + textureOffset;
 }

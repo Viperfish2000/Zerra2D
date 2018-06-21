@@ -1,15 +1,35 @@
 package com.zerra.object;
 
 import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
 
 import com.zerra.Game;
 import com.zerra.gfx.ICamera;
+import com.zerra.util.Display;
 
 public class Camera extends GLObject implements ICamera {
 
 	@Override
 	public void update() {
 		super.update();
+
+		float speed = 4.0f;
+
+		if (Display.isKeyPressed(GLFW.GLFW_KEY_W)) {
+			position.y -= speed;
+		}
+
+		if (Display.isKeyPressed(GLFW.GLFW_KEY_S)) {
+			position.y += speed;
+		}
+
+		if (Display.isKeyPressed(GLFW.GLFW_KEY_A)) {
+			position.x -= speed;
+		}
+
+		if (Display.isKeyPressed(GLFW.GLFW_KEY_D)) {
+			position.x += speed;
+		}
 	}
 
 	@Override
