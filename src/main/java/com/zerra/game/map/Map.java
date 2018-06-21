@@ -61,7 +61,8 @@ public class Map {
 			float lastX = cameraLastPosition.x;
 			float lastY = cameraLastPosition.y;
 			if (x - lastX < 0) {
-				for (int tileX = 1; tileX < 3; tileX++) {
+				System.out.println("LEFT");
+				for (int tileX = 1; tileX < 5; tileX++) {
 					for (int tileY = -1; tileY < height + 1; tileY++) {
 						int xPos = (int) (tileX + (Math.ceil(x - 64) / 16));
 						int yPos = (int) (y / 16 + tileY);
@@ -71,7 +72,8 @@ public class Map {
 			}
 
 			if (x - lastX > 0) {
-				for (int tileX = 1; tileX < 3; tileX++) {
+				System.out.println("RIGHT");
+				for (int tileX = 4; tileX < 7; tileX++) {
 					for (int tileY = -1; tileY < height + 1; tileY++) {
 						int xPos = (int) (tileX + width + (Math.ceil(x - 64) / 16));
 						int yPos = (int) (y / 16 + tileY);
@@ -80,9 +82,10 @@ public class Map {
 				}
 			}
 
-			if (y - lastY < 0) {
+			if (y - lastY  < 0) {
+				System.out.println("UP");
 				for (int tileX = -1; tileX < width + 1; tileX++) {
-					for (int tileY = 1; tileY < 3; tileY++) {
+					for (int tileY = -2; tileY < 0; tileY++) {
 						int xPos = (int) (x / 16 + tileX);
 						int yPos = (int) Math.ceil(tileY + y / 16);
 						tiles.add(new TileGrass(xPos * 16, yPos * 16));
@@ -91,6 +94,7 @@ public class Map {
 			}
 
 			if (y - lastY > 0) {
+				System.out.println("DOWN");
 				for (int tileX = -1; tileX < width + 1; tileX++) {
 					for (int tileY = 1; tileY < 3; tileY++) {
 						int xPos = (int) (x / 16 + tileX);
