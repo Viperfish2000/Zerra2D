@@ -54,6 +54,7 @@ public class Game implements Runnable {
 		Display.createDisplay("test", WIDTH, HEIGHT);
 
 		GlWrapper.disableDepth();
+		GL11.glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 		textureManager = new TextureManager();
 		renderer = new MasterRenderer();
