@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.zerra.game.entity.Entity;
-import com.zerra.game.entity.EntityPlayerMover;
 
 public class EntityManager {
 
@@ -24,15 +23,6 @@ public class EntityManager {
 	
 	public void destroyEntity(Entity entity) {
 		entities.remove(entity);
-	}
-	
-	public EntityPlayerMover getPlayerMover() {
-		for (Entity entity : entities.keySet()) {
-			if(entity instanceof EntityPlayerMover) {
-				return (EntityPlayerMover) entity;
-			}
-		}
-		return null;
 	}
 	
 	public void tick() {

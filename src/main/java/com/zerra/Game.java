@@ -1,6 +1,5 @@
 package com.zerra;
 
-import java.awt.Rectangle;
 import java.util.Arrays;
 
 import org.apache.logging.log4j.LogManager;
@@ -107,11 +106,6 @@ public class Game implements Runnable {
 
 	private void render() {
 		renderer.render(Arrays.asList(new Tile[] { new TileBase(0, 0) {
-			@Override
-			public Rectangle getBounds() {
-				return null;
-			}
-
 			@Override
 			public Vector4f getTextureCoords() {
 				return new Vector4f(0, 0, 16, 16);

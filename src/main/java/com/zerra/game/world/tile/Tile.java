@@ -1,7 +1,8 @@
 package com.zerra.game.world.tile;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
+
+import org.joml.Vector4f;
 
 import com.zerra.util.ResourceLocation;
 
@@ -18,19 +19,19 @@ public abstract class Tile {
 	public abstract void tick();
 
 	public abstract void render(Graphics g);
+	
+	public abstract Vector4f getTextureCoords();
 
-	public abstract Rectangle getBounds();
-
+	public ResourceLocation getTexture() {
+		return texture;
+	}
+	
 	public float getX() {
 		return x;
 	}
 
 	public float getY() {
 		return y;
-	}
-
-	public ResourceLocation getTexture() {
-		return texture;
 	}
 
 	public void setX(float x) {

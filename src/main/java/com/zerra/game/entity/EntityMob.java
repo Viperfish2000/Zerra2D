@@ -20,8 +20,7 @@ public class EntityMob extends Entity {
 	@Override
 	public void tick() {
 		super.tick();
-		this.setX(this.getX() + Game.manager.getPlayerMover().getVelX());
-		this.setY(this.getY() + Game.manager.getPlayerMover().getVelY());
+		
 	}
 	
 	@Override

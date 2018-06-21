@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -63,7 +62,8 @@ public class TileRenderer {
 			List<Tile> batch = tiles.get(texture);
 			Game.getInstance().getTextureManager().bind(texture);
 			for (Tile tile : batch) {
-this.updateModelViewMatrix(, rotation, scale, viewMatrix, vboData);
+				//TODO: Change this.
+				this.updateModelViewMatrix(0, 0, 0, 0, null, null);
 			}
 			GL31.glDrawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount(), batch.size());
 		}

@@ -4,11 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import com.zerra.Game;
-import com.zerra.game.world.tile.Tile;
-import com.zerra.game.world.tile.TileRock;
-import com.zerra.game.world.tile.World;
-
 public class EntityPlayer extends EntityLiving {
 
 	public EntityPlayer() {
@@ -24,21 +19,6 @@ public class EntityPlayer extends EntityLiving {
 	@Override
 	public void tick() {
 		super.tick();
-		if(this.ticksExisted % 4 == 0) {
-			collision();
-		}
-	}
-	
-	private void collision() {
-		for (Tile tile : World.getTiles()) {
-			if(tile instanceof TileRock) {
-				if(getBounds().intersects(((TileRock)tile).getBounds())) {
-					Game.manager.getPlayerMover().setVelX(0);
-					Game.manager.getPlayerMover().setVelY(0);
-					this.setHealth(this.getHealth() - 5);
-				}
-			}
-		}
 	}
 
 	@Override
