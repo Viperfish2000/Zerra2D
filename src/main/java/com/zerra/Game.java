@@ -2,10 +2,12 @@ package com.zerra;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.opengl.GL11;
 
 import com.zerra.game.handlers.EntityManager;
 import com.zerra.util.Display;
 import com.zerra.util.Loader;
+import com.zerra.util.Timer;
 
 public class Game implements Runnable {
 
@@ -14,6 +16,7 @@ public class Game implements Runnable {
 	
 	private static Logger logger = LogManager.getLogger();
 	private static Game instance = new Game();
+	private static final Timer TIMER = new Timer(60);
 
 	private boolean running;
 	
@@ -25,7 +28,7 @@ public class Game implements Runnable {
 	public synchronized void start() {
 		if (running)
 			return;
-
+		
 		running = true;
 	}
 
@@ -48,30 +51,25 @@ public class Game implements Runnable {
 			e.printStackTrace();
 		}
 
-		long lastTime = System.nanoTime();
-		double amountOfTicks = 60.0D;
-		double ns = 1000000000 / amountOfTicks;
-		double delta = 0.0D;
 		long timer = System.currentTimeMillis();
 		int frames = 0;
+		
 		while (running) {
 			if (!Display.isCloseRequested())
 				Display.update();
 			else
 				running = false;
 			
-			long now = System.nanoTime();
-			delta += (now - lastTime) / ns;
-			lastTime = now;
-			while (delta >= 1) {
+			TIMER.updateTimer();
+			
+			for(int i = 0; i < Math.min(10, TIMER.elapsedTicks); ++i) {
 				update();
-				delta--;
 			}
-			if (running) {
-				render();
-				frames++;
-			}
-
+			
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+			render();
+			frames++;
+			
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
 				logger.info("World Finished Loading: " + /* Game.worldFinishedLoading + */" --- FPS: " + frames);
