@@ -1,15 +1,20 @@
 package com.zerra.game.world.tile;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
+
+import org.joml.Vector4f;
 
 import com.zerra.Game;
+import com.zerra.util.ResourceLocation;
 
-public class TileBase extends Tile {
+public abstract class TileBase extends Tile {
 
-	public TileBase(int x, int y) {
-		this.setX(x*32 + Game.manager.getPlayerMover().getX());
-		this.setY(y*32 + Game.manager.getPlayerMover().getY());
+	public static final ResourceLocation TILE_ATLAS = new ResourceLocation("textures/tiles.png");
+
+	public TileBase(float x, float y) {
+		super(TILE_ATLAS);
+		this.setX(x);
+		this.setY(y);
 	}
 
 	@Override
@@ -17,14 +22,10 @@ public class TileBase extends Tile {
 		this.setX(this.getX() + Game.manager.getPlayerMover().getVelX());
 		this.setY(this.getY() + Game.manager.getPlayerMover().getVelY());
 	}
-	
-	@Override
-	public void render(Graphics g) {
-		
-	}
 
 	@Override
-	public Rectangle getBounds() {
-		return null;
+	public void render(Graphics g) {
 	}
+
+	public abstract Vector4f getTextureCoords();
 }

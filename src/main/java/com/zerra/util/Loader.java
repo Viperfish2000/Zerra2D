@@ -70,7 +70,7 @@ public class Loader {
 			return Loader.loadTexture(ImageIO.read(location.getInputStream()));
 		} catch (Exception e) {
 			Game.logger().warn("Could not find image at \'" + location + "\'");
-			return null;
+			return Loader.loadTexture(LoadingUtils.createMissingImage(256, 256));
 		}
 	}
 
@@ -133,10 +133,20 @@ public class Loader {
 		int vaoID = GL30.glGenVertexArrays();
 		vaos.add(vaoID);
 		GL30.glBindVertexArray(vaoID);
-		bindIndicesBuffer(indices);
+		bindIndicesBuffer(vaoID, indices);
 		storeDataInAttributeList(0, 3, positions);
 		storeDataInAttributeList(1, 2, textureCoords);
 		storeDataInAttributeList(2, 3, normals);
+		GL30.glBindVertexArray(0);
+		return new Model(vaoID, indices.length);
+	}
+
+	public static Model loadToVAO(float[] positions, int[] indices, int dimensions) {
+		int vaoID = GL30.glGenVertexArrays();
+		vaos.add(vaoID);
+		GL30.glBindVertexArray(vaoID);
+		bindIndicesBuffer(vaoID, indices);
+		storeDataInAttributeList(0, dimensions, positions);
 		GL30.glBindVertexArray(0);
 		return new Model(vaoID, indices.length);
 	}
@@ -178,6 +188,16 @@ public class Loader {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 	}
 
+	private static void bindIndicesBuffer(int vao, int[] indices) {
+		int vboID = GL15.glGenBuffers();
+		vbos.add(vboID);
+		GL30.glBindVertexArray(vao);
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
+		IntBuffer buffer = Buffers.storeDataInIntBuffer(indices);
+		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+		GL30.glBindVertexArray(0);
+	}
+
 	public static void storeDataInAttributeList(int attributeNumber, int dataSize, float[] data) {
 		int vboID = GL15.glGenBuffers();
 		vbos.add(vboID);
@@ -186,13 +206,5 @@ public class Loader {
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
 		GL20.glVertexAttribPointer(attributeNumber, dataSize, GL11.GL_FLOAT, false, 0, 0);
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-	}
-
-	private static void bindIndicesBuffer(int[] indices) {
-		int vboID = GL15.glGenBuffers();
-		vbos.add(vboID);
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
-		IntBuffer buffer = Buffers.storeDataInIntBuffer(indices);
-		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
 	}
 }

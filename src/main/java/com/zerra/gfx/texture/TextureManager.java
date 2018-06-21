@@ -24,7 +24,7 @@ public class TextureManager {
 		this.load(MISSING_TEXTURE_LOCATION, Loader.loadTexture(LoadingUtils.createMissingImage(256, 256)));
 		boundTextureLocation = MISSING_TEXTURE_LOCATION;
 	}
-	
+
 	public void loadTexture(ResourceLocation location, ITexture texture) {
 		textures.put(location.toString(), texture);
 	}
