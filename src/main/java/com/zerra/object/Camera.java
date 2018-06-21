@@ -12,7 +12,7 @@ public class Camera extends GLObject implements ICamera {
 	public void update() {
 		super.update();
 
-		float speed = 4.0f;
+		float speed = 2.0f;
 
 		if (Display.isKeyPressed(GLFW.GLFW_KEY_W)) {
 			position.y -= speed;
