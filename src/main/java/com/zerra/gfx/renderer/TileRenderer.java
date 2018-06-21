@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -104,8 +105,11 @@ public class TileRenderer {
 	}
 
 	private void updateTextureCoords(Tile tile, float[] data) {
-		data[pointer++] = 0;
-		data[pointer++] = 0;
+		// TODO add the tile width into the tile texture class
+		float numberOfRows = 16;
+		Vector2f textureCoords = tile.getTextureCoords();
+		data[pointer++] = textureCoords.x / numberOfRows;
+		data[pointer++] = textureCoords.y / numberOfRows;
 	}
 
 	private void storeMatrixData(Matrix4f matrix, float[] data) {

@@ -112,7 +112,7 @@ public class Game implements Runnable {
 				renderer.renderTile(new TileBase(i * 16, j * 16) {
 					@Override
 					public Vector2f getTextureCoords() {
-						return new Vector2f(0, 0);
+						return new Vector2f(0, 1);
 					}
 				});
 			}
