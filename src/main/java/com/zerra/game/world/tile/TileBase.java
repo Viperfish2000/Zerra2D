@@ -17,7 +17,7 @@ public class TileBase extends Tile {
 	}
 
 	@Override
-	public void tick() {
+	public void update() {
 	}
 
 	@Override

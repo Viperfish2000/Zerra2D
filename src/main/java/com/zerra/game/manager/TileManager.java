@@ -29,7 +29,7 @@ public class TileManager {
 	
 	public void tick() {
 		for (Tile tile : tilesToRender) {
-			tile.tick();
+			tile.update();
 		}
 	}
 	

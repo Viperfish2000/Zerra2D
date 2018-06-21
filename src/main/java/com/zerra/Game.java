@@ -2,11 +2,10 @@ package com.zerra;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 
 import com.zerra.game.manager.EntityManager;
-import com.zerra.game.world.tile.TileBase;
+import com.zerra.game.map.Map;
 import com.zerra.gfx.GlWrapper;
 import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.gfx.texture.TextureManager;
@@ -27,6 +26,8 @@ public class Game implements Runnable {
 	private TextureManager textureManager;
 	private MasterRenderer renderer;
 	private Camera camera;
+
+	private Map map;
 
 	private boolean running;
 
@@ -57,6 +58,8 @@ public class Game implements Runnable {
 		textureManager = new TextureManager();
 		renderer = new MasterRenderer();
 		camera = new Camera();
+
+		map = new Map();
 	}
 
 	@Override
@@ -103,20 +106,22 @@ public class Game implements Runnable {
 
 	private void update() {
 		camera.update();
+		map.update();
 	}
 
 	private void render() {
 		// TODO this is temporary code. Remove. Plz
-		for (int i = 0; i < 16; i++) {
-			for (int j = 0; j < 16; j++) {
-				renderer.renderTile(new TileBase(i * 16, j * 16) {
-					@Override
-					public Vector2f getTextureCoords() {
-						return new Vector2f(0, 1);
-					}
-				});
-			}
-		}
+		// for (int i = 0; i < 16; i++) {
+		// for (int j = 0; j < 16; j++) {
+		// renderer.renderTile(new TileBase(i * 16, j * 16) {
+		// @Override
+		// public Vector2f getTextureCoords() {
+		// return new Vector2f(0, 1);
+		// }
+		// });
+		// }
+		// }
+		map.render(renderer);
 		renderer.render(camera);
 	}
 

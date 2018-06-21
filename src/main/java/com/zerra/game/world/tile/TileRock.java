@@ -11,12 +11,12 @@ import javax.imageio.ImageIO;
 import com.zerra.Game;
 
 public class TileRock extends TileBase {
-	
+
 	public static BufferedImage image;
 
 	public TileRock(int x, int y) {
 		super(x, y);
-		if(image == null) {
+		if (image == null) {
 			try {
 				TileRock.image = ImageIO.read(new File("rock.png"));
 			} catch (IOException e) {
@@ -27,15 +27,15 @@ public class TileRock extends TileBase {
 	}
 
 	@Override
-	public void tick() {
-		super.tick();
+	public void update() {
+		super.update();
 	}
-	
+
 	@Override
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 
-		if(this.getY() < Game.HEIGHT - 32 && this.getY() > 0 - 32 && this.getX() < Game.WIDTH && this.getX() > 0 - 32) {
+		if (this.getY() < Game.HEIGHT - 32 && this.getY() > 0 - 32 && this.getX() < Game.WIDTH && this.getX() > 0 - 32) {
 			g.drawImage(image, 32, 32, null);
 		}
 	}

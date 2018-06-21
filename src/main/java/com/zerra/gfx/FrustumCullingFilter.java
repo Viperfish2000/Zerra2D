@@ -1,7 +1,12 @@
 package com.zerra.gfx;
 
+import java.util.List;
+
 import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
+
+import com.zerra.game.world.tile.Tile;
+import com.zerra.util.AxisAlignedBB;
 
 public class FrustumCullingFilter {
 
@@ -21,6 +26,16 @@ public class FrustumCullingFilter {
 
 	public boolean insideFrustum(float x, float y, float z, float boundingRadius) {
 		return frustumIntersection.testSphere(x, y, z, boundingRadius);
+	}
+
+	public boolean insideFrustum(float x, float y, AxisAlignedBB box) {
+		return frustumIntersection.testAab((float) (x + box.getX()), (float) (y + box.getY()), 0, (float) (x + box.getXMax()), (float) (y + box.getYMax()), 1);
+	}
+
+	public void filterTiles(List<Tile> tiles) {
+		for (Tile tile : tiles) {
+			tile.setRemoved(!insideFrustum(tile.getX(), tile.getY(), 0, 16));
+		}
 	}
 
 	// public void filterObjects(List<? extends GameObject> objects, float meshBoundingRadius) {

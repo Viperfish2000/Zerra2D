@@ -4,23 +4,29 @@ import java.awt.Graphics;
 
 import org.joml.Vector2f;
 
+import com.zerra.util.AxisAlignedBB;
 import com.zerra.util.ResourceLocation;
 
 public abstract class Tile {
 
+	private boolean removed;
 	private float x, y;
 	private ResourceLocation texture;
-	public boolean shouldRender = false;
+	public boolean shouldRender;
 
 	public Tile(ResourceLocation texture) {
 		this.texture = texture;
 	}
 
-	public abstract void tick();
+	public abstract void update();
 
 	public abstract void render(Graphics g);
 
 	public abstract Vector2f getTextureCoords();
+
+	public AxisAlignedBB getCollisionBox() {
+		return new AxisAlignedBB(0, 0, 16, 16);
+	}
 
 	public ResourceLocation getTexture() {
 		return texture;
@@ -40,5 +46,13 @@ public abstract class Tile {
 
 	public void setY(float y) {
 		this.y = y;
+	}
+
+	public boolean isRemoved() {
+		return removed;
+	}
+
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
 	}
 }

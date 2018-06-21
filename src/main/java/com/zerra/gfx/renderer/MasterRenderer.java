@@ -15,8 +15,8 @@ import com.zerra.util.ResourceLocation;
 
 public class MasterRenderer {
 
-	private static final float scale = 3;
-	private static final Matrix4f projectionMatrix = new Matrix4f().ortho(0, Display.getWidth() / scale, Display.getHeight() / scale, 0, 0.3f, 1000f);
+	public static final float SCALE = 3;
+	private static final Matrix4f projectionMatrix = new Matrix4f().ortho(0, Display.getWidth() / SCALE, Display.getHeight() / SCALE, 0, 0.3f, 1000f);
 
 	private TileShader tileShader;
 	private TileRenderer tileRenderer;

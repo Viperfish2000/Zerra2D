@@ -24,8 +24,8 @@ public class TileGrass extends TileBase {
 	}
 
 	@Override
-	public void tick() {
-		super.tick();
+	public void update() {
+		super.update();
 	}
 	
 	@Override
