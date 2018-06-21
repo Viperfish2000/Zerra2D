@@ -8,7 +8,8 @@ import com.zerra.game.GameObject;
 public class Entity extends GameObject {
 
 	private EntityType type;
-	public long ticksExisted = 0;
+	private long ticksExisted = 0;
+	private int velX, velY;
 	
 	public Entity() {
 		this(0, 0, EntityType.NEUTRAL);
@@ -20,17 +21,9 @@ public class Entity extends GameObject {
 		this.setType(type);
 	}
 
-	public EntityType getType() {
-		return type;
-	}
-
-	public void setType(EntityType type) {
-		this.type = type;
-	}
-
 	@Override
 	public void tick() {
-		ticksExisted++;
+		setTicksExisted(getTicksExisted() + 1);
 	}
 
 	@Override
@@ -41,5 +34,37 @@ public class Entity extends GameObject {
 	@Override
 	public Rectangle getBounds() {
 		return null;
+	}
+	
+	public EntityType getType() {
+		return type;
+	}
+
+	public void setType(EntityType type) {
+		this.type = type;
+	}
+	
+	public int getVelX() {
+		return velX;
+	}
+
+	public void setVelX(int velX) {
+		this.velX = velX;
+	}
+
+	public int getVelY() {
+		return velY;
+	}
+
+	public void setVelY(int velY) {
+		this.velY = velY;
+	}
+
+	public long getTicksExisted() {
+		return ticksExisted;
+	}
+
+	public void setTicksExisted(long ticksExisted) {
+		this.ticksExisted = ticksExisted;
 	}
 }
