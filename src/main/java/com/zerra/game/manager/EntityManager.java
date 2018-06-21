@@ -1,4 +1,4 @@
-package com.zerra.game.handlers;
+package com.zerra.game.manager;
 
 import java.awt.Graphics;
 import java.util.HashMap;

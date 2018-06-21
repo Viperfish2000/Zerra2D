@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 
 import com.zerra.game.entity.Entity;
 import com.zerra.game.entity.EntityType;
-import com.zerra.game.handlers.EntityManager;
+import com.zerra.game.manager.EntityManager;
 
 public class KeyInput extends KeyAdapter {
 

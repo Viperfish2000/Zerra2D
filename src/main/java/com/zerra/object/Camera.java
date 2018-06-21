@@ -5,7 +5,7 @@ import org.joml.Vector3f;
 import com.zerra.Game;
 import com.zerra.gfx.ICamera;
 
-public class Camera extends GameObject implements ICamera {
+public class Camera extends GLObject implements ICamera {
 
 	@Override
 	public void update() {

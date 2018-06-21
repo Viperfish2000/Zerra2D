@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
-import com.zerra.game.handlers.EntityManager;
+import com.zerra.game.manager.EntityManager;
 import com.zerra.game.world.tile.Tile;
 import com.zerra.game.world.tile.TileBase;
 import com.zerra.gfx.GlWrapper;

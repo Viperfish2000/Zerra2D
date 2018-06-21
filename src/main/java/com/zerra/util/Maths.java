@@ -105,4 +105,26 @@ public class Maths {
 		viewMatrix.translate(-camera.getPosition().x, -camera.getPosition().y, -camera.getPosition().z);
 		return viewMatrix;
 	}
+	
+	/**
+	 * A method for clamping a variable between two values.
+	 * 
+	 * @param value
+	 * 			The value to be clamped.
+	 * @param min
+	 * 			The lowest the value should go.
+	 * @param max
+	 * 			The highest the value should go.
+	 * @return
+	 * 			The clamped value.
+	 */
+	public static int clamp(int value, int min, int max) {
+		if(value < min) {
+			value = min;
+		}
+		if(value > max) {
+			value = max;
+		}
+		return value;
+	}
 }

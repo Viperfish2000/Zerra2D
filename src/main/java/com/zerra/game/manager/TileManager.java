@@ -1,12 +1,14 @@
-package com.zerra.game.world.tile;
+package com.zerra.game.manager;
 
 import java.awt.Graphics;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.zerra.Game;
+import com.zerra.game.world.tile.Tile;
+import com.zerra.game.world.tile.TileGrass;
 
 
-public class World {
+public class TileManager {
 
 	private static CopyOnWriteArrayList<Tile> tilesToRender = new CopyOnWriteArrayList<Tile>();
 	

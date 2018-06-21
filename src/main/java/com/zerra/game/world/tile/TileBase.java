@@ -26,7 +26,6 @@ public class TileBase extends Tile {
 
 	@Override
 	public Vector4f getTextureCoords() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
