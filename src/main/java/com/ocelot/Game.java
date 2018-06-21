@@ -3,6 +3,7 @@ package com.ocelot;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.ocelot.util.Display;
 import com.ocelot.util.Loader;
 
 public class Game implements Runnable {
@@ -14,7 +15,7 @@ public class Game implements Runnable {
 
 	private Game() {
 	}
-	
+
 	public synchronized void start() {
 		if (running)
 			return;
@@ -28,19 +29,19 @@ public class Game implements Runnable {
 
 		running = false;
 	}
-	
+
 	private void init() throws Exception {
-		
+		Display.createDisplay("test", 1280, 720);
 	}
 
 	@Override
 	public void run() {
 		try {
 			init();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0D;
 		double ns = 1000000000 / amountOfTicks;
@@ -48,6 +49,11 @@ public class Game implements Runnable {
 		long timer = System.currentTimeMillis();
 		int frames = 0;
 		while (running) {
+			if (!Display.isCloseRequested())
+				Display.update();
+			else
+				running = false;
+			
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
@@ -89,11 +95,11 @@ public class Game implements Runnable {
 	public static Logger logger() {
 		return logger;
 	}
-	
+
 	public static Game getInstance() {
 		return instance;
 	}
-	
+
 	public static void main(String[] args) {
 		new Thread(Game.getInstance()).start();
 		Game.getInstance().start();
