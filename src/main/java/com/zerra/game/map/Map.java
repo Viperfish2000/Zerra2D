@@ -66,6 +66,7 @@ public class Map {
 					for (int tileY = -1; tileY < height + 1; tileY++) {
 						int xPos = (int) (tileX + (Math.ceil(x - 64) / 16));
 						int yPos = (int) (y / 16 + tileY);
+						if(getTile(xPos * 16, yPos * 16) == null)
 						tiles.add(new TileGrass(xPos * 16, yPos * 16));
 					}
 				}
@@ -77,6 +78,7 @@ public class Map {
 					for (int tileY = -1; tileY < height + 1; tileY++) {
 						int xPos = (int) (tileX + width + (Math.ceil(x - 64) / 16));
 						int yPos = (int) (y / 16 + tileY);
+						if(getTile(xPos * 16, yPos * 16) == null)
 						tiles.add(new TileGrass(xPos * 16, yPos * 16));
 					}
 				}
@@ -88,6 +90,7 @@ public class Map {
 					for (int tileY = -2; tileY < 0; tileY++) {
 						int xPos = (int) (x / 16 + tileX);
 						int yPos = (int) Math.ceil(tileY + y / 16);
+						if(getTile(xPos * 16, yPos * 16) == null)
 						tiles.add(new TileGrass(xPos * 16, yPos * 16));
 					}
 				}
@@ -99,6 +102,7 @@ public class Map {
 					for (int tileY = 1; tileY < 3; tileY++) {
 						int xPos = (int) (x / 16 + tileX);
 						int yPos = (int) Math.floor(tileY + height + y / 16);
+						if(getTile(xPos * 16, yPos * 16) == null)
 						tiles.add(new TileGrass(xPos * 16, yPos * 16));
 					}
 				}
