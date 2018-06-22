@@ -1,13 +1,15 @@
-package com.zerra.gfx.post;
+package com.zerra.gfx.post.light;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+
+import com.zerra.gfx.post.ImageRenderer;
 
 public class LightApplier {
 
 	private ImageRenderer renderer;
 	private LightApplierShader shader;
-	
+
 	public LightApplier() {
 		this.renderer = new ImageRenderer();
 		this.shader = new LightApplierShader();
@@ -15,7 +17,7 @@ public class LightApplier {
 		this.shader.connectTextureUnits();
 		this.shader.stop();
 	}
-	
+
 	public void render(int texture, int lightTexture) {
 		this.shader.start();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -25,9 +27,13 @@ public class LightApplier {
 		this.renderer.renderQuad();
 		this.shader.stop();
 	}
-	
+
 	public void cleanUp() {
 		this.renderer.cleanUp();
 		this.shader.cleanUp();
+	}
+
+	public ImageRenderer getRenderer() {
+		return renderer;
 	}
 }

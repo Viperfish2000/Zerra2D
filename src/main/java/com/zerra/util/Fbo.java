@@ -1,4 +1,4 @@
-package com.zerra.gfx.post;
+package com.zerra.util;
 
 import java.nio.ByteBuffer;
 
@@ -6,8 +6,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
-
-import com.zerra.util.Display;
 
 public class Fbo {
 

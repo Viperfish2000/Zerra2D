@@ -1,4 +1,4 @@
-package com.zerra.gfx.post;
+package com.zerra.gfx.post.contrast;
 
 import com.zerra.gfx.shader.ShaderProgram;
 

@@ -1,7 +1,10 @@
-package com.zerra.gfx.post;
+package com.zerra.gfx.post.contrast;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+
+import com.zerra.gfx.post.ImageRenderer;
+import com.zerra.util.Display;
 
 public class ContrastChanger {
 
@@ -9,7 +12,7 @@ public class ContrastChanger {
 	private ContrastShader shader;
 	
 	public ContrastChanger(float contrast) {
-		this.renderer = new ImageRenderer();
+		this.renderer = new ImageRenderer(Display.getWidth(), Display.getHeight());
 		this.shader = new ContrastShader();
 		this.shader.start();
 		this.shader.loadContrast(contrast);
@@ -27,5 +30,9 @@ public class ContrastChanger {
 	public void cleanUp() {
 		this.renderer.cleanUp();
 		this.shader.cleanUp();
+	}
+	
+	public ImageRenderer getRenderer() {
+		return renderer;
 	}
 }

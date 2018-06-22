@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.zerra.game.world.tile.TileEntry;
 import com.zerra.gfx.light.Light;
-import com.zerra.gfx.post.Fbo;
 import com.zerra.gfx.post.PostProcessing;
 import com.zerra.gfx.shader.LightShader;
 import com.zerra.gfx.shader.QuadShader;
@@ -20,6 +19,7 @@ import com.zerra.gfx.shader.TileShader;
 import com.zerra.object.ICamera;
 import com.zerra.object.Quad;
 import com.zerra.util.Display;
+import com.zerra.util.Fbo;
 import com.zerra.util.ResourceLocation;
 
 public class MasterRenderer {
