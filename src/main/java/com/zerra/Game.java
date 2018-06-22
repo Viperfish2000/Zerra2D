@@ -56,7 +56,7 @@ public class Game implements Runnable {
 	}
 
 	private void init() throws Exception {
-		Display.createDisplay("test", WIDTH, HEIGHT);
+		Display.createDisplay("Zerra", WIDTH, HEIGHT);
 
 		GlWrapper.enableDepth();
 		GL11.glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -101,7 +101,7 @@ public class Game implements Runnable {
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
 				// logger.info("World Finished Loading: " + Game.worldFinishedLoading + " --- fps: " + frames);
-				Display.setTitle("test | fps: " + frames);
+				Display.setTitle("Zerra | fps: " + frames);
 				frames = 0;
 			}
 			try {
