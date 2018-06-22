@@ -108,6 +108,10 @@ public class MasterRenderer {
 			this.lights.add(lights[i]);
 		}
 	}
+	
+	public void setAmbientLight(float red, float green, float blue) {
+		LIGHT.getColor().set(red, green, blue, 1);
+	}
 
 	public static Matrix4f getProjectionMatrix() {
 		return projectionMatrix;

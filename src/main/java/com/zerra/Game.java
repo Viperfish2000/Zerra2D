@@ -124,6 +124,7 @@ public class Game implements Runnable {
 	}
 
 	private void render() {
+		renderer.setAmbientLight(0, 0, 0.75f);
 		map.render(renderer);
 		renderer.renderLights(new Light(new Vector2f(), new Vector4f(1, 1, 1, 5), 50), new Light(new Vector2f((float) Display.getMouseX() / MasterRenderer.SCALE + camera.getPosition().x, (float) Display.getMouseY() / MasterRenderer.SCALE + camera.getPosition().y), new Vector4f(1, 0, 1, 5), 50));
 		renderer.render(camera);
