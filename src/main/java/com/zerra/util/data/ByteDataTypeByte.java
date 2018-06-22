@@ -16,12 +16,12 @@ public class ByteDataTypeByte extends ByteDataTypePrimitive {
 	}
 
 	@Override
-	void write(DataOutput output) throws IOException {
+	public void write(DataOutput output) throws IOException {
 		output.writeByte(data);
 	}
 
 	@Override
-	void read(DataInput input) throws IOException {
+	public void read(DataInput input) throws IOException {
 		this.data = input.readByte();
 	}
 

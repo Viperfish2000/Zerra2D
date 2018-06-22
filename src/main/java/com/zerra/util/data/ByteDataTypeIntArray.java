@@ -17,7 +17,7 @@ public class ByteDataTypeIntArray extends ByteDataBase {
 	}
 
 	@Override
-	void write(DataOutput output) throws IOException {
+	public void write(DataOutput output) throws IOException {
 		output.writeInt(data.length);
 		for (int i = 0; i < data.length; i++) {
 			output.writeInt(data[i]);
@@ -25,7 +25,7 @@ public class ByteDataTypeIntArray extends ByteDataBase {
 	}
 
 	@Override
-	void read(DataInput input) throws IOException {
+	public void read(DataInput input) throws IOException {
 		this.data = new int[input.readInt()];
 		for (int i = 0; i < data.length; i++) {
 			this.data[i] = input.readInt();

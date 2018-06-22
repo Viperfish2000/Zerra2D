@@ -1,5 +1,8 @@
 package com.zerra;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
@@ -13,6 +16,7 @@ import com.zerra.object.Camera;
 import com.zerra.util.Display;
 import com.zerra.util.Loader;
 import com.zerra.util.Timer;
+import com.zerra.util.thread.ThreadPool;
 
 public class Game implements Runnable {
 
@@ -26,6 +30,7 @@ public class Game implements Runnable {
 	private TextureManager textureManager;
 	private MasterRenderer renderer;
 	private Camera camera;
+	private ThreadPool pool;
 
 	private TileMap map;
 
@@ -59,8 +64,10 @@ public class Game implements Runnable {
 		textureManager = new TextureManager();
 		renderer = new MasterRenderer();
 		camera = new Camera();
+		pool = new ThreadPool(4);
 
 		map = new TileMap();
+		load();
 	}
 
 	@Override
@@ -127,9 +134,41 @@ public class Game implements Runnable {
 	}
 
 	private void cleanUp() {
+		this.addTask(() -> {
+			this.save();
+		});
+		Display.destroy();
+		pool.join();
 		Loader.cleanUp();
 		renderer.cleanUp();
 		System.exit(0);
+	}
+
+	private void save() {
+		try {
+			File saveFolder = new File("data/saves");
+			if (!saveFolder.exists()) {
+				saveFolder.mkdirs();
+			}
+			map.save(saveFolder);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void load() {
+		try {
+			File saveFolder = new File("data/saves");
+			if (saveFolder.exists()) {
+				map.load(saveFolder);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void addTask(Runnable task) {
+		pool.addScheduledTask(task);
 	}
 
 	public float getRenderPartialTicks() {

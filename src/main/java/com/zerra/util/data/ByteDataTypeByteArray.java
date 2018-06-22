@@ -17,13 +17,13 @@ public class ByteDataTypeByteArray extends ByteDataBase {
 	}
 
 	@Override
-	void write(DataOutput output) throws IOException {
+	public void write(DataOutput output) throws IOException {
 		output.writeInt(data.length);
 		output.write(data);
 	}
 
 	@Override
-	void read(DataInput input) throws IOException {
+	public void read(DataInput input) throws IOException {
 		this.data = new byte[input.readInt() - 1];
 		input.readFully(this.data);
 	}

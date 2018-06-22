@@ -16,12 +16,12 @@ public class ByteDataTypeString extends ByteDataBase {
 	}
 
 	@Override
-	void write(DataOutput output) throws IOException {
+	public void write(DataOutput output) throws IOException {
 		output.writeUTF(data);
 	}
 
 	@Override
-	void read(DataInput input) throws IOException {
+	public void read(DataInput input) throws IOException {
 		this.data = input.readUTF();
 	}
 

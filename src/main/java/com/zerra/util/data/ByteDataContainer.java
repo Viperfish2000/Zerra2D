@@ -20,7 +20,7 @@ public class ByteDataContainer extends ByteDataBase {
 	}
 
 	@Override
-	void write(DataOutput output) throws IOException {
+	public void write(DataOutput output) throws IOException {
 		for (String key : dataMap.keySet()) {
 			writeEntry(key, dataMap.get(key), output);
 		}
@@ -29,7 +29,7 @@ public class ByteDataContainer extends ByteDataBase {
 	}
 
 	@Override
-	void read(DataInput input) throws IOException {
+	public void read(DataInput input) throws IOException {
 		this.dataMap.clear();
 		byte id;
 
