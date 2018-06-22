@@ -10,6 +10,6 @@ public class TileRock extends TileBase {
 
 	@Override
 	public Vector2f getTextureCoords() {
-		return new Vector2f(0, 1);
+		return new Vector2f(1, 0);
 	}
 }

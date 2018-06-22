@@ -15,5 +15,5 @@ void main() {
 	vec2 textureCoords = position;
 	textureCoords.y - 1.0 - textureCoords.y;
 	textureCoords /= numberOfRows;
-	pass_TextureCoords = textureCoords + textureOffset;
+	pass_TextureCoords = textureCoords + textureOffset.yx;
 }
