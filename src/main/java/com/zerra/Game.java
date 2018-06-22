@@ -19,6 +19,7 @@ import com.zerra.gfx.texture.TextureManager;
 import com.zerra.object.Camera;
 import com.zerra.util.Display;
 import com.zerra.util.Loader;
+import com.zerra.util.Maths;
 import com.zerra.util.Timer;
 import com.zerra.util.thread.ThreadPool;
 
@@ -37,7 +38,9 @@ public class Game implements Runnable {
 	private ThreadPool pool;
 
 	private TileMap map;
-
+	private float worldTime = 0.0F;
+	private float time = 1.0F;
+	
 	private boolean running;
 
 	public static EntityManager manager = new EntityManager();
@@ -121,10 +124,20 @@ public class Game implements Runnable {
 	private void update() {
 		camera.update();
 		map.update();
+		
+		/** Day/Night Cycle **/
+		time = (float) (Math.cos(worldTime) + 0.5);
+		System.out.println(time);
+		time = (float) Maths.clamp(time, 0.2F, 1.0F);
+		if(time > 1.0F || time < 0.2F) {
+			worldTime += 0.0005F;
+		}else {
+			worldTime += 0.0001F;
+		}
 	}
 
 	private void render() {
-		renderer.setAmbientLight(0.25f, 0.25f, 0.25f);
+		renderer.setAmbientLight(time, time, time);
 		map.render(renderer);
 		renderer.renderLights(new Light(new Vector2f(), new Vector4f(1, 1, 1, 5), 250), new Light(new Vector2f((float) Display.getMouseX() / MasterRenderer.SCALE + camera.getPosition().x, (float) Display.getMouseY() / MasterRenderer.SCALE + camera.getPosition().y), new Vector4f(1, 1, 0, 5), 100));
 		renderer.render(camera);
