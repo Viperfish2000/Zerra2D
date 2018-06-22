@@ -120,6 +120,7 @@ public class Game implements Runnable {
 
 	private void render() {
 		map.render(renderer);
+		// renderer.renderLights(new Light(new Vector2f(), new Vector3f(1, 0, 0), 30));
 		renderer.render(camera);
 	}
 

@@ -6,14 +6,14 @@ public class TileEntry {
 	private float x;
 	private float y;
 	private boolean removed;
-	
+
 	public TileEntry(Tile tile, float x, float y) {
 		this.tile = tile;
 		this.x = x;
 		this.y = y;
 		this.removed = false;
 	}
-	
+
 	public Tile getTile() {
 		return tile;
 	}

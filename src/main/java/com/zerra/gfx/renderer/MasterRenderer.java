@@ -8,6 +8,8 @@ import java.util.Map;
 import org.joml.Matrix4f;
 
 import com.zerra.game.world.tile.TileEntry;
+import com.zerra.gfx.light.Light;
+import com.zerra.gfx.shader.LightShader;
 import com.zerra.gfx.shader.TileShader;
 import com.zerra.object.ICamera;
 import com.zerra.util.Display;
@@ -21,22 +23,31 @@ public class MasterRenderer {
 	private TileShader tileShader;
 	private TileRenderer tileRenderer;
 
+	private LightShader lightShader;
+	private LightRenderer lightRenderer;
+
 	private Map<ResourceLocation, List<TileEntry>> tiles;
+	private List<Light> lights;
 
 	public MasterRenderer() {
 		this.tileShader = new TileShader();
 		this.tileRenderer = new TileRenderer(tileShader);
+		this.lightShader = new LightShader();
+		this.lightRenderer = new LightRenderer(lightShader);
 		this.tiles = new HashMap<ResourceLocation, List<TileEntry>>();
+		this.lights = new ArrayList<Light>();
 	}
 
 	public void render(ICamera camera) {
 		this.tileRenderer.render(this.tiles, camera);
+		this.lightRenderer.render(lights, camera);
 
 		this.tiles.clear();
 	}
 
 	public void cleanUp() {
 		this.tileRenderer.cleanUp();
+		this.lightRenderer.cleanUp();
 	}
 
 	public void renderTile(TileEntry tile) {
@@ -47,6 +58,12 @@ public class MasterRenderer {
 			this.tiles.put(texture, batch);
 		}
 		batch.add(tile);
+	}
+
+	public void renderLights(Light... lights) {
+		for (int i = 0; i < lights.length; i++) {
+			this.lights.add(lights[i]);
+		}
 	}
 
 	public static Matrix4f getProjectionMatrix() {
