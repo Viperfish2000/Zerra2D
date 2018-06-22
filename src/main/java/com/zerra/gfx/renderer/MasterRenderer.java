@@ -8,9 +8,9 @@ import java.util.Map;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import org.lwjgl.opengl.GL11;
 
 import com.zerra.game.world.tile.TileEntry;
-import com.zerra.gfx.GlWrapper;
 import com.zerra.gfx.light.Light;
 import com.zerra.gfx.post.Fbo;
 import com.zerra.gfx.post.PostProcessing;
@@ -63,18 +63,17 @@ public class MasterRenderer {
 		this.quads.add(LIGHT);
 
 		this.fbo.bindFrameBuffer();
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		this.tileRenderer.render(this.tiles, camera);
 		this.fbo.unbindFrameBuffer();
 
-		
 		this.lightFbo.bindFrameBuffer();
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		this.quadRenderer.render(this.quads, camera);
 		this.lightRenderer.render(this.lights, camera);
 		this.lightFbo.unbindFrameBuffer();
-		
+
 		PostProcessing.doPostProcessing(fbo.getColorTexture(), lightFbo.getColorTexture());
-		
-		GlWrapper.disableDepth();
 
 		this.tiles.clear();
 		this.quads.clear();
@@ -108,7 +107,7 @@ public class MasterRenderer {
 			this.lights.add(lights[i]);
 		}
 	}
-	
+
 	public void setAmbientLight(float red, float green, float blue) {
 		LIGHT.getColor().set(red, green, blue, 1);
 	}

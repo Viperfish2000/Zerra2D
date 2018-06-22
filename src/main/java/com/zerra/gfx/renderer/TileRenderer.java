@@ -16,7 +16,6 @@ import org.lwjgl.opengl.GL31;
 import com.zerra.Game;
 import com.zerra.game.world.tile.Tile;
 import com.zerra.game.world.tile.TileEntry;
-import com.zerra.gfx.GlWrapper;
 import com.zerra.gfx.shader.TileShader;
 import com.zerra.model.Model;
 import com.zerra.object.ICamera;
@@ -60,7 +59,7 @@ public class TileRenderer {
 			pointer = 0;
 			float[] vboData = new float[batch.size() * INSTANCE_DATA_LENGTH];
 			for (TileEntry tile : batch) {
-				this.updateModelViewMatrix(tile.getX(), tile.getY(), 0, 16, Maths.createViewMatrix(camera), vboData);
+				this.updateModelViewMatrix(tile.getX(), tile.getY(), tile.getLayer(), 0, 16, Maths.createViewMatrix(camera), vboData);
 				this.updateTextureCoords(tile.getTile(), vboData);
 			}
 			Loader.updateVboData(vboID, vboData, buffer);
@@ -97,9 +96,9 @@ public class TileRenderer {
 		shader.stop();
 	}
 
-	private void updateModelViewMatrix(float x, float y, float rotation, float scale, Matrix4f viewMatrix, float[] vboData) {
+	private void updateModelViewMatrix(float x, float y, int layer, float rotation, float scale, Matrix4f viewMatrix, float[] vboData) {
 		Matrix4f modelMatrix = new Matrix4f();
-		modelMatrix.translate(x, y, -100, modelMatrix);
+		modelMatrix.translate(x, y, -100 + layer, modelMatrix);
 		modelMatrix.rotate((float) Math.toRadians(rotation), 0, 0, 1, modelMatrix);
 		modelMatrix.scale(scale, modelMatrix);
 		Matrix4f modelViewMatrix = viewMatrix.mul(modelMatrix, modelMatrix);
