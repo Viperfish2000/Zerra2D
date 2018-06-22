@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 
 import com.zerra.game.manager.EntityManager;
-import com.zerra.game.map.Map;
+import com.zerra.game.map.TileMap;
 import com.zerra.gfx.GlWrapper;
 import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.gfx.texture.TextureManager;
@@ -27,7 +27,7 @@ public class Game implements Runnable {
 	private MasterRenderer renderer;
 	private Camera camera;
 
-	private Map map;
+	private TileMap map;
 
 	private boolean running;
 
@@ -60,7 +60,7 @@ public class Game implements Runnable {
 		renderer = new MasterRenderer();
 		camera = new Camera();
 
-		map = new Map();
+		map = new TileMap();
 	}
 
 	@Override

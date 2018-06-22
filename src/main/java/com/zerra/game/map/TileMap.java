@@ -17,7 +17,7 @@ import com.zerra.util.Display;
 import com.zerra.util.Maths;
 import com.zerra.util.data.ByteDataContainer;
 
-public class Map {
+public class TileMap {
 
 	private ByteDataContainer container;
 
@@ -27,7 +27,7 @@ public class Map {
 	private float width;
 	private float height;
 
-	public Map() {
+	public TileMap() {
 		container = new ByteDataContainer();
 		filter = new FrustumCullingFilter();
 		tiles = new ArrayList<TileEntry>();
