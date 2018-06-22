@@ -60,7 +60,7 @@ public class TileMap {
 				tiles.remove(i);
 				i--;
 				hasRemovedTiles = true;
-				this.getChunk(tile.getX(), tile.getY()).getContainer().setString(tile.getX() + "," + tile.getY(), tile.getTile().getRegistryName());
+				this.getChunk(tile.getX(), tile.getY()).getTileData().setString(tile.getX() + "," + tile.getY(), tile.getTile().getRegistryName());
 			}
 		}
 
@@ -122,7 +122,7 @@ public class TileMap {
 			renderer.renderTile(tiles.get(i));
 		}
 	}
-	
+
 	public void generate() {
 		for (int x = -1; x < width + 2; x++) {
 			for (int y = -1; y < height + 2; y++) {
@@ -135,26 +135,38 @@ public class TileMap {
 	public void save(File saveFolder) throws IOException {
 		String worldName = "world";// TODO add different names so you can have multiple saves
 
+		/** The folder the world is actually in */
 		worldFolder = new File(saveFolder, worldName);
+		/** The file the chunk files are able to be identified. ex. (0,0=741261b0-b0e9-4466-9df5-0c7f76101925) */
 		File tileDataFile = new File(worldFolder, "tiles.bit");
+		/** Creates the world folder if it does not yet exist */
 		if (!worldFolder.exists()) {
 			worldFolder.mkdirs();
 		}
+		/** Creates the tile data file and clears it if it already exists */
 		tileDataFile.createNewFile();
 
+		/** This is used to write the position and id of the chunks */
 		ByteDataContainer chunks = new ByteDataContainer();
 		for (Chunk chunk : this.chunks) {
+			/** The id is used as the file name for the chunk */
 			UUID chunkName = chunk.getId();
+			/** The chunk data is used to specify chunk specific data */
 			ByteDataContainer chunkData = new ByteDataContainer();
+			/** Sets the name of the chunk file and associates it with a position */
 			chunkData.setUUID("chunkName", chunkName);
+			/** Creates the chunk file and folder if they don't exist */
 			File file = new File(worldFolder, "chunks/" + chunkName.toString());
 			if (!file.getParentFile().exists()) {
 				file.getParentFile().mkdirs();
 			}
+			/** Sets the chunk data to the chunk pos */
 			chunks.setTag(chunk.getGridX() + "," + chunk.getGridY(), chunkData);
+			/** Writes the chunk tile data to file */
 			DataOutputStream tileStream = new DataOutputStream(new FileOutputStream(file));
-			chunk.getContainer().write(tileStream);
+			chunk.getTileData().write(tileStream);
 		}
+		/** Writes the chunk identifiers to file */
 		DataOutputStream tileStream = new DataOutputStream(new FileOutputStream(tileDataFile));
 		chunks.write(tileStream);
 	}
@@ -164,6 +176,7 @@ public class TileMap {
 
 		worldFolder = new File(saveFolder, worldName);
 		File tileDataFile = new File(worldFolder, "tiles.bit");
+		/** Attempts to load the data file to know what files to load on the fly */
 		if (tileDataFile.exists()) {
 			DataInputStream tileStream = new DataInputStream(new FileInputStream(tileDataFile));
 			chunksList.read(tileStream);
@@ -182,12 +195,21 @@ public class TileMap {
 	}
 
 	private void addTile(Tile tile, float x, float y) {
-		if (this.getChunk(x, y).getContainer().getString(x + "," + y) != null) {
-			tile = Tile.byName(this.getChunk(x, y).getContainer().getString(x + "," + y));
+		if (this.getChunk(x, y).getTileData().getString(x + "," + y) != null) {
+			tile = Tile.byName(this.getChunk(x, y).getTileData().getString(x + "," + y));
 		}
 		tiles.add(new TileEntry(tile, x, y));
 	}
 
+	/**
+	 * Loads a chunk from file if it has been generated or creates a new chunk if there is no file found.
+	 * 
+	 * @param x
+	 *            The x position to get the chunk at
+	 * @param y
+	 *            The y position to get the chunk at
+	 * @return The chunk that was either loaded or created
+	 */
 	private Chunk getChunk(float x, float y) {
 		int gridX = (int) (x / CHUNK_SIZE / 16);
 		int gridY = (int) (y / CHUNK_SIZE / 16);
@@ -209,6 +231,17 @@ public class TileMap {
 		return chunk;
 	}
 
+	/**
+	 * Attempts to load a single chunk from file.
+	 * 
+	 * @param gridX
+	 *            The grid x position of the chunk
+	 * @param gridY
+	 *            The grid y position of the chunk
+	 * @return The chunk that was loaded or null if the chunk could not be loaded
+	 * @throws IOException
+	 *             If anything goes wrong when trying to load the chunk file
+	 */
 	@Nullable
 	private Chunk tryLoadingChunk(int gridX, int gridY) throws IOException {
 		if (chunksList.getTag(gridX + "," + gridY) != null) {
@@ -218,7 +251,7 @@ public class TileMap {
 				if (chunkFile.exists()) {
 					Chunk chunk = new Chunk(chunkId, gridX, gridY);
 					DataInputStream stream = new DataInputStream(new FileInputStream(chunkFile));
-					chunk.getContainer().read(stream);
+					chunk.getTileData().read(stream);
 					return chunk;
 				}
 			}
