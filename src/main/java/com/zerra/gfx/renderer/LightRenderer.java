@@ -39,7 +39,6 @@ public class LightRenderer {
 	}
 
 	private void bind() {
-		GlWrapper.disableDepth();
 		GlWrapper.enableBlend();
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		shader.start();
@@ -52,7 +51,6 @@ public class LightRenderer {
 		GL30.glBindVertexArray(0);
 		shader.stop();
 		GlWrapper.disableBlend();
-		GlWrapper.enableDepth();
 	}
 
 	public void cleanUp() {

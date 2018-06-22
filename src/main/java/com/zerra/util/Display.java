@@ -11,11 +11,14 @@ import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
+import com.zerra.handler.Keyboard;
+
 public class Display {
 
 	private static String title;
 	private static int width;
 	private static int height;
+	private static boolean fullscreen;
 
 	private static DoubleBuffer mouseXBuffer = BufferUtils.createDoubleBuffer(1);
 	private static DoubleBuffer mouseYBuffer = BufferUtils.createDoubleBuffer(1);
@@ -27,20 +30,29 @@ public class Display {
 	}
 
 	public static void createDisplay(String title, int width, int height) {
-		Display.title = title;
-		Display.width = width;
-		Display.height = height;
+		createDisplay(title, width, height, false);
+	}
 
-		if (isCreated())
-			throw new RuntimeException("Display was already created!");
+	private static void createDisplay(String title, int width, int height, boolean borderless) {
+		if (!borderless) {
+			Display.title = title;
+			Display.width = width;
+			Display.height = height;
+		}
+		Display.fullscreen = borderless;
+		
 		if (!GLFW.glfwInit()) {
 			throw new RuntimeException("Failed to initialize GLFW");
 		}
+
+		if (isCreated())
+			throw new RuntimeException("Display was already created!");
 		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_FALSE);
 		GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, 3);
 		GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, 3);
 		GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
 		GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GLFW.GLFW_TRUE);
+		GLFW.glfwWindowHint(GLFW.GLFW_DECORATED, borderless ? GLFW.GLFW_FALSE : GLFW.GLFW_TRUE);
 
 		windowID = GLFW.glfwCreateWindow(width, height, title, NULL, NULL);
 
@@ -51,7 +63,7 @@ public class Display {
 		GLFW.glfwShowWindow(windowID);
 		GLFW.glfwFocusWindow(windowID);
 
-		// GLFW.glfwSetKeyCallback(windowID, Keyboard.INSTANCE);
+		GLFW.glfwSetKeyCallback(windowID, Keyboard.INSTANCE);
 		// GLFW.glfwSetMouseButtonCallback(windowID, Mouse.INSTANCE);
 		// GLFW.glfwSetScrollCallback(windowID, Mouse.Scroll.INSTANCE);
 
@@ -59,7 +71,7 @@ public class Display {
 		GLFW.glfwSetWindowPos(windowID, (int) ((vidMode.width() * 0.5) - (width * 0.5)), (int) ((vidMode.height() * 0.5) - (height * 0.5)));
 
 		GLFW.glfwSwapInterval(1);
-		
+
 		GLFW.glfwMakeContextCurrent(windowID);
 		GL.createCapabilities();
 	}
@@ -72,11 +84,14 @@ public class Display {
 	public static void destroy() {
 		if (cursorID != NULL) {
 			GLFW.glfwDestroyCursor(cursorID);
+			cursorID = NULL;
 		}
 		GLFW.glfwDestroyWindow(windowID);
-		// Keyboard.INSTANCE.free();
+		windowID = NULL;
+		Keyboard.INSTANCE.free();
 		// Mouse.INSTANCE.free();
 		// Mouse.Scroll.INSTANCE.free();
+		GLFW.glfwTerminate();
 	}
 
 	public static void close() {
@@ -94,6 +109,17 @@ public class Display {
 		}
 	}
 
+	public static void setFullscreen() {
+		GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+		destroy();
+		createDisplay(title, vidMode.width(), vidMode.height(), true);
+	}
+
+	public static void setWindowed() {
+		destroy();
+		createDisplay(title, width, height);
+	}
+
 	public static String getTitle() {
 		return title;
 	}
@@ -104,6 +130,10 @@ public class Display {
 
 	public static int getHeight() {
 		return height;
+	}
+
+	public static boolean isFullscreen() {
+		return fullscreen;
 	}
 
 	public static double getMouseX() {
@@ -131,12 +161,12 @@ public class Display {
 	public static boolean isKeyPressed(int key) {
 		return GLFW.glfwGetKey(windowID, key) == GLFW.GLFW_PRESS;
 	}
-	
+
 	public static void setTitle(String title) {
 		GLFW.glfwSetWindowTitle(windowID, title);
 		Display.title = title;
 	}
-	
+
 	public static void setSize(int width, int height) {
 		GLFW.glfwSetWindowSize(windowID, width, height);
 		Display.width = width;
