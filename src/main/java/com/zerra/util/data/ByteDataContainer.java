@@ -34,11 +34,9 @@ public class ByteDataContainer extends ByteDataBase {
 		byte id;
 
 		while ((id = input.readByte()) != 0) {
-			System.out.println(id);
 			String key = input.readUTF();
 			this.dataMap.put(key, readData(id, key, input));
 		}
-		System.out.println();
 	}
 
 	private static void writeEntry(String name, ByteDataBase data, DataOutput output) throws IOException {

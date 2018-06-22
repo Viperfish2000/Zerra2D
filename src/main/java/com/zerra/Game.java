@@ -68,6 +68,7 @@ public class Game implements Runnable {
 
 		map = new TileMap();
 		load();
+		map.generate();
 	}
 
 	@Override
@@ -118,17 +119,6 @@ public class Game implements Runnable {
 	}
 
 	private void render() {
-		// TODO this is temporary code. Remove. Plz
-		// for (int i = 0; i < 16; i++) {
-		// for (int j = 0; j < 16; j++) {
-		// renderer.renderTile(new TileBase(i * 16, j * 16) {
-		// @Override
-		// public Vector2f getTextureCoords() {
-		// return new Vector2f(0, 1);
-		// }
-		// });
-		// }
-		// }
 		map.render(renderer);
 		renderer.render(camera);
 	}
