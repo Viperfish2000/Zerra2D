@@ -6,21 +6,22 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import com.zerra.Game;
 import com.zerra.gfx.GlWrapper;
-import com.zerra.gfx.light.Light;
-import com.zerra.gfx.shader.LightShader;
+import com.zerra.gfx.shader.QuadShader;
 import com.zerra.model.Model;
 import com.zerra.object.ICamera;
+import com.zerra.object.Quad;
 import com.zerra.util.Loader;
 
-public class LightRenderer {
+public class QuadRenderer {
 
 	private static final float[] POSITIONS = new float[] { -1, 1, -1, -1, 1, 1, 1, -1 };
 
-	private LightShader shader;
+	private QuadShader shader;
 	private Model quad;
 
-	public LightRenderer(LightShader shader) {
+	public QuadRenderer(QuadShader shader) {
 		this.shader = shader;
 		this.shader.start();
 		this.shader.loadProjectionMatrix(MasterRenderer.getProjectionMatrix());
@@ -28,20 +29,19 @@ public class LightRenderer {
 		this.quad = Loader.loadToVAO(POSITIONS, 2);
 	}
 
-	public void render(List<Light> lights, ICamera camera) {
+	public void render(List<Quad> quads, ICamera camera) {
 		this.bind();
-		shader.loadViewMatrix(camera);
-		for (Light light : lights) {
-			shader.loadLight(light);
-			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
+		for (Quad quad : quads) {
+			shader.loadColor(quad.getColor());
+			shader.loadTransformationMatrix(quad.getRenderTransformation(Game.getInstance().getRenderPartialTicks()));
+			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, this.quad.getVertexCount());
 		}
 		this.unbind();
 	}
 
 	private void bind() {
-		GlWrapper.disableDepth();
 		GlWrapper.enableBlend();
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		shader.start();
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
@@ -52,7 +52,6 @@ public class LightRenderer {
 		GL30.glBindVertexArray(0);
 		shader.stop();
 		GlWrapper.disableBlend();
-		GlWrapper.enableDepth();
 	}
 
 	public void cleanUp() {

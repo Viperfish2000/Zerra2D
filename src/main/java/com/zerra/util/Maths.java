@@ -28,7 +28,7 @@ public class Maths {
 		if (matrix == null) {
 			matrix = new Matrix4f();
 			matrix.identity();
-			matrix.translate(translation.x, translation.y, 0);
+			matrix.translate(translation.x, translation.y, -1);
 			matrix.scale(scale.x, scale.y, 1);
 			TRANSFORMATION_MATRICES.put(translation.x + "," + translation.y + "," + scale.x + "," + scale.y, matrix);
 		}
@@ -117,7 +117,7 @@ public class Maths {
 	 *            The highest the value should go.
 	 * @return The clamped value.
 	 */
-	public static int clamp(int value, int min, int max) {
+	public static double clamp(double value, double min, double max) {
 		if (value < min) {
 			value = min;
 		}

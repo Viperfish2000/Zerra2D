@@ -3,23 +3,25 @@ package com.zerra.gfx.post;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-public class ContrastChanger {
+public class LightApplier {
 
 	private ImageRenderer renderer;
-	private ContrastShader shader;
+	private LightApplierShader shader;
 	
-	public ContrastChanger(float contrast) {
+	public LightApplier() {
 		this.renderer = new ImageRenderer();
-		this.shader = new ContrastShader();
+		this.shader = new LightApplierShader();
 		this.shader.start();
-		this.shader.loadContrast(contrast);
+		this.shader.connectTextureUnits();
 		this.shader.stop();
 	}
 	
-	public void render(int texture) {
+	public void render(int texture, int lightTexture) {
 		this.shader.start();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
+		GL13.glActiveTexture(GL13.GL_TEXTURE1);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, lightTexture);
 		this.renderer.renderQuad();
 		this.shader.stop();
 	}

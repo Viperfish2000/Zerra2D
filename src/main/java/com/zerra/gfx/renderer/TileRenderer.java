@@ -99,7 +99,7 @@ public class TileRenderer {
 
 	private void updateModelViewMatrix(float x, float y, float rotation, float scale, Matrix4f viewMatrix, float[] vboData) {
 		Matrix4f modelMatrix = new Matrix4f();
-		modelMatrix.translate(x, y, -1, modelMatrix);
+		modelMatrix.translate(x, y, -100, modelMatrix);
 		modelMatrix.rotate((float) Math.toRadians(rotation), 0, 0, 1, modelMatrix);
 		modelMatrix.scale(scale, modelMatrix);
 		Matrix4f modelViewMatrix = viewMatrix.mul(modelMatrix, modelMatrix);

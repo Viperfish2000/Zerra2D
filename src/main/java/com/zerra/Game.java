@@ -5,11 +5,15 @@ import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joml.Vector2f;
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
 import com.zerra.game.manager.EntityManager;
 import com.zerra.game.map.TileMap;
 import com.zerra.gfx.GlWrapper;
+import com.zerra.gfx.light.Light;
+import com.zerra.gfx.post.PostProcessing;
 import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.gfx.texture.TextureManager;
 import com.zerra.object.Camera;
@@ -60,6 +64,7 @@ public class Game implements Runnable {
 
 		GlWrapper.enableDepth();
 		GL11.glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
+		PostProcessing.init();
 
 		textureManager = new TextureManager();
 		renderer = new MasterRenderer();
@@ -120,7 +125,7 @@ public class Game implements Runnable {
 
 	private void render() {
 		map.render(renderer);
-		// renderer.renderLights(new Light(new Vector2f(), new Vector3f(1, 0, 0), 30));
+		renderer.renderLights(new Light(new Vector2f(), new Vector4f(1, 1, 1, 5), 50), new Light(new Vector2f((float) Display.getMouseX() / MasterRenderer.SCALE + camera.getPosition().x, (float) Display.getMouseY() / MasterRenderer.SCALE + camera.getPosition().y), new Vector4f(1, 0, 1, 5), 50));
 		renderer.render(camera);
 	}
 
@@ -130,6 +135,7 @@ public class Game implements Runnable {
 		});
 		Display.destroy();
 		pool.join();
+		PostProcessing.cleanUp();
 		Loader.cleanUp();
 		renderer.cleanUp();
 		System.exit(0);
