@@ -15,6 +15,7 @@ import org.lwjgl.opengl.GL31;
 
 import com.zerra.Game;
 import com.zerra.game.world.tile.Tile;
+import com.zerra.game.world.tile.TileEntry;
 import com.zerra.gfx.shader.TileShader;
 import com.zerra.model.Model;
 import com.zerra.object.ICamera;
@@ -50,16 +51,16 @@ public class TileRenderer {
 		Loader.storeInstancedDataInAttributeList(quad.getVaoID(), vboID, 5, 2, INSTANCE_DATA_LENGTH, 16);
 	}
 
-	public void render(Map<ResourceLocation, List<Tile>> tiles, ICamera camera) {
+	public void render(Map<ResourceLocation, List<TileEntry>> tiles, ICamera camera) {
 		this.prepare();
 		for (ResourceLocation texture : tiles.keySet()) {
 			this.bindTexture(texture);
-			List<Tile> batch = tiles.get(texture);
+			List<TileEntry> batch = tiles.get(texture);
 			pointer = 0;
 			float[] vboData = new float[batch.size() * INSTANCE_DATA_LENGTH];
-			for (Tile tile : batch) {
+			for (TileEntry tile : batch) {
 				this.updateModelViewMatrix(tile.getX(), tile.getY(), 0, 16, Maths.createViewMatrix(camera), vboData);
-				this.updateTextureCoords(tile, vboData);
+				this.updateTextureCoords(tile.getTile(), vboData);
 			}
 			Loader.updateVboData(vboID, vboData, buffer);
 			GL31.glDrawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount(), batch.size());

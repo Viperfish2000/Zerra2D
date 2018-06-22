@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 public class ByteDataContainer extends ByteDataBase {
 
 	private Map<String, ByteDataBase> dataMap;
@@ -83,54 +85,66 @@ public class ByteDataContainer extends ByteDataBase {
 		return container;
 	}
 
+	@Nullable
 	public byte getByte(String key) {
-		return ((ByteDataTypeByte) dataMap.get(key)).getByte();
+		return dataMap.containsKey(key) ? ((ByteDataTypeByte) dataMap.get(key)).getByte() : null;
 	}
 
+	@Nullable
 	public short getShort(String key) {
-		return ((ByteDataTypePrimitive) dataMap.get(key)).getShort();
+		return dataMap.containsKey(key) ? ((ByteDataTypePrimitive) dataMap.get(key)).getShort() : null;
 	}
 
+	@Nullable
 	public int getInt(String key) {
-		return ((ByteDataTypePrimitive) dataMap.get(key)).getInt();
+		return dataMap.containsKey(key) ? ((ByteDataTypePrimitive) dataMap.get(key)).getInt() : null;
 	}
 
+	@Nullable
 	public float getFloat(String key) {
-		return ((ByteDataTypePrimitive) dataMap.get(key)).getFloat();
+		return dataMap.containsKey(key) ? ((ByteDataTypePrimitive) dataMap.get(key)).getFloat() : null;
 	}
 
+	@Nullable
 	public double getDouble(String key) {
-		return ((ByteDataTypePrimitive) dataMap.get(key)).getDouble();
+		return dataMap.containsKey(key) ? ((ByteDataTypePrimitive) dataMap.get(key)).getDouble() : null;
 	}
 
+	@Nullable
 	public boolean getBoolean(String key) {
-		return ((ByteDataTypeBoolean) dataMap.get(key)).getBoolean();
+		return dataMap.containsKey(key) ? ((ByteDataTypeBoolean) dataMap.get(key)).getBoolean() : null;
 	}
 
+	@Nullable
 	public long getLong(String key) {
-		return ((ByteDataTypePrimitive) dataMap.get(key)).getLong();
+		return dataMap.containsKey(key) ? ((ByteDataTypePrimitive) dataMap.get(key)).getLong() : null;
 	}
 
+	@Nullable
 	public String getString(String key) {
-		return ((ByteDataTypeString) dataMap.get(key)).getString();
+		return dataMap.containsKey(key) ? ((ByteDataTypeString) dataMap.get(key)).getString() : null;
 	}
 
+	@Nullable
 	public byte[] getByteArray(String key) {
-		return ((ByteDataTypeByteArray) dataMap.get(key)).getByteArray();
+		return dataMap.containsKey(key) ? ((ByteDataTypeByteArray) dataMap.get(key)).getByteArray() : null;
 	}
 
+	@Nullable
 	public int[] getIntArray(String key) {
-		return ((ByteDataTypeIntArray) dataMap.get(key)).getIntArray();
+		return dataMap.containsKey(key) ? ((ByteDataTypeIntArray) dataMap.get(key)).getIntArray() : null;
 	}
 
 	public ByteDataBase getTag(String key) {
 		return dataMap.get(key);
 	}
 
+	@Nullable
 	public ByteDataContainer getByteContainer(String key) {
 		return (ByteDataContainer) dataMap.get(key);
 	}
 
+	@Nullable
 	public UUID getUUID(String key) {
 		return new UUID(this.getLong(key + "Most"), this.getLong(key + "Least"));
 	}
@@ -171,7 +185,7 @@ public class ByteDataContainer extends ByteDataBase {
 		dataMap.put(key, new ByteDataTypeByteArray(data));
 	}
 
-	public void setString(String key, int[] data) {
+	public void setIntArray(String key, int[] data) {
 		dataMap.put(key, new ByteDataTypeIntArray(data));
 	}
 

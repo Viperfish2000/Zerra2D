@@ -9,30 +9,33 @@ import org.joml.Vector3f;
 
 import com.zerra.Game;
 import com.zerra.game.world.tile.Tile;
-import com.zerra.game.world.tile.TileGrass;
-import com.zerra.game.world.tile.TileRock;
+import com.zerra.game.world.tile.TileEntry;
 import com.zerra.gfx.FrustumCullingFilter;
 import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.object.ICamera;
 import com.zerra.util.Display;
 import com.zerra.util.Maths;
+import com.zerra.util.data.ByteDataContainer;
 
 public class Map {
 
+	private ByteDataContainer container;
+
 	private FrustumCullingFilter filter;
-	private List<Tile> tiles;
+	private List<TileEntry> tiles;
 
 	private float width;
 	private float height;
 
 	public Map() {
+		container = new ByteDataContainer();
 		filter = new FrustumCullingFilter();
-		tiles = new ArrayList<Tile>();
+		tiles = new ArrayList<TileEntry>();
 		width = Display.getWidth() / MasterRenderer.SCALE / 16;
 		height = Display.getHeight() / MasterRenderer.SCALE / 16;
 		for (int x = -1; x < width + 2; x++) {
 			for (int y = -1; y < height + 2; y++) {
-				tiles.add(new TileRock(x * 16, y * 16));
+				this.addTile(Tile.SAND, x * 16, y * 16);
 			}
 		}
 	}
@@ -44,12 +47,13 @@ public class Map {
 
 		boolean hasRemovedTiles = false;
 		for (int i = 0; i < tiles.size(); i++) {
-			Tile tile = tiles.get(i);
-			tile.update();
+			TileEntry tile = tiles.get(i);
+			tile.getTile().update();
 			if (tile.isRemoved()) {
 				tiles.remove(i);
 				i--;
 				hasRemovedTiles = true;
+				container.setString(tile.getX() + "," + tile.getY(), tile.getTile().getRegistryName());
 			}
 		}
 
@@ -66,8 +70,8 @@ public class Map {
 					for (int tileY = -1; tileY < height + 1; tileY++) {
 						int xPos = (int) (tileX + (Math.ceil(x - 64) / 16));
 						int yPos = (int) (y / 16 + tileY);
-						if(getTile(xPos * 16, yPos * 16) == null)
-						tiles.add(new TileGrass(xPos * 16, yPos * 16));
+						if (getTile(xPos * 16, yPos * 16) == null)
+							this.addTile(Tile.GRASS, xPos * 16, yPos * 16);
 					}
 				}
 			}
@@ -78,20 +82,20 @@ public class Map {
 					for (int tileY = -1; tileY < height + 1; tileY++) {
 						int xPos = (int) (tileX + width + (Math.ceil(x - 64) / 16));
 						int yPos = (int) (y / 16 + tileY);
-						if(getTile(xPos * 16, yPos * 16) == null)
-						tiles.add(new TileGrass(xPos * 16, yPos * 16));
+						if (getTile(xPos * 16, yPos * 16) == null)
+							this.addTile(Tile.GRASS, xPos * 16, yPos * 16);
 					}
 				}
 			}
 
-			if (y - lastY  < 0) {
+			if (y - lastY < 0) {
 				System.out.println("UP");
 				for (int tileX = -1; tileX < width + 1; tileX++) {
 					for (int tileY = -2; tileY < 0; tileY++) {
 						int xPos = (int) (x / 16 + tileX);
 						int yPos = (int) Math.ceil(tileY + y / 16);
-						if(getTile(xPos * 16, yPos * 16) == null)
-						tiles.add(new TileGrass(xPos * 16, yPos * 16));
+						if (getTile(xPos * 16, yPos * 16) == null)
+							this.addTile(Tile.GRASS, xPos * 16, yPos * 16);
 					}
 				}
 			}
@@ -102,12 +106,13 @@ public class Map {
 					for (int tileY = 1; tileY < 3; tileY++) {
 						int xPos = (int) (x / 16 + tileX);
 						int yPos = (int) Math.floor(tileY + height + y / 16);
-						if(getTile(xPos * 16, yPos * 16) == null)
-						tiles.add(new TileGrass(xPos * 16, yPos * 16));
+						if (getTile(xPos * 16, yPos * 16) == null)
+							this.addTile(Tile.GRASS, xPos * 16, yPos * 16);
 					}
 				}
 			}
 		}
+		System.out.println(container.getSize());
 	}
 
 	public void render(MasterRenderer renderer) {
@@ -119,11 +124,18 @@ public class Map {
 	@Nullable
 	public Tile getTile(float x, float y) {
 		for (int i = 0; i < tiles.size(); i++) {
-			Tile tile = tiles.get(i);
+			TileEntry tile = tiles.get(i);
 			if (tile.getX() == x && tile.getY() == y) {
-				return tile;
+				return tile.getTile();
 			}
 		}
 		return null;
+	}
+
+	private void addTile(Tile tile, float x, float y) {
+		if(container.getString(x + "," + y) != null) {
+			tile = Tile.byName(container.getString(x + "," + y));
+		}
+		tiles.add(new TileEntry(tile, x, y));
 	}
 }

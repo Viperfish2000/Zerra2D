@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.joml.Matrix4f;
 
-import com.zerra.game.world.tile.Tile;
+import com.zerra.game.world.tile.TileEntry;
 import com.zerra.gfx.shader.TileShader;
 import com.zerra.object.ICamera;
 import com.zerra.util.Display;
@@ -21,12 +21,12 @@ public class MasterRenderer {
 	private TileShader tileShader;
 	private TileRenderer tileRenderer;
 
-	private Map<ResourceLocation, List<Tile>> tiles;
+	private Map<ResourceLocation, List<TileEntry>> tiles;
 
 	public MasterRenderer() {
 		this.tileShader = new TileShader();
 		this.tileRenderer = new TileRenderer(tileShader);
-		this.tiles = new HashMap<ResourceLocation, List<Tile>>();
+		this.tiles = new HashMap<ResourceLocation, List<TileEntry>>();
 	}
 
 	public void render(ICamera camera) {
@@ -39,11 +39,12 @@ public class MasterRenderer {
 		this.tileRenderer.cleanUp();
 	}
 
-	public void renderTile(Tile tile) {
-		List<Tile> batch = tiles.get(tile.getTexture());
+	public void renderTile(TileEntry tile) {
+		ResourceLocation texture = tile.getTile().getTexture();
+		List<TileEntry> batch = tiles.get(texture);
 		if (batch == null) {
-			batch = new ArrayList<Tile>();
-			this.tiles.put(tile.getTexture(), batch);
+			batch = new ArrayList<TileEntry>();
+			this.tiles.put(texture, batch);
 		}
 		batch.add(tile);
 	}

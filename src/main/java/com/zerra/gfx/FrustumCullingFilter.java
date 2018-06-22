@@ -5,7 +5,7 @@ import java.util.List;
 import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
 
-import com.zerra.game.world.tile.Tile;
+import com.zerra.game.world.tile.TileEntry;
 import com.zerra.util.AxisAlignedBB;
 
 public class FrustumCullingFilter {
@@ -32,8 +32,8 @@ public class FrustumCullingFilter {
 		return frustumIntersection.testAab((float) (x + box.getX()), (float) (y + box.getY()), 0, (float) (x + box.getXMax()), (float) (y + box.getYMax()), 1);
 	}
 
-	public void filterTiles(List<Tile> tiles) {
-		for (Tile tile : tiles) {
+	public void filterTiles(List<TileEntry> tiles) {
+		for (TileEntry tile : tiles) {
 			tile.setRemoved(!insideFrustum(tile.getX() + 8, tile.getY() + 8, 0, 16));
 		}
 	}

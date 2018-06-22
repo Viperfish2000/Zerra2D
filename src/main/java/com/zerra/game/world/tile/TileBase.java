@@ -8,10 +8,11 @@ public class TileBase extends Tile {
 
 	public static final ResourceLocation TILE_ATLAS = new ResourceLocation("textures/tiles.png");
 
-	public TileBase(float x, float y) {
-		super(TILE_ATLAS);
-		this.setX(x);
-		this.setY(y);
+	private Vector2f textureCoords;
+
+	public TileBase(String registryName, String unlocalizedName, Vector2f textureCoords) {
+		super(registryName, unlocalizedName);
+		this.textureCoords = textureCoords;
 	}
 
 	@Override
@@ -20,6 +21,11 @@ public class TileBase extends Tile {
 
 	@Override
 	public Vector2f getTextureCoords() {
-		return new Vector2f();
+		return textureCoords;
+	}
+
+	@Override
+	public ResourceLocation getTexture() {
+		return TILE_ATLAS;
 	}
 }
