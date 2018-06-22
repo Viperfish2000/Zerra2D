@@ -105,26 +105,42 @@ public class Maths {
 		viewMatrix.translate(-camera.getPosition().x, -camera.getPosition().y, -camera.getPosition().z);
 		return viewMatrix;
 	}
-	
+
 	/**
 	 * A method for clamping a variable between two values.
 	 * 
 	 * @param value
-	 * 			The value to be clamped.
+	 *            The value to be clamped.
 	 * @param min
-	 * 			The lowest the value should go.
+	 *            The lowest the value should go.
 	 * @param max
-	 * 			The highest the value should go.
-	 * @return
-	 * 			The clamped value.
+	 *            The highest the value should go.
+	 * @return The clamped value.
 	 */
 	public static int clamp(int value, int min, int max) {
-		if(value < min) {
+		if (value < min) {
 			value = min;
 		}
-		if(value > max) {
+		if (value > max) {
 			value = max;
 		}
 		return value;
+	}
+
+	/**
+	 * Interpolates between point a and b
+	 * 
+	 * @param a
+	 *            The first position
+	 * @param b
+	 *            The second position
+	 * @param blend
+	 *            The amount to interpolate
+	 * @return The interpolated value
+	 */
+	public static float interpolate(float a, float b, float blend) {
+		double theta = blend * Math.PI;
+		float f = (float) (1f - Math.cos(theta)) * 0.5f;
+		return a * (1f - f) + b * f;
 	}
 }

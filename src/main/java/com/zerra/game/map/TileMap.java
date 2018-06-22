@@ -62,7 +62,7 @@ public class TileMap {
 				tiles.remove(i);
 				i--;
 				hasRemovedTiles = true;
-				this.getChunk(tile.getX(), tile.getY()).getTileData().setString(tile.getX() + "," + tile.getY(), tile.getTile().getRegistryName());
+				this.getChunk(tile.getX(), tile.getY()).getTileData().setTag(tile.getX() + "," + tile.getY() + "," + tile.getLayer(), tile.serialize());
 			}
 		}
 
@@ -198,11 +198,16 @@ public class TileMap {
 		return null;
 	}
 
-	protected void addTile(Tile tile, float x, float y) {
-		if (this.getChunk(x, y).getTileData().getString(x + "," + y) != null) {
-			tile = Tile.byName(this.getChunk(x, y).getTileData().getString(x + "," + y));
+	protected void addTile(Tile tile, EnumBiome biome, int layer, float x, float y) {
+		TileEntry entry = null;
+		if (this.getChunk(x, y).getTileData().hasKey(x + "," + y, 10)) {
+			entry = TileEntry.fromTag(x, y, layer, this.getChunk(x, y).getTileData().getByteContainer(x + "," + y + "," + layer));
 		}
-		tiles.add(new TileEntry(tile, x, y));
+		
+		if(entry == null) {
+			entry = new TileEntry(tile, biome,layer, x, y);
+		}
+		tiles.add(entry);
 	}
 
 	/**

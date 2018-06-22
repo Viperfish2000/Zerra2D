@@ -58,7 +58,7 @@ public class Game implements Runnable {
 	private void init() throws Exception {
 		Display.createDisplay("test", WIDTH, HEIGHT);
 
-		GlWrapper.disableDepth();
+		GlWrapper.enableDepth();
 		GL11.glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 		textureManager = new TextureManager();
@@ -94,7 +94,7 @@ public class Game implements Runnable {
 				update();
 			}
 
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			render();
 			frames++;
 

@@ -12,8 +12,7 @@ uniform float numberOfRows;
 void main() {
 	gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 0.0, 1.0);
 
-	vec2 textureCoords = position;
-	textureCoords.y - 1.0 - textureCoords.y;
+	vec2 textureCoords = position.yx;
 	textureCoords /= numberOfRows;
 	pass_TextureCoords = textureCoords + textureOffset.yx;
 }

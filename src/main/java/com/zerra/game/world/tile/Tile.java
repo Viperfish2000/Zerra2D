@@ -19,6 +19,8 @@ public abstract class Tile {
 	public static final Tile GRASS = new TileBase("grass", "grass", new Vector2f(1, 0));
 	public static final Tile STONE = new TileBase("stone", "stone", new Vector2f(2, 0));
 	public static final Tile SAND = new TileBase("sand", "sand", new Vector2f(3, 0));
+	
+	public static final Tile BOULDER = new TileBase("boulder", "boulder", new Vector2f(0, 1));
 
 	private String registryName;
 	private String unlocalizedName;

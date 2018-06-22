@@ -7,5 +7,9 @@ out vec4 out_Color;
 uniform sampler2D tileTexture;
 
 void main() {
-	out_Color = texture(tileTexture, pass_TextureCoords);
+	vec4 textureColor = texture(tileTexture, pass_TextureCoords);
+	if(textureColor.a < 0.5) {
+		discard;
+	}
+	out_Color = textureColor;
 }
