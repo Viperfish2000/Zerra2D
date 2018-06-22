@@ -15,9 +15,10 @@ import com.zerra.util.data.ByteDataContainer;
  * @author Ocelot5836
  */
 public class Chunk {
-
+	
 	private ByteDataContainer tileData;
 	private UUID chunkId;
+	private EnumBiome biome;
 	private int gridX;
 	private int gridY;
 
@@ -29,9 +30,10 @@ public class Chunk {
 	 * @param gridY
 	 *            The y position on the chunk grid
 	 */
-	public Chunk(UUID id, int gridX, int gridY) {
+	public Chunk(UUID id, EnumBiome biome, int gridX, int gridY) {
 		this.tileData = new ByteDataContainer();
 		this.chunkId = id;
+		this.biome = biome;
 		this.gridX = gridX;
 		this.gridY = gridY;
 	}
@@ -41,6 +43,17 @@ public class Chunk {
 	 */
 	public ByteDataContainer getTileData() {
 		return tileData;
+	}
+
+	/**
+	 * @return The id of this chunk. Used to identify the file the tiles are saved to
+	 */
+	public UUID getId() {
+		return chunkId;
+	}
+	
+	public EnumBiome getBiome() {
+		return biome;
 	}
 
 	/**
@@ -55,12 +68,5 @@ public class Chunk {
 	 */
 	public int getGridY() {
 		return gridY;
-	}
-
-	/**
-	 * @return The id of this chunk. Used to identify the file the tiles are saved to
-	 */
-	public UUID getId() {
-		return chunkId;
 	}
 }
