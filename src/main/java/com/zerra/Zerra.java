@@ -32,7 +32,7 @@ public class Zerra implements Runnable {
 	public static int WIDTH = 1280;
 	public static int HEIGHT = 720;
 
-	private static Logger logger = LogManager.getLogger();
+	private static Logger logger = LogManager.getLogger("Zerra");
 	private static Zerra instance = new Zerra();
 	private static final Timer TIMER = new Timer(60);
 
@@ -158,7 +158,6 @@ public class Zerra implements Runnable {
 	private void render() {
 		/** Debug Code */
 		renderer.renderLights(new Light(new Vector2f((float) Display.getMouseX() / MasterRenderer.SCALE + camera.getPosition().x, (float) Display.getMouseY() / MasterRenderer.SCALE + camera.getPosition().y), new Vector4f(1, 1, 1, 50), 25));
-		
 		/** Actual code that will stay */
 		world.render(renderer, TIMER.renderPartialTicks);
 		renderer.render(camera);

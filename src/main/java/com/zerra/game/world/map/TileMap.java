@@ -72,50 +72,45 @@ public class TileMap {
 		}
 
 		if (hasRemovedTiles) {
-			Vector3f cameraPosition = camera.getPosition();
-			Vector3f cameraLastPosition = camera.getLastPosition();
-			float x = cameraPosition.x;
-			float y = cameraPosition.y;
-			float lastX = cameraLastPosition.x;
-			float lastY = cameraLastPosition.y;
-			if (x - lastX < 0) {
+			Vector3f cameraDirection = camera.getDirection();
+			if (cameraDirection.x < 0) {
 				for (int tileX = 1; tileX < 5; tileX++) {
 					for (int tileY = -1; tileY < height + 1; tileY++) {
-						int xPos = (int) (tileX + (Math.ceil(x - 64) / 16));
-						int yPos = (int) (y / 16 + tileY);
+						int xPos = (int) (tileX + (Math.ceil(cameraDirection.x - 64) / 16));
+						int yPos = (int) (cameraDirection.y / 16 + tileY);
 						if (getTile(xPos * 16, yPos * 16) == null)
 							this.worldGenerator.generateTile(xPos * 16, yPos * 16);
 					}
 				}
 			}
 
-			if (x - lastX > 0) {
+			if (cameraDirection.x > 0) {
 				for (int tileX = 4; tileX < 7; tileX++) {
 					for (int tileY = -1; tileY < height + 1; tileY++) {
-						int xPos = (int) (tileX + width + (Math.ceil(x - 64) / 16));
-						int yPos = (int) (y / 16 + tileY);
+						int xPos = (int) (tileX + width + (Math.ceil(cameraDirection.x - 64) / 16));
+						int yPos = (int) (cameraDirection.y / 16 + tileY);
 						if (getTile(xPos * 16, yPos * 16) == null)
 							this.worldGenerator.generateTile(xPos * 16, yPos * 16);
 					}
 				}
 			}
 
-			if (y - lastY < 0) {
+			if (cameraDirection.y < 0) {
 				for (int tileX = -1; tileX < width + 1; tileX++) {
 					for (int tileY = -2; tileY < 0; tileY++) {
-						int xPos = (int) (x / 16 + tileX);
-						int yPos = (int) Math.ceil(tileY + y / 16);
+						int xPos = (int) (cameraDirection.x / 16 + tileX);
+						int yPos = (int) Math.ceil(tileY + cameraDirection.y / 16);
 						if (getTile(xPos * 16, yPos * 16) == null)
 							this.worldGenerator.generateTile(xPos * 16, yPos * 16);
 					}
 				}
 			}
 
-			if (y - lastY > 0) {
+			if (cameraDirection.y > 0) {
 				for (int tileX = -1; tileX < width + 1; tileX++) {
 					for (int tileY = 1; tileY < 3; tileY++) {
-						int xPos = (int) (x / 16 + tileX);
-						int yPos = (int) Math.floor(tileY + height + y / 16);
+						int xPos = (int) (cameraDirection.x / 16 + tileX);
+						int yPos = (int) Math.floor(tileY + height + cameraDirection.y / 16);
 						if (getTile(xPos * 16, yPos * 16) == null)
 							this.worldGenerator.generateTile(xPos * 16, yPos * 16);
 					}
