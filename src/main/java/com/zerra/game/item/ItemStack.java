@@ -12,8 +12,7 @@ public class ItemStack {
 	}
 
 	/**
-	 * @return 
-	 * 		The item the ItemStack contains.
+	 * @return The item the ItemStack contains.
 	 */
 	public Item getItem() {
 		return item;
@@ -30,20 +29,24 @@ public class ItemStack {
 	}
 
 	/**
-	 * @return 
-	 * 		The number of items in the ItemStack.
+	 * @return The number of items in the ItemStack.
 	 */
 	public int getSize() {
 		return size;
 	}
-
+	
+	/**
+	 * Sets the size of the ItemStack.
+	 * 
+	 * @param size
+	 * 			The amount the ItemStack will hold.
+	 */
 	public void setSize(int size) {
 		this.size = size;
 	}
 
 	/**
-	 * @return 
-	 * 		Gets the max size an ItemStack can hold.
+	 * @return Gets the max size an ItemStack can hold.
 	 */
 	public int getMaxSize() {
 		return maxSize;

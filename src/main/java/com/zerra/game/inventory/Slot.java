@@ -11,10 +11,7 @@ public class Slot {
 	}
 
 	/**
-	 * Gets the ItemStack stored in this slot.
-	 * 
-	 * @return 
-	 * 		The ItemStack that is stored in the slot.
+	 * @return The ItemStack that is stored in the slot.
 	 */
 	public ItemStack getItemStack() {
 		return itemStack;

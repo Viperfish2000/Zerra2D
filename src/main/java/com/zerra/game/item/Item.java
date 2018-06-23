@@ -12,10 +12,7 @@ public class Item {
 	}
 	
 	/**
-	 * Gets the damage of the item.
-	 * 
-	 * @return
-	 * 		The damage of the item.
+	 * @return The damage of the item.
 	 */
 	public int getDamage() {
 		return damage;
@@ -32,8 +29,6 @@ public class Item {
 	}
 	
 	/**
-	 * Gets the max damage that the item can hold.
-	 * 
 	 * @return The max damage the item can hold.
 	 */
 	public int getMaxDamage() {
@@ -56,8 +51,7 @@ public class Item {
 	}
 
 	/**
-	 * @return
-	 * 		Whether or not the item is able to be stacked.
+	 * @return Whether or not the item is able to be stacked.
 	 */
 	public boolean isStackable() {
 		return isStackable;
@@ -82,10 +76,7 @@ public class Item {
 	}
 	
 	/**
-	 * Gets whether or not this item should have its damage bar rendered.
-	 * 
-	 * @return 
-	 * 		If the damage bar is being rendered or not.
+	 * @return If the damage bar is being rendered or not.
 	 */
 	public boolean shouldRenderDamageBar() {
 		return shouldRenderDamageBar;

@@ -12,8 +12,7 @@ public class Inventory {
 	}
 
 	/**
-	 * @return 
-	 * 		The slots the inventory has.
+	 * @return The slots the inventory has.
 	 */
 	public Slot[] getSlots() {
 		return slots;
@@ -44,10 +43,7 @@ public class Inventory {
 	}
 	
 	/**
-	 * Gets the next empty slot. Starts at slot 0.
-	 * 
-	 * @return 
-	 * 		The next slot in the inventory that is empty.
+	 * @return The next slot in the inventory that is empty.
 	 */
 	public Slot getNextEmptySlot() {
 		for(int i = 0; i < slots.length; i++) {
