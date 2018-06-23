@@ -1,20 +1,20 @@
 package com.zerra.game.entity;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import javax.swing.Renderer;
 
 import com.zerra.game.GameObject;
+import com.zerra.gfx.renderer.EntityRenderer;
 
-public class Entity extends GameObject {
+public abstract class Entity extends GameObject {
 
 	private EntityType type;
 	private long ticksExisted = 0;
 	private int velX, velY;
-	
+
 	public Entity() {
 		this(0, 0, EntityType.NEUTRAL);
 	}
-	
+
 	public Entity(int x, int y, EntityType type) {
 		this.setX(x);
 		this.setY(y);
@@ -22,20 +22,14 @@ public class Entity extends GameObject {
 	}
 
 	@Override
-	public void onUpdate() {
-		setTicksExisted(getTicksExisted() + 1);
+	public void update() {
+		this.ticksExisted++;
 	}
 
 	@Override
-	public void render(Graphics g) {
-		
+	public void render(Renderer renderer, EntityRenderer entityRenderer, float x, float y) {
 	}
-	
-	@Override
-	public Rectangle getBounds() {
-		return null;
-	}
-	
+
 	public EntityType getType() {
 		return type;
 	}
@@ -43,7 +37,7 @@ public class Entity extends GameObject {
 	public void setType(EntityType type) {
 		this.type = type;
 	}
-	
+
 	public int getVelX() {
 		return velX;
 	}

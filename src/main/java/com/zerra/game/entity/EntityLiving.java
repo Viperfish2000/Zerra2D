@@ -1,10 +1,7 @@
 package com.zerra.game.entity;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
+public abstract class EntityLiving extends Entity {
 
-public class EntityLiving extends Entity {
-	
 	private int health = 0;
 	private int maxHealth = 0;
 	private int stamina = 0;
@@ -13,28 +10,13 @@ public class EntityLiving extends Entity {
 	private int maxMana = 0;
 	private int armor = 0;
 	private int speed = 0;
-	
+
 	public EntityLiving() {
 		super(0, 0, EntityType.NEUTRAL);
 	}
-	
+
 	public EntityLiving(int x, int y, EntityType type) {
 		super(x, y, type);
-	}
-
-	@Override
-	public void onUpdate() {
-		super.onUpdate();
-	}
-
-	@Override
-	public void render(Graphics g) {
-		
-	}
-	
-	@Override
-	public Rectangle getBounds() {
-		return null;
 	}
 
 	public int getHealth() {

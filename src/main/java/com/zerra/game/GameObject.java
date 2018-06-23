@@ -1,17 +1,26 @@
 package com.zerra.game;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import javax.swing.Renderer;
+
+import com.zerra.gfx.renderer.EntityRenderer;
+import com.zerra.util.AxisAlignedBB;
+import com.zerra.util.ResourceLocation;
 
 public abstract class GameObject {
 
 	private int x, y;
 	private String unlocalizedName;
 
-	public abstract void onUpdate();
-	public abstract void render(Graphics g);
-	public abstract Rectangle getBounds();
-	
+	public abstract void update();
+
+	public abstract void render(Renderer renderer, EntityRenderer entityRenderer, float x, float y);
+
+	public abstract AxisAlignedBB getCollisionBox();
+
+	public abstract ResourceLocation getTexture();
+
+	public abstract int getTextureWidth();
+
 	public int getX() {
 		return x;
 	}
@@ -27,11 +36,11 @@ public abstract class GameObject {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+
 	public String getUnlocalizedName() {
 		return unlocalizedName;
 	}
-	
+
 	public void setUnlocalizedName(String unlocalizedName) {
 		this.unlocalizedName = unlocalizedName;
 	}
