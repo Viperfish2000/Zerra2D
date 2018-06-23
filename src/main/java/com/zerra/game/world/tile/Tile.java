@@ -25,9 +25,12 @@ public abstract class Tile {
 	public static final Tile SAND = new TileBase("sand", "sand", new Vector2f(4, 0));
 	public static final Tile LAVA = new TileLava("lava", "lava", new Vector2f(2, 1));
 	public static final Tile WATER = new TileBase("water", "water", new Vector2f(1, 1));
-	public static final Tile OBSIDIAN = new TileBase("obsidian", "obsidian", new Vector2f(3, 1));
-	public static final Tile PLANKS = new TileBase("planks", "planks", new Vector2f(5, 0));
 	public static final Tile SNOW = new TileBase("snow", "snow", new Vector2f(6, 0));
+
+	public static final Tile PLANKS = new TileBase("planks", "planks", new Vector2f(5, 0));
+	
+	public static final Tile OBSIDIAN = new TileBase("obsidian", "obsidian", new Vector2f(3, 1));
+	public static final Tile GOLD_ORE = new TileBase("gold_ore", "gold_ore", new Vector2f(7, 0));
 
 	public static final Tile BOULDER = new TileBase("boulder", "boulder", new Vector2f(0, 1));
 
