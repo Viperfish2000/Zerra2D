@@ -15,15 +15,24 @@ public class TileBase extends Tile {
 		this.textureCoords = textureCoords;
 	}
 
+	/**
+	 * Updates the tile.
+	 */
 	@Override
 	public void update() {
 	}
 
+	/**
+	 * @return The texture coordinates for this tile.
+	 */
 	@Override
 	public Vector2f getTextureCoords() {
 		return textureCoords;
 	}
 
+	/**
+	 * @return The resource location of the texture this tile uses.
+	 */
 	@Override
 	public ResourceLocation getTexture() {
 		return TILE_ATLAS;

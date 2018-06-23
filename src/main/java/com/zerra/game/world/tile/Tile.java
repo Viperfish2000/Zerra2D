@@ -5,6 +5,7 @@ import java.util.Map;
 import org.joml.Vector2f;
 
 import com.google.common.collect.Maps;
+import com.zerra.annotation.Review;
 import com.zerra.game.map.TileMap;
 import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.gfx.renderer.TileRenderer;
@@ -49,47 +50,113 @@ public abstract class Tile {
 		}
 	}
 
+	/**
+	 * Renders the tile.
+	 * 
+	 * @param x
+	 * 		The x position to render the tile at.
+	 * 
+	 * @param y
+	 * 		The y position to render the tile at.
+	 * 
+	 * @param renderer
+	 * 		The master renderer to use in rendering the tile.
+	 * 
+	 * @param tileRenderer
+	 * 		The tile renderer to use in rendering the tile.
+	 */
 	public void render(float x, float y, MasterRenderer renderer, TileRenderer tileRenderer) {
 	}
 
+	/**
+	 * Updates the tile.
+	 */
 	public abstract void update();
 
+	/**
+	 * Called when the tile is added into the world.
+	 * 
+	 * @param map
+	 * 		The world the tile is being placed in.
+	 * 
+	 * @param x
+	 * 		The x position of where the tile is placed at.
+	 * 
+	 * @param y
+	 * 		The y position of where the tile is placed at.
+	 */
 	public void onTilePlaced(TileMap map, float x, float y) {
 	}
 
+	/**
+	 * Called when the tile is removed from the world.
+	 * 
+	 * @param map
+	 * 		The world the tile is being removed from.
+	 * 
+	 * @param x
+	 * 		The x position of where the tile is removed from.
+	 * 
+	 * @param y
+	 * 		The y position of where the tile is removed from.
+	 */
 	public void onTileDestroyed(TileMap map, float x, float y) {
 	}
 
+	/**
+	 * @return The texture coordinates the tile uses.
+	 */
 	public abstract Vector2f getTextureCoords();
 
+	/**
+	 * @return The resource location for the texture the tile uses.
+	 */
 	public abstract ResourceLocation getTexture();
 
+	/**
+	 * @return The collision box of the tile.
+	 */
 	public AxisAlignedBB getCollisionBox() {
 		return FULL;
 	}
 
+	/**
+	 * @return The registry name of the tile.
+	 */
 	public String getRegistryName() {
 		return registryName;
 	}
 
 	/**
-	 * @return The name before it is localized
+	 * @return The name of the tile before it is localized.
 	 */
 	public String getUnlocalizedName() {
 		return "tile." + this.unlocalizedName + ".name";
 	}
 
 	/**
-	 * @return The name of the tile converted to the proper language
+	 * @return The name of the tile converted to the proper language.
 	 */
 	public String getLocalizedName() {
 		return I18n.format(this.getUnlocalizedName());
 	}
 
+	/**
+	 * @return Whether or not this tile should render.
+	 */
 	public boolean shouldRender() {
 		return shouldRender;
 	}
 
+	/**
+	 * Checks whether or not this object equals the specified object.
+	 * 
+	 * @param Object obj
+	 * 				The object this class is being compared against.
+	 * 
+	 * @return Whether or not this object is equal to the specified object.
+	 */
+	@Review(desc = "WARNING. THIS IS UNSAFE! YOU NEED TO OVERRIDE THE HASHCODE METHOD IF YOU EVER OVERRIDE THE EQUALS METHOD.")
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Tile) {
@@ -99,11 +166,22 @@ public abstract class Tile {
 		return super.equals(obj);
 	}
 
+	/**
+	 * Gets this tile object as a String object.
+	 */
 	@Override
 	public String toString() {
 		return "Tile[" + this.getLocalizedName() + "/" + this.getUnlocalizedName() + ":" + this.getRegistryName() + "]";
 	}
 
+	/**
+	 * Gets the tile type based on the registry name.
+	 * 
+	 * @param registryName
+	 * 				The registry name used to search the registry with.
+	 * 
+	 * @return The tile retrieved from the registry.
+	 */
 	public static Tile byName(String registryName) {
 		Tile tile = REGISTRY.get(registryName);
 		return tile != null ? tile : Tile.VOID;

@@ -2,6 +2,7 @@ package com.zerra.game.map;
 
 import java.util.Random;
 
+import com.zerra.annotation.Review;
 import com.zerra.util.Maths;
 
 public class HeightGenerator {
@@ -21,6 +22,7 @@ public class HeightGenerator {
 		this.seed = seed;
 	}
 
+	@Review(desc = "What does this do?")
 	public float generateHeight(float x, float y, float amplitude, int octaves, float roughness) {
 		float total = 0;
 		float d = (float) Math.pow(2, octaves - 1);
@@ -32,6 +34,7 @@ public class HeightGenerator {
 		return total;
 	}
 
+	@Review(desc = "What does this do?")
 	private float getInterpolatedNoise(float x, float y) {
 		int intX = (int) x;
 		int intY = (int) y;
@@ -48,6 +51,7 @@ public class HeightGenerator {
 		return Maths.interpolate(i1, i2, fracY);
 	}
 
+	@Review(desc = "What does this do?")
 	private float getSmoothNoise(int x, int y) {
 		float corners = (getNoise(x - 1, y - 1) + getNoise(x + 1, y - 1) + getNoise(x - 1, y + 1) + getNoise(x + 1, y + 1)) / 16f;
 		float sides = (getNoise(x - 1, y) + getNoise(x + 1, y) + getNoise(x, y - 1) + getNoise(x, y + 1)) / 8f;
@@ -55,15 +59,23 @@ public class HeightGenerator {
 		return corners + sides + center;
 	}
 
+	@Review(desc = "What does this do?")
 	private float getNoise(int x, int y) {
 		random.setSeed(x * 4956132 + y * 125176 + seed);
 		return random.nextFloat();
 	}
 
+	/**
+	 * @return The seed of the world.
+	 */
 	public int getSeed() {
 		return seed;
 	}
 	
+	/**
+	 * @return The random seed of the world.
+	 */
+	@Review(desc = "How is this different from HeightGenerator#getSeed?")
 	public long getRandomSeed() {
 		return randomSeed;
 	}

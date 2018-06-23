@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 import org.joml.Vector3f;
 
 import com.zerra.Game;
+import com.zerra.annotation.Review;
 import com.zerra.game.world.tile.Tile;
 import com.zerra.game.world.tile.TileEntry;
 import com.zerra.gfx.FrustumCullingFilter;
@@ -49,6 +50,9 @@ public class TileMap {
 		height = Display.getHeight() / MasterRenderer.SCALE / 16;
 	}
 
+	/**
+	 * Updates the world tiles. Manages whether or not tiles should be loaded/unloaded based on their location on/off screen.
+	 */
 	public void update() {
 		ICamera camera = Game.getInstance().getCamera();
 		filter.updateFrustum(MasterRenderer.getProjectionMatrix(), Maths.createViewMatrix(camera));
@@ -120,12 +124,22 @@ public class TileMap {
 		}
 	}
 
+	/**
+	 * Updates the rendering for all tiles on screen.
+	 * 
+	 * @param renderer
+	 * 			The master renderer used to update tile rendering.
+	 */
 	public void render(MasterRenderer renderer) {
 		for (int i = 0; i < tiles.size(); i++) {
 			renderer.renderTile(tiles.get(i));
 		}
 	}
 
+	/**
+	 * Generates tiles.
+	 */
+	@Review(desc = "I thought generate would deal with chunks, not tiles.")
 	public void generate() {
 		for (int x = -1; x < width + 2; x++) {
 			for (int y = -1; y < height + 2; y++) {
@@ -135,6 +149,15 @@ public class TileMap {
 		}
 	}
 
+	/**
+	 * Saves the world (how heroic sounding).
+	 * 
+	 * @param saveFolder
+	 * 				The location to save the world to.
+	 * 
+	 * @throws IOException
+	 * 				Potentially thrown due to world files not being found.
+	 */
 	public void save(File saveFolder) throws IOException {
 		String worldName = "world";// TODO add different names so you can have multiple saves
 
@@ -185,6 +208,18 @@ public class TileMap {
 		tileIndex.write(tileIndexStream);
 	}
 
+	/**
+	 * Loads the world.
+	 * 
+	 * @param saveFolder
+	 * 				The save folder to load the world from.
+	 * 
+	 * @param worldName
+	 * 				The name of the world to load.
+	 * 
+	 * @throws IOException
+	 * 				Potentially thrown due to world files not being found.
+	 */
 	public void load(File saveFolder, String worldName) throws IOException {
 
 		worldFolder = new File(saveFolder, worldName);
@@ -205,6 +240,17 @@ public class TileMap {
 		}
 	}
 
+	/**
+	 * Gets a tile at the specified position.
+	 * 
+	 * @param x
+	 * 		The x position of the tile.
+	 * 
+	 * @param y
+	 * 		The y position of the tile.
+	 * 
+	 * @return The tile at the position.
+	 */
 	@Nullable
 	public Tile getTile(float x, float y) {
 		for (int i = 0; i < tiles.size(); i++) {
@@ -216,6 +262,16 @@ public class TileMap {
 		return null;
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param tile
+	 * @param biome
+	 * @param layer
+	 * @param x
+	 * @param y
+	 */
+	@Review(desc = "Not exactly sure what this is. I think it just adds tiles to the tile entry?")
 	protected void addTile(Tile tile, EnumBiome biome, int layer, float x, float y) {
 		TileEntry entry = null;
 		if (this.getChunk(x, y).getTileData().hasKey(x + "," + y, 10)) {
@@ -236,6 +292,7 @@ public class TileMap {
 	 *            The x position to get the chunk at
 	 * @param y
 	 *            The y position to get the chunk at
+	 *            
 	 * @return The chunk that was either loaded or created
 	 */
 	protected Chunk getChunk(float x, float y) {
@@ -266,7 +323,9 @@ public class TileMap {
 	 *            The grid x position of tdhe chunk
 	 * @param gridY
 	 *            The grid y position of the chunk
+	 *            
 	 * @return The chunk that was loaded or null if the chunk could not be loaded
+	 * 
 	 * @throws IOException
 	 *             If anything goes wrong when trying to load the chunk file
 	 */

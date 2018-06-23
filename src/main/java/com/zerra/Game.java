@@ -48,6 +48,9 @@ public class Game implements Runnable {
 	private Game() {
 	}
 
+	/**
+	 * Sets the game's running status to true.
+	 */
 	public synchronized void start() {
 		if (running)
 			return;
@@ -56,6 +59,9 @@ public class Game implements Runnable {
 		running = true;
 	}
 
+	/**
+	 * Sets the game's running status to false.
+	 */
 	public synchronized void stop() {
 		if (running)
 			return;
@@ -64,6 +70,12 @@ public class Game implements Runnable {
 		running = false;
 	}
 
+	/**
+	 * Initializes the game.
+	 * 
+	 * @throws Exception
+	 * 				May be unable to load missing world files.
+	 */
 	private void init() throws Exception {
 		logger.info("Creating display...");
 		Display.createDisplay("Zerra", WIDTH, HEIGHT);
@@ -87,6 +99,9 @@ public class Game implements Runnable {
 		map.generate();
 	}
 
+	/**
+	 * This is the GAME LOOP. This regulates the game cycling. DO NOT TOUCH.
+	 */
 	@Override
 	public void run() {
 		try {
@@ -129,6 +144,9 @@ public class Game implements Runnable {
 		cleanUp();
 	}
 
+	/**
+	 * Updates game logic and events.
+	 */
 	private void update() {
 		camera.update();
 		map.update();
@@ -152,6 +170,9 @@ public class Game implements Runnable {
 		}
 	}
 
+	/**
+	 * Renders game.
+	 */
 	private void render() {
 		renderer.renderLights(new Light(new Vector2f((float) Display.getMouseX() / MasterRenderer.SCALE + camera.getPosition().x, (float) Display.getMouseY() / MasterRenderer.SCALE + camera.getPosition().y), new Vector4f(1, 1, 1, 50), 25));
 		renderer.setAmbientLight(time, time, time);
@@ -159,6 +180,9 @@ public class Game implements Runnable {
 		renderer.render(camera);
 	}
 
+	/**
+	 * Cleans up the game before the game loop has closed.
+	 */
 	private void cleanUp() {
 		this.addTask(() -> {
 			this.save();
@@ -172,6 +196,9 @@ public class Game implements Runnable {
 		System.exit(0);
 	}
 
+	/**
+	 * Saves current world.
+	 */
 	private void save() {
 		try {
 			File saveFolder = new File("data/saves");
@@ -185,6 +212,12 @@ public class Game implements Runnable {
 		}
 	}
 
+	/**
+	 * Loads up a world.
+	 * 
+	 * @param worldName
+	 * 			The name of the world to load up.
+	 */
 	private void load(String worldName) {
 		try {
 			File saveFolder = new File("data/saves");
@@ -196,34 +229,65 @@ public class Game implements Runnable {
 		}
 	}
 
+	/**
+	 * Adds a task to the thread pool.
+	 * 
+	 * @param task
+	 * 			The task to add.
+	 */
 	public void addTask(Runnable task) {
 		pool.addScheduledTask(task);
 	}
 
+	/**
+	 * @return The partial ticks of the game. Useful for smooth rendering.
+	 */
 	public float getRenderPartialTicks() {
 		return TIMER.renderPartialTicks;
 	}
 
+	/**
+	 * @return The texture manager for the game.
+	 */
 	public TextureManager getTextureManager() {
 		return textureManager;
 	}
 
+	/**
+	 * @return The master renderer for the game.
+	 */
 	public MasterRenderer getRenderer() {
 		return renderer;
 	}
 
+	/**
+	 * @return The camera for the game.
+	 */
+	//TODO: Move this out of this class! We don't need a camera object until we are in a world!!!
 	public Camera getCamera() {
 		return camera;
 	}
 
+	/**
+	 * @return The logger for the game.
+	 */
 	public static Logger logger() {
 		return logger;
 	}
 
+	/**
+	 * @return The instance for the game.
+	 */
 	public static Game getInstance() {
 		return instance;
 	}
 
+	/**
+	 * The main method. This is where it all began...
+	 * 
+	 * @param args
+	 * 		You know what these do... or don't. Don't think it really matters, to be honest.
+	 */
 	public static void main(String[] args) {
 		logger.info("Setting up game...");
 		new Thread(Game.getInstance()).start();

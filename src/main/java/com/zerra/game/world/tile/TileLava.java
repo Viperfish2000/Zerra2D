@@ -29,6 +29,17 @@ public class TileLava extends TileBase {
 		LIGHT_CACHE.remove(x + "," + y);
 	}
 
+	/**
+	 * Gets the light object at the specified position.
+	 * 
+	 * @param x
+	 * 		The x position to get the light.
+	 * 
+	 * @param y
+	 * 		The y position to get the light.
+	 * 
+	 * @return The light object from the given tile position.
+	 */
 	private Light getLight(float x, float y) {
 		Light light = LIGHT_CACHE.get(x + "," + y);
 		if (light == null) {

@@ -16,22 +16,42 @@ public class ModelTexture {
 		this.useFakeLighting = false;
 	}
 
+	/**
+	 * @return The resource location for the texture.
+	 */
 	public ResourceLocation getTexture() {
 		return texture;
 	}
 
+	/**
+	 * @return The number of rows the texture has.
+	 */
 	public int getNumberOfRows() {
 		return numberOfRows;
 	}
 
+	/**
+	 * @return Whether or not the texture has transparency.
+	 */
 	public boolean hasTransparency() {
 		return hasTransparency;
 	}
 
+	/**
+	 * @return Whether or not the texture uses fake lighting.
+	 */
 	public boolean usesFakeLighting() {
 		return useFakeLighting;
 	}
 
+	/**
+	 * Sets the number of rows the model texture has.
+	 * 
+	 * @param numberOfRows
+	 * 				The number of rows this model texture will have.
+	 * 
+	 * @return The model texture.
+	 */
 	public ModelTexture setNumberOfRows(int numberOfRows) {
 		if(numberOfRows < 1)
 			numberOfRows = 1;
@@ -39,11 +59,27 @@ public class ModelTexture {
 		return this;
 	}
 
+	/**
+	 * Sets whether or not this model texture has transparency.
+	 * 
+	 * @param transparent
+	 * 				Sets whether or not the model texture has transparency.
+	 * 
+	 * @return The model texture.
+	 */
 	public ModelTexture setTransparent(boolean transparent) {
 		this.hasTransparency = transparent;
 		return this;
 	}
 
+	/**
+	 * Sets whether or not this model texture uses fake lighting.
+	 * 
+	 * @param useFakeLighting
+	 * 				Sets whether or not the model texture will use fake lighting.
+	 * 
+	 * @return The model texture.
+	 */
 	public ModelTexture setUseFakeLighting(boolean useFakeLighting) {
 		this.useFakeLighting = useFakeLighting;
 		return this;
