@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
-import com.zerra.Game;
+import com.zerra.Zerra;
 
 /**
  * <em><b>Copyright (c) 2018 Ocelot5836.</b></em>
@@ -69,7 +69,7 @@ public class LoadingUtils {
 			}
 			scanner.close();
 		} catch (Exception e) {
-			Game.logger().warn("Error loading text to array!");
+			Zerra.logger().warn("Error loading text to array!");
 			e.printStackTrace();
 		}
 		result = new String[lines.size()];
@@ -115,7 +115,7 @@ public class LoadingUtils {
 			}
 			scanner.close();
 		} catch (Exception e) {
-			Game.logger().warn(String.format("Error loading text to array from %s!", pageURL));
+			Zerra.logger().warn(String.format("Error loading text to array from %s!", pageURL));
 			e.printStackTrace();
 		}
 		result = new String[lines.size()];
@@ -157,7 +157,7 @@ public class LoadingUtils {
 		try {
 			image = ImageIO.read(input);
 		} catch (Exception e) {
-			Game.logger().warn(String.format("Missing image: %s", input));
+			Zerra.logger().warn(String.format("Missing image: %s", input));
 			image = defaultEmptyImage;
 		}
 
@@ -175,7 +175,7 @@ public class LoadingUtils {
 	public static BufferedImage getImage(String name) {
 		if (isImageLoaded(name))
 			return LOADED_IMAGES.get(name);
-		Game.logger().fatal(String.format("You cannot get an image that has not been loaded! The identifier of the image was %s", name));
+		Zerra.logger().fatal(String.format("You cannot get an image that has not been loaded! The identifier of the image was %s", name));
 		return null;
 	}
 

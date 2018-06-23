@@ -3,7 +3,7 @@ package com.zerra.game.registry;
 import java.lang.reflect.Constructor;
 import java.util.HashSet;
 
-import com.zerra.Game;
+import com.zerra.Zerra;
 import com.zerra.annotation.Review;
 import com.zerra.game.entity.Entity;
 
@@ -50,7 +50,7 @@ public class EntityRegistry {
 			String tempUL = tempEnt.getUnlocalizedName();
 			
 			if(UL.matches(tempUL)) {
-				Game.logger().error("Entity with unlocalized name " + UL + " is already registered!");
+				Zerra.logger().error("Entity with unlocalized name " + UL + " is already registered!");
 				return false;
 			}
 		}
@@ -82,7 +82,7 @@ public class EntityRegistry {
 				return REGISTRY.remove(clazz);
 			}
 		}
-		Game.logger().error("Entity with unlocalized name " + UL + " could not be found in the registry. Removal canceled.");
+		Zerra.logger().error("Entity with unlocalized name " + UL + " could not be found in the registry. Removal canceled.");
 		return false;
 	}
 }

@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL31;
 
-import com.zerra.Game;
+import com.zerra.Zerra;
 import com.zerra.game.world.tile.Tile;
 import com.zerra.game.world.tile.TileEntry;
 import com.zerra.gfx.shader.TileShader;
@@ -62,7 +62,7 @@ public class TileRenderer {
 			pointer = 0;
 			float[] vboData = new float[batch.size() * INSTANCE_DATA_LENGTH];
 			for (TileEntry tile : batch) {
-				tile.getTile().render(tile.getX(), tile.getY(), Game.getInstance().getRenderer(), this);
+				tile.getTile().render(tile.getX(), tile.getY(), Zerra.getInstance().getRenderer(), this);
 				this.updateModelViewMatrix(tile.getX(), tile.getY(), tile.getLayer(), 0, 16, Maths.createViewMatrix(camera), vboData);
 				this.updateTextureCoords(tile.getTile(), vboData);
 			}
@@ -74,9 +74,9 @@ public class TileRenderer {
 
 	private void bindTexture(ResourceLocation texture) {
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		Game.getInstance().getTextureManager().bind(texture);
+		Zerra.getInstance().getTextureManager().bind(texture);
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);
-		Game.getInstance().getTextureManager().bind(GLOW_LOCATION);
+		Zerra.getInstance().getTextureManager().bind(GLOW_LOCATION);
 		shader.loadNumberOfRows(16);
 	}
 

@@ -3,7 +3,7 @@ package com.zerra.game;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import com.zerra.Game;
+import com.zerra.Zerra;
 
 public class HUD {
 
@@ -11,7 +11,7 @@ public class HUD {
 
 		/** Render daytime shading **/
 		g.setColor(new Color(0.0F, 0, 0.0F, (float) 0F));
-		g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
+		g.fillRect(0, 0, Zerra.WIDTH, Zerra.HEIGHT);
 		
 		/** Render health bar **/
 		g.setColor(Color.DARK_GRAY);

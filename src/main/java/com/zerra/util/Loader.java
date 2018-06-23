@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL33;
 
-import com.zerra.Game;
+import com.zerra.Zerra;
 import com.zerra.gfx.texture.BasicTexture;
 import com.zerra.gfx.texture.ITexture;
 import com.zerra.gfx.texture.cubemap.CubeMapTextureData;
@@ -69,7 +69,7 @@ public class Loader {
 		try {
 			return Loader.loadTexture(ImageIO.read(location.getInputStream()));
 		} catch (Exception e) {
-			Game.logger().warn("Could not find image at \'" + location + "\'");
+			Zerra.logger().warn("Could not find image at \'" + location + "\'");
 			return Loader.loadTexture(LoadingUtils.createMissingImage(256, 256));
 		}
 	}

@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import com.zerra.Game;
+import com.zerra.Zerra;
 import com.zerra.gfx.GlWrapper;
 import com.zerra.gfx.shader.QuadShader;
 import com.zerra.model.Model;
@@ -33,7 +33,7 @@ public class QuadRenderer {
 		this.bind();
 		for (Quad quad : quads) {
 			shader.loadColor(quad.getColor());
-			shader.loadTransformationMatrix(quad.getRenderTransformation(Game.getInstance().getRenderPartialTicks()));
+			shader.loadTransformationMatrix(quad.getRenderTransformation(Zerra.getInstance().getRenderPartialTicks()));
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, this.quad.getVertexCount());
 		}
 		this.unbind();

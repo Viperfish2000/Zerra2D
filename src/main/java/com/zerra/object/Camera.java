@@ -3,7 +3,7 @@ package com.zerra.object;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
-import com.zerra.Game;
+import com.zerra.Zerra;
 import com.zerra.util.Display;
 
 public class Camera extends GLObject implements ICamera {
@@ -33,9 +33,9 @@ public class Camera extends GLObject implements ICamera {
 
 	@Override
 	public Vector3f getPosition() {
-		renderPosition.x = lastPosition.x + (position.x - lastPosition.x) * Game.getInstance().getRenderPartialTicks();
-		renderPosition.y = lastPosition.y + (position.y - lastPosition.y) * Game.getInstance().getRenderPartialTicks();
-		renderPosition.z = lastPosition.z + (position.z - lastPosition.z) * Game.getInstance().getRenderPartialTicks();
+		renderPosition.x = lastPosition.x + (position.x - lastPosition.x) * Zerra.getInstance().getRenderPartialTicks();
+		renderPosition.y = lastPosition.y + (position.y - lastPosition.y) * Zerra.getInstance().getRenderPartialTicks();
+		renderPosition.z = lastPosition.z + (position.z - lastPosition.z) * Zerra.getInstance().getRenderPartialTicks();
 		return renderPosition;
 	}
 
@@ -46,9 +46,9 @@ public class Camera extends GLObject implements ICamera {
 
 	@Override
 	public Vector3f getRotation() {
-		renderRotation.x = lastRotation.x + (rotation.x - lastRotation.x) * Game.getInstance().getRenderPartialTicks();
-		renderRotation.y = lastRotation.y + (rotation.y - lastRotation.y) * Game.getInstance().getRenderPartialTicks();
-		renderRotation.z = lastRotation.z + (rotation.z - lastRotation.z) * Game.getInstance().getRenderPartialTicks();
+		renderRotation.x = lastRotation.x + (rotation.x - lastRotation.x) * Zerra.getInstance().getRenderPartialTicks();
+		renderRotation.y = lastRotation.y + (rotation.y - lastRotation.y) * Zerra.getInstance().getRenderPartialTicks();
+		renderRotation.z = lastRotation.z + (rotation.z - lastRotation.z) * Zerra.getInstance().getRenderPartialTicks();
 		return renderRotation;
 	}
 

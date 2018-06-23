@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 
 import org.joml.Vector3f;
 
-import com.zerra.Game;
+import com.zerra.Zerra;
 import com.zerra.annotation.Review;
 import com.zerra.game.world.tile.Tile;
 import com.zerra.game.world.tile.TileEntry;
@@ -54,7 +54,7 @@ public class TileMap {
 	 * Updates the world tiles. Manages whether or not tiles should be loaded/unloaded based on their location on/off screen.
 	 */
 	public void update() {
-		ICamera camera = Game.getInstance().getCamera();
+		ICamera camera = Zerra.getInstance().getCamera();
 		filter.updateFrustum(MasterRenderer.getProjectionMatrix(), Maths.createViewMatrix(camera));
 		filter.filterTiles(tiles);
 
@@ -309,7 +309,7 @@ public class TileMap {
 			e.printStackTrace();
 		}
 		if (chunk == null) {
-			Game.logger().info("Created new chunk at " + gridX + "," + gridY);
+			Zerra.logger().info("Created new chunk at " + gridX + "," + gridY);
 			chunk = new Chunk(UUID.randomUUID(), gridX, gridY);
 		}
 		chunks.add(chunk);
@@ -340,10 +340,10 @@ public class TileMap {
 					Chunk chunk = new Chunk(chunkId, gridX, gridY);
 					DataInputStream stream = new DataInputStream(new FileInputStream(chunkFile));
 					chunk.getTileData().read(stream);
-					Game.logger().info("Attempting to load chunk at x: " + gridX + " y: " + gridY);
+					Zerra.logger().info("Attempting to load chunk at x: " + gridX + " y: " + gridY);
 					return chunk;
 				}
-				Game.logger().error("Unable to find chunk file!");
+				Zerra.logger().error("Unable to find chunk file!");
 			}
 		}
 		return null;
