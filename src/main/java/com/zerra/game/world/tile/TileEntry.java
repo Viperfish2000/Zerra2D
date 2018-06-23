@@ -1,7 +1,7 @@
 package com.zerra.game.world.tile;
 
 import com.zerra.annotation.Review;
-import com.zerra.game.map.EnumBiome;
+import com.zerra.game.world.map.EnumBiome;
 import com.zerra.util.ISerializable;
 import com.zerra.util.data.ByteDataContainer;
 
@@ -69,7 +69,7 @@ public class TileEntry implements ISerializable<ByteDataContainer> {
 	 * Sets the x position for the tile in this tile entry.
 	 * 
 	 * @param x
-	 * 		The x position to set the tile at.
+	 *            The x position to set the tile at.
 	 */
 	public void setX(float x) {
 		this.x = x;
@@ -79,7 +79,7 @@ public class TileEntry implements ISerializable<ByteDataContainer> {
 	 * Sets the y position for the tile in this tile entry.
 	 * 
 	 * @param y
-	 * 		The y position to set the tile at.
+	 *            The y position to set the tile at.
 	 */
 	public void setY(float y) {
 		this.y = y;
@@ -89,7 +89,7 @@ public class TileEntry implements ISerializable<ByteDataContainer> {
 	 * Sets whether or not this tile is removed.
 	 * 
 	 * @param removed
-	 * 			Whether or not the tile is removed.
+	 *            Whether or not the tile is removed.
 	 */
 	@Review(desc = "What does removed mean in this context??")
 	public void setRemoved(boolean removed) {
@@ -120,16 +120,16 @@ public class TileEntry implements ISerializable<ByteDataContainer> {
 	 * Retrieves a tile entry based on a tag.s
 	 * 
 	 * @param x
-	 * 		The x position of the tile.
+	 *            The x position of the tile.
 	 * 
 	 * @param y
-	 * 		The y position of the tile.
+	 *            The y position of the tile.
 	 * 
 	 * @param layer
-	 * 		The number of layers the tile has.
+	 *            The number of layers the tile has.
 	 * 
 	 * @param data
-	 * 		The serialized data to deserialize. This gets the rest of the data a tile has, which includes biome type, tile type, etc.
+	 *            The serialized data to deserialize. This gets the rest of the data a tile has, which includes biome type, tile type, etc.
 	 * @return
 	 */
 	public static TileEntry fromTag(float x, float y, int layer, ByteDataContainer data) {
