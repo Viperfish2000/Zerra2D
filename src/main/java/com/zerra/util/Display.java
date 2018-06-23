@@ -40,7 +40,7 @@ public class Display {
 			Display.height = height;
 		}
 		Display.fullscreen = borderless;
-		
+
 		if (!GLFW.glfwInit()) {
 			throw new RuntimeException("Failed to initialize GLFW");
 		}
@@ -105,6 +105,14 @@ public class Display {
 		if (cursorID != NULL) {
 			GLFW.glfwSetCursor(windowID, cursorID);
 		}
+	}
+
+	public static void setIcon(BufferedImage icon) {
+		GLFWImage image = GLFWImage.create();
+		image.width(icon.getWidth());
+		image.height(icon.getHeight());
+		image.pixels(Loader.loadToByteBuffer(icon));
+		GLFW.nglfwSetWindowIcon(windowID, 1, image.address());
 	}
 
 	public static void setFullscreen() {

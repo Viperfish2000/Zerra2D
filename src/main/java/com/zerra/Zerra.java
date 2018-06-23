@@ -19,7 +19,9 @@ import com.zerra.gfx.texture.TextureManager;
 import com.zerra.object.Camera;
 import com.zerra.util.Display;
 import com.zerra.util.Loader;
+import com.zerra.util.LoadingUtils;
 import com.zerra.util.Maths;
+import com.zerra.util.ResourceLocation;
 import com.zerra.util.Timer;
 import com.zerra.util.thread.ThreadPool;
 
@@ -79,7 +81,8 @@ public class Zerra implements Runnable {
 	private void init() throws Exception {
 		logger.info("Creating display...");
 		Display.createDisplay("Zerra", WIDTH, HEIGHT);
-
+		Display.setIcon(LoadingUtils.loadImage("icon", new ResourceLocation("icons/32.png").getInputStream()));
+		
 		GlWrapper.enableDepth();
 		GL11.glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
 		PostProcessing.init();
