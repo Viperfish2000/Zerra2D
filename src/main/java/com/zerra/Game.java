@@ -134,6 +134,14 @@ public class Game implements Runnable {
 		} else {
 			worldTime += 0.0001F;
 		}
+		if(Display.getMouseButton() == 0) {
+			worldTime+=0.01f;
+			System.out.println(worldTime);
+		}
+		if(Display.getMouseButton() == 1) {
+			worldTime-=0.01f;
+			System.out.println(worldTime);
+		}
 	}
 
 	private void render() {
