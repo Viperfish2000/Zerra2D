@@ -28,7 +28,7 @@ public class Game implements Runnable {
 	public static int WIDTH = 1280;
 	public static int HEIGHT = 720;
 
-	private static Logger logger = LogManager.getLogger();
+	public static Logger logger = LogManager.getLogger();
 	private static Game instance = new Game();
 	private static final Timer TIMER = new Timer(60);
 
@@ -52,6 +52,7 @@ public class Game implements Runnable {
 		if (running)
 			return;
 
+		logger.info("Running game...");
 		running = true;
 	}
 
@@ -59,10 +60,12 @@ public class Game implements Runnable {
 		if (running)
 			return;
 
+		logger.info("Shutting down game...");
 		running = false;
 	}
 
 	private void init() throws Exception {
+		logger.info("Creating display...");
 		Display.createDisplay("Zerra", WIDTH, HEIGHT);
 
 		GlWrapper.enableDepth();
@@ -75,7 +78,12 @@ public class Game implements Runnable {
 		pool = new ThreadPool(4);
 
 		map = new TileMap();
-		load();
+
+		logger.info("Loading world...");
+		
+		//TODO: This is where world loading is first called.
+		load("world");
+		logger.info("Generating terrain...");
 		map.generate();
 	}
 
@@ -160,6 +168,7 @@ public class Game implements Runnable {
 		PostProcessing.cleanUp();
 		Loader.cleanUp();
 		renderer.cleanUp();
+		logger.info("Closing game...");
 		System.exit(0);
 	}
 
@@ -169,17 +178,18 @@ public class Game implements Runnable {
 			if (!saveFolder.exists()) {
 				saveFolder.mkdirs();
 			}
+			logger.info("Saving world...");
 			map.save(saveFolder);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void load() {
+	private void load(String worldName) {
 		try {
 			File saveFolder = new File("data/saves");
 			if (saveFolder.exists()) {
-				map.load(saveFolder);
+				map.load(saveFolder, worldName);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -215,6 +225,7 @@ public class Game implements Runnable {
 	}
 
 	public static void main(String[] args) {
+		logger.info("Setting up game...");
 		new Thread(Game.getInstance()).start();
 		Game.getInstance().start();
 	}

@@ -185,8 +185,7 @@ public class TileMap {
 		tileIndex.write(tileIndexStream);
 	}
 
-	public void load(File saveFolder) throws IOException {
-		String worldName = "world";// TODO add different names so you can have multiple saves
+	public void load(File saveFolder, String worldName) throws IOException {
 
 		worldFolder = new File(saveFolder, worldName);
 		File tileDataFile = new File(worldFolder, "tiles.bit");
@@ -264,7 +263,7 @@ public class TileMap {
 	 * Attempts to load a single chunk from file.
 	 * 
 	 * @param gridX
-	 *            The grid x position of the chunk
+	 *            The grid x position of tdhe chunk
 	 * @param gridY
 	 *            The grid y position of the chunk
 	 * @return The chunk that was loaded or null if the chunk could not be loaded
@@ -282,8 +281,10 @@ public class TileMap {
 					Chunk chunk = new Chunk(chunkId, gridX, gridY);
 					DataInputStream stream = new DataInputStream(new FileInputStream(chunkFile));
 					chunk.getTileData().read(stream);
+					Game.logger.info("Attempting to load chunk at x: " + gridX + " y: " + gridY);
 					return chunk;
 				}
+				Game.logger.error("Unable to find chunk file!");
 			}
 		}
 		return null;
