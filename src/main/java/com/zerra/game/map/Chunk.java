@@ -18,7 +18,6 @@ public class Chunk {
 	
 	private ByteDataContainer tileData;
 	private UUID chunkId;
-	private EnumBiome biome;
 	private int gridX;
 	private int gridY;
 
@@ -30,10 +29,9 @@ public class Chunk {
 	 * @param gridY
 	 *            The y position on the chunk grid
 	 */
-	public Chunk(UUID id, EnumBiome biome, int gridX, int gridY) {
+	public Chunk(UUID id, int gridX, int gridY) {
 		this.tileData = new ByteDataContainer();
 		this.chunkId = id;
-		this.biome = biome;
 		this.gridX = gridX;
 		this.gridY = gridY;
 	}
@@ -50,10 +48,6 @@ public class Chunk {
 	 */
 	public UUID getId() {
 		return chunkId;
-	}
-	
-	public EnumBiome getBiome() {
-		return biome;
 	}
 
 	/**
