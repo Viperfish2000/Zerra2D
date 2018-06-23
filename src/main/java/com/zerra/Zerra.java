@@ -9,7 +9,6 @@ import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
-import com.zerra.game.manager.EntityManager;
 import com.zerra.game.map.TileMap;
 import com.zerra.gfx.GlWrapper;
 import com.zerra.gfx.light.Light;
@@ -44,8 +43,6 @@ public class Zerra implements Runnable {
 	private float time = 1.0F;
 
 	private boolean running;
-
-	public static EntityManager manager = new EntityManager();
 
 	private Zerra() {
 	}
@@ -82,7 +79,7 @@ public class Zerra implements Runnable {
 		logger.info("Creating display...");
 		Display.createDisplay("Zerra", WIDTH, HEIGHT);
 		Display.setIcon(LoadingUtils.loadImage("icon", new ResourceLocation("icons/32.png").getInputStream()));
-		
+
 		GlWrapper.enableDepth();
 		GL11.glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
 		PostProcessing.init();

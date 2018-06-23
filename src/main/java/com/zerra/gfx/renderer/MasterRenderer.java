@@ -10,9 +10,11 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
+import com.zerra.game.entity.Entity;
 import com.zerra.game.world.tile.TileEntry;
 import com.zerra.gfx.light.Light;
 import com.zerra.gfx.post.PostProcessing;
+import com.zerra.gfx.shader.EntityShader;
 import com.zerra.gfx.shader.LightShader;
 import com.zerra.gfx.shader.QuadShader;
 import com.zerra.gfx.shader.TileShader;
@@ -30,6 +32,9 @@ public class MasterRenderer {
 	private TileShader tileShader;
 	private TileRenderer tileRenderer;
 
+	private EntityShader entityShader;
+	private EntityRenderer entityRenderer;
+
 	private QuadShader quadShader;
 	private QuadRenderer quadRenderer;
 
@@ -40,6 +45,7 @@ public class MasterRenderer {
 	private Fbo lightFbo;
 
 	private Map<ResourceLocation, List<TileEntry>> tiles;
+	private Map<ResourceLocation, List<Entity>> entities;
 	private List<Quad> quads;
 	private List<Light> lights;
 
@@ -48,6 +54,8 @@ public class MasterRenderer {
 	public MasterRenderer() {
 		this.tileShader = new TileShader();
 		this.tileRenderer = new TileRenderer(tileShader);
+		this.entityShader = new EntityShader();
+		this.entityRenderer = new EntityRenderer(entityShader);
 		this.quadShader = new QuadShader();
 		this.quadRenderer = new QuadRenderer(quadShader);
 		this.lightShader = new LightShader();
@@ -55,6 +63,7 @@ public class MasterRenderer {
 		this.fbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_RENDER_BUFFER, 2);
 		this.lightFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.NONE);
 		this.tiles = new HashMap<ResourceLocation, List<TileEntry>>();
+		this.entities = new HashMap<ResourceLocation, List<Entity>>();
 		this.quads = new ArrayList<Quad>();
 		this.lights = new ArrayList<Light>();
 	}
@@ -65,6 +74,7 @@ public class MasterRenderer {
 		this.fbo.bindFrameBuffer();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		this.tileRenderer.render(this.tiles, camera);
+		this.entityRenderer.render(entities, camera);
 		this.fbo.unbindFrameBuffer();
 
 		this.lightFbo.bindFrameBuffer();
@@ -82,8 +92,11 @@ public class MasterRenderer {
 
 	public void cleanUp() {
 		this.tileRenderer.cleanUp();
+		this.entityShader.cleanUp();
 		this.quadRenderer.cleanUp();
 		this.lightRenderer.cleanUp();
+		this.fbo.cleanUp();
+		this.lightFbo.cleanUp();
 	}
 
 	public void renderTile(TileEntry tile) {

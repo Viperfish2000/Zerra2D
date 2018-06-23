@@ -1,8 +1,7 @@
 package com.zerra.game.entity;
 
-import javax.swing.Renderer;
-
 import com.zerra.gfx.renderer.EntityRenderer;
+import com.zerra.gfx.renderer.MasterRenderer;
 
 public abstract class EntityMob extends Entity {
 
@@ -10,7 +9,7 @@ public abstract class EntityMob extends Entity {
 		this(10, 20);
 	}
 
-	public EntityMob(int x, int y) {
+	public EntityMob(float x, float y) {
 		this.setX(x);
 		this.setY(y);
 		this.setType(EntityType.ENEMY);
@@ -23,7 +22,7 @@ public abstract class EntityMob extends Entity {
 	}
 
 	@Override
-	public void render(Renderer renderer, EntityRenderer entityRenderer, float x, float y) {
+	public void render(MasterRenderer renderer, EntityRenderer entityRenderer) {
 		/*
 		 * if(this.getY() < Zerra.HEIGHT - 32 && this.getY() > 0 - 32 && this.getX() < Zerra.WIDTH && this.getX() > 0 - 32) { g.setColor(Color.RED); g.fillRect(this.getX(), this.getY(), 16, 16); }
 		 */

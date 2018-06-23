@@ -1,9 +1,8 @@
 package com.zerra.game.entity;
 
-import javax.swing.Renderer;
-
 import com.zerra.game.GameObject;
 import com.zerra.gfx.renderer.EntityRenderer;
+import com.zerra.gfx.renderer.MasterRenderer;
 
 public abstract class Entity extends GameObject {
 
@@ -15,7 +14,7 @@ public abstract class Entity extends GameObject {
 		this(0, 0, EntityType.NEUTRAL);
 	}
 
-	public Entity(int x, int y, EntityType type) {
+	public Entity(float x, float y, EntityType type) {
 		this.setX(x);
 		this.setY(y);
 		this.setType(type);
@@ -27,7 +26,7 @@ public abstract class Entity extends GameObject {
 	}
 
 	@Override
-	public void render(Renderer renderer, EntityRenderer entityRenderer, float x, float y) {
+	public void render(MasterRenderer renderer, EntityRenderer entityRenderer) {
 	}
 
 	public EntityType getType() {

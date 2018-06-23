@@ -1,19 +1,18 @@
 package com.zerra.game;
 
-import javax.swing.Renderer;
-
 import com.zerra.gfx.renderer.EntityRenderer;
+import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.util.AxisAlignedBB;
 import com.zerra.util.ResourceLocation;
 
 public abstract class GameObject {
 
-	private int x, y;
+	private float x, y;
 	private String unlocalizedName;
 
 	public abstract void update();
 
-	public abstract void render(Renderer renderer, EntityRenderer entityRenderer, float x, float y);
+	public abstract void render(MasterRenderer renderer, EntityRenderer entityRenderer);
 
 	public abstract AxisAlignedBB getCollisionBox();
 
@@ -21,20 +20,20 @@ public abstract class GameObject {
 
 	public abstract int getTextureWidth();
 
-	public int getX() {
+	public float getX() {
 		return x;
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
+	public float getY() {
 		return y;
 	}
 
-	public void setY(int y) {
+	public void setY(float y) {
 		this.y = y;
+	}
+
+	public void setX(float x) {
+		this.x = x;
 	}
 
 	public String getUnlocalizedName() {
