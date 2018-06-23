@@ -5,6 +5,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.zerra.Zerra;
 import com.zerra.game.inventory.PlayerInventory;
+import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.util.AxisAlignedBB;
 import com.zerra.util.Display;
 import com.zerra.util.ResourceLocation;
@@ -36,7 +37,7 @@ public class EntityPlayer extends EntityLiving {
 
 		float dx = 0;
 		float dy = 0;
-		
+
 		if (Display.isKeyPressed(GLFW.GLFW_KEY_W)) {
 			dy -= speed;
 		}
@@ -52,11 +53,12 @@ public class EntityPlayer extends EntityLiving {
 		if (Display.isKeyPressed(GLFW.GLFW_KEY_D)) {
 			dx += speed;
 		}
-		
+
 		x += dx;
 		y += dy;
 
 		Zerra.getInstance().getCamera().move(dx, dy, 0);
+		Zerra.getInstance().getCamera().setPosition(x + 16 - Display.getWidth() / MasterRenderer.SCALE / 2, y + 16 - Display.getHeight() / MasterRenderer.SCALE / 2, 0);
 	}
 
 	public int getExp() {

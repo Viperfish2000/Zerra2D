@@ -43,7 +43,6 @@ public class GLObject {
 		this.lastPosition.set(this.position);
 		this.lastRotation.set(this.rotation);
 		this.lastScale.set(this.scale);
-		this.direction.set(0);
 	}
 
 	public void render(double mouseX, double mouseY, float partialTicks) {
@@ -70,9 +69,9 @@ public class GLObject {
 	}
 
 	public Matrix4f getRenderTransformation(float partialTicks) {
-		renderPosition.x = lastPosition.x + ((position.x + direction.x) - lastPosition.x) * partialTicks;
-		renderPosition.y = lastPosition.y + ((position.y + direction.y) - lastPosition.y) * partialTicks;
-		renderPosition.z = lastPosition.z + ((position.z + direction.z) - lastPosition.z) * partialTicks;
+		renderPosition.x = lastPosition.x + (position.x - lastPosition.x) * partialTicks;
+		renderPosition.y = lastPosition.y + (position.y - lastPosition.y) * partialTicks;
+		renderPosition.z = lastPosition.z + (position.z - lastPosition.z) * partialTicks;
 
 		renderRotation.x = lastRotation.x + (rotation.x - lastRotation.x) * partialTicks;
 		renderRotation.y = lastRotation.y + (rotation.y - lastRotation.y) * partialTicks;
@@ -102,9 +101,9 @@ public class GLObject {
 	}
 
 	public GLObject move(float x, float y, float z) {
-		this.direction.x += x;
-		this.direction.y += y;
-		this.direction.z += z;
+		this.direction.x = x;
+		this.direction.y = y;
+		this.direction.z = z;
 		return this;
 	}
 

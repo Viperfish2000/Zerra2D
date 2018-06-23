@@ -148,8 +148,8 @@ public class Zerra implements Runnable {
 	 * Updates game logic and events.
 	 */
 	private void update() {
-		camera.update();
 		world.update();
+		camera.update();
 	}
 
 	/**
