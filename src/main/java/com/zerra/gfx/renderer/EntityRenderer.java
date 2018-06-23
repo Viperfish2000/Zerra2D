@@ -18,19 +18,36 @@ import com.zerra.util.Loader;
 import com.zerra.util.Maths;
 import com.zerra.util.ResourceLocation;
 
+/**
+ * <em><b>Copyright (c) 2018 The Zerra Team.</b></em>
+ * 
+ * <br>
+ * </br>
+ * 
+ * Handles all the code necessary to render an entity to the screen.
+ * 
+ * @author Ocelot5836
+ */
 public class EntityRenderer {
 
 	private static final float[] POSITIONS = new float[] { 0, 0, 0, 1, 1, 0, 1, 1 };
 
 	private EntityShader shader;
 	private Model quad;
+	
+	private Vector2f position;
+	private Vector2f scale;
 
 	public EntityRenderer(EntityShader shader) {
+		this.shader = shader;
 		this.shader.start();
 		this.shader.connectTextureUnits();
 		this.shader.loadProjectionMatrix(MasterRenderer.getProjectionMatrix());
 		this.shader.stop();
 		this.quad = Loader.loadToVAO(POSITIONS, 2);
+		
+		this.position = new Vector2f();
+		this.scale = new Vector2f(32);
 	}
 
 	public void render(Map<ResourceLocation, List<Entity>> entities, ICamera camera) {
@@ -40,7 +57,8 @@ public class EntityRenderer {
 			shader.loadViewMatrix(camera);
 			List<Entity> batch = entities.get(texture);
 			for (Entity entity : batch) {
-				shader.loadTransformationMatrix(Maths.createTransformationMatrix(new Vector2f(entity.getX(), entity.getY()), new Vector2f(1)));
+				shader.loadTransformationMatrix(Maths.createTransformationMatrix(position.set(entity.getX(), entity.getY()), scale));
+				shader.loadTextureOffset(entity.getTextureOffset());
 				shader.loadNumberOfRows(entity.getTextureWidth());
 				entity.render(Zerra.getInstance().getRenderer(), this);
 				GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());

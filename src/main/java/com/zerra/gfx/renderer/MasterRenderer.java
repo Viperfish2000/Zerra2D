@@ -101,12 +101,22 @@ public class MasterRenderer {
 
 	public void renderTile(TileEntry tile) {
 		ResourceLocation texture = tile.getTile().getTexture();
-		List<TileEntry> batch = tiles.get(texture);
+		List<TileEntry> batch = this.tiles.get(texture);
 		if (batch == null) {
 			batch = new ArrayList<TileEntry>();
 			this.tiles.put(texture, batch);
 		}
 		batch.add(tile);
+	}
+
+	public void renderEntity(Entity entity) {
+		ResourceLocation texture = entity.getTexture();
+		List<Entity> batch = this.entities.get(texture);
+		if (batch == null) {
+			batch = new ArrayList<Entity>();
+			this.entities.put(texture, batch);
+		}
+		batch.add(entity);
 	}
 
 	public void renderQuads(Quad... quads) {

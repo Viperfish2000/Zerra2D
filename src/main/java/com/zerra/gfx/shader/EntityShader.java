@@ -1,6 +1,7 @@
 package com.zerra.gfx.shader;
 
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 
 import com.zerra.object.ICamera;
 import com.zerra.util.Maths;
@@ -11,6 +12,7 @@ public class EntityShader extends ShaderProgram {
 	private int location_transformationMatrix;
 	private int location_viewMatrix;
 	private int location_numberOfRows;
+	private int location_textureOffset;
 
 	private int location_entityTexture;
 
@@ -29,8 +31,9 @@ public class EntityShader extends ShaderProgram {
 		location_transformationMatrix = super.getUniformLocation("transformationMatrix");
 		location_viewMatrix = super.getUniformLocation("viewMatrix");
 		location_numberOfRows = super.getUniformLocation("numberOfRows");
+		location_textureOffset = super.getUniformLocation("textureOffset");
 
-		location_entityTexture = super.getUniformLocation("tileTexture");
+		location_entityTexture = super.getUniformLocation("entityTexture");
 	}
 
 	public void connectTextureUnits() {
@@ -51,5 +54,9 @@ public class EntityShader extends ShaderProgram {
 
 	public void loadNumberOfRows(int numberOfRows) {
 		super.loadFloat(location_numberOfRows, numberOfRows);
+	}
+
+	public void loadTextureOffset(Vector2f textureOffset) {
+		super.loadVector(location_textureOffset, textureOffset);
 	}
 }
