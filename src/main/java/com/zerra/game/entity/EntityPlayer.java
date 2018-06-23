@@ -1,9 +1,12 @@
 package com.zerra.game.entity;
 
 import org.joml.Vector2f;
+import org.lwjgl.glfw.GLFW;
 
+import com.zerra.Zerra;
 import com.zerra.game.inventory.PlayerInventory;
 import com.zerra.util.AxisAlignedBB;
+import com.zerra.util.Display;
 import com.zerra.util.ResourceLocation;
 
 public class EntityPlayer extends EntityLiving {
@@ -23,6 +26,37 @@ public class EntityPlayer extends EntityLiving {
 		this.setY(y);
 		this.setType(EntityType.PLAYER);
 		this.inventory = new PlayerInventory(45);
+	}
+
+	@Override
+	public void update() {
+		super.update();
+
+		float speed = 2.0f;
+
+		float dx = 0;
+		float dy = 0;
+		
+		if (Display.isKeyPressed(GLFW.GLFW_KEY_W)) {
+			dy -= speed;
+		}
+
+		if (Display.isKeyPressed(GLFW.GLFW_KEY_S)) {
+			dy += speed;
+		}
+
+		if (Display.isKeyPressed(GLFW.GLFW_KEY_A)) {
+			dx -= speed;
+		}
+
+		if (Display.isKeyPressed(GLFW.GLFW_KEY_D)) {
+			dx += speed;
+		}
+		
+		x += dx;
+		y += dy;
+
+		Zerra.getInstance().getCamera().move(dx, dy, 0);
 	}
 
 	public int getExp() {

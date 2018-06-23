@@ -86,6 +86,7 @@ public class MasterRenderer {
 		PostProcessing.doPostProcessing(fbo.getColorTexture(0), fbo.getColorTexture(1), lightFbo.getColorTexture());
 
 		this.tiles.clear();
+		this.entities.clear();
 		this.quads.clear();
 		this.lights.clear();
 	}

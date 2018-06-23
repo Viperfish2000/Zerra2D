@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL30;
 
 import com.zerra.Zerra;
 import com.zerra.game.entity.Entity;
+import com.zerra.gfx.GlWrapper;
 import com.zerra.gfx.shader.EntityShader;
 import com.zerra.model.Model;
 import com.zerra.object.ICamera;
@@ -73,6 +74,8 @@ public class EntityRenderer {
 	}
 
 	private void prepare() {
+		GlWrapper.enableBlend();
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		shader.start();
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);

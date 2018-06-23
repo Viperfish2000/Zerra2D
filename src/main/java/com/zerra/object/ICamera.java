@@ -13,4 +13,6 @@ public interface ICamera {
 	Vector3f getLastRotation();
 
 	Vector3f getScale();
+
+	Vector3f getDirection();
 }
