@@ -51,19 +51,19 @@ public abstract class Tile {
 	}
 
 	/**
-	 * Renders the tile.
+	 * Called when the tile is rendered. Please Note, this does <b><i>NOT</i></b> render the tile! This is only called when the tile is rendered.
 	 * 
 	 * @param x
-	 * 		The x position to render the tile at.
+	 * 		The x position of the tile instance
 	 * 
 	 * @param y
-	 * 		The y position to render the tile at.
+	 * 		The y position of the tile instance
 	 * 
 	 * @param renderer
-	 * 		The master renderer to use in rendering the tile.
+	 * 		the main rendering handler
 	 * 
 	 * @param tileRenderer
-	 * 		The tile renderer to use in rendering the tile.
+	 * 		the renderer that actually renders the tile
 	 */
 	public void render(float x, float y, MasterRenderer renderer, TileRenderer tileRenderer) {
 	}
@@ -104,45 +104,50 @@ public abstract class Tile {
 	}
 
 	/**
-	 * @return The texture coordinates the tile uses.
+	 * @return The texture coordinates the tile uses
 	 */
 	public abstract Vector2f getTextureCoords();
 
 	/**
-	 * @return The resource location for the texture the tile uses.
+	 * @return The resource location for the texture the tile uses
 	 */
 	public abstract ResourceLocation getTexture();
+	
+	/**
+	 * @return The width (in tiles) of the texture atlas. This will <b><i>ONLY</u></b> work properly if you use a different texture than another tile with the same texture
+	 */
+	public abstract int getTextureWidth();
 
 	/**
-	 * @return The collision box of the tile.
+	 * @return The collision box of the tile
 	 */
 	public AxisAlignedBB getCollisionBox() {
 		return FULL;
 	}
 
 	/**
-	 * @return The registry name of the tile.
+	 * @return The registry name of the tile
 	 */
 	public String getRegistryName() {
 		return registryName;
 	}
 
 	/**
-	 * @return The name of the tile before it is localized.
+	 * @return The name of the tile before it is localized
 	 */
 	public String getUnlocalizedName() {
 		return "tile." + this.unlocalizedName + ".name";
 	}
 
 	/**
-	 * @return The name of the tile converted to the proper language.
+	 * @return The name of the tile converted to the proper language
 	 */
 	public String getLocalizedName() {
 		return I18n.format(this.getUnlocalizedName());
 	}
 
 	/**
-	 * @return Whether or not this tile should render.
+	 * @return Whether or not this tile should render
 	 */
 	public boolean shouldRender() {
 		return shouldRender;
@@ -154,7 +159,7 @@ public abstract class Tile {
 	 * @param Object obj
 	 * 				The object this class is being compared against.
 	 * 
-	 * @return Whether or not this object is equal to the specified object.
+	 * @return Whether or not this object is equal to the specified object
 	 */
 	@Review(desc = "WARNING. THIS IS UNSAFE! YOU NEED TO OVERRIDE THE HASHCODE METHOD IF YOU EVER OVERRIDE THE EQUALS METHOD.")
 	@Override
@@ -180,7 +185,7 @@ public abstract class Tile {
 	 * @param registryName
 	 * 				The registry name used to search the registry with.
 	 * 
-	 * @return The tile retrieved from the registry.
+	 * @return The tile retrieved from the registry
 	 */
 	public static Tile byName(String registryName) {
 		Tile tile = REGISTRY.get(registryName);

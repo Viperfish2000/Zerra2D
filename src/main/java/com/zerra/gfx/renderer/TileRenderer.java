@@ -57,8 +57,9 @@ public class TileRenderer {
 	public void render(Map<ResourceLocation, List<TileEntry>> tiles, ICamera camera) {
 		this.prepare();
 		for (ResourceLocation texture : tiles.keySet()) {
-			this.bindTexture(texture);
 			List<TileEntry> batch = tiles.get(texture);
+			if(batch.size() > 0)
+				this.bindTexture(batch.get(0).getTile());
 			pointer = 0;
 			float[] vboData = new float[batch.size() * INSTANCE_DATA_LENGTH];
 			for (TileEntry tile : batch) {
@@ -72,12 +73,12 @@ public class TileRenderer {
 		this.unbind();
 	}
 
-	private void bindTexture(ResourceLocation texture) {
+	private void bindTexture(Tile tile) {
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		Zerra.getInstance().getTextureManager().bind(texture);
+		Zerra.getInstance().getTextureManager().bind(tile.getTexture());
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);
 		Zerra.getInstance().getTextureManager().bind(GLOW_LOCATION);
-		shader.loadNumberOfRows(16);
+		shader.loadNumberOfRows(tile.getTextureWidth());
 	}
 
 	private void prepare() {
@@ -112,8 +113,7 @@ public class TileRenderer {
 	}
 
 	private void updateTextureCoords(Tile tile, float[] data) {
-		// TODO add the tile width into the tile texture class
-		float numberOfRows = 16;
+		float numberOfRows = tile.getTextureWidth();
 		Vector2f textureCoords = tile.getTextureCoords();
 		data[pointer++] = textureCoords.x / numberOfRows;
 		data[pointer++] = textureCoords.y / numberOfRows;
