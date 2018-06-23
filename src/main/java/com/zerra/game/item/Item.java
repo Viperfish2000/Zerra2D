@@ -12,6 +12,8 @@ public class Item {
 	}
 	
 	/**
+	 * Gets the damage of the item.
+	 * 
 	 * @return
 	 * 		The damage of the item.
 	 */
@@ -20,6 +22,8 @@ public class Item {
 	}
 	
 	/**
+	 * Sets the damage of the item.
+	 * 
 	 * @param damage
 	 * 			Sets the damage of the item to the specified value.
 	 */
@@ -28,7 +32,9 @@ public class Item {
 	}
 	
 	/**
-	 * @return The max damage the Item can hold.
+	 * Gets the max damage that the item can hold.
+	 * 
+	 * @return The max damage the item can hold.
 	 */
 	public int getMaxDamage() {
 		return maxDamage;
@@ -36,14 +42,14 @@ public class Item {
 	
 	/**
 	 * @param maxDamage
-	 * 				The value the max damage of the Item will be set to.
+	 * 				The value the max damage of the item will be set to.
 	 */
 	public void setMaxDamage(int maxDamage) {
 		this.maxDamage = maxDamage;
 	}
 	
 	/**
-	 * @return Whether or not the Item is able to be damaged.
+	 * @return Whether or not the item is able to be damaged.
 	 */
 	public boolean isDamagable() {
 		return maxDamage > 0 ? true : false;
@@ -51,7 +57,7 @@ public class Item {
 
 	/**
 	 * @return
-	 * 		Whether or not the Item is able to be stacked.
+	 * 		Whether or not the item is able to be stacked.
 	 */
 	public boolean isStackable() {
 		return isStackable;
@@ -59,22 +65,27 @@ public class Item {
 
 	/**
 	 * @param isStackable
-	 * 				Determines whether or not the Item can be stacked.
+	 * 				Determines whether or not the item can be stacked.
 	 */
 	public void setStackable(boolean isStackable) {
 		this.isStackable = isStackable;
 	}
 	
 	/**
+	 * Sets whether or not the damage bar of the item should render.
+	 * 
 	 * @param shouldRender
-	 * 				Sets whether or not the damage bar of the item should render.
+	 * 				Should the damage bar be rendered.
 	 */
 	public void setRenderDamageBar(boolean shouldRender) {
 		shouldRenderDamageBar = shouldRender;
 	}
 	
 	/**
-	 * @return Whether or not the damage bar of the item should be rendered.
+	 * Gets whether or not this item should have its damage bar rendered.
+	 * 
+	 * @return 
+	 * 		If the damage bar is being rendered or not.
 	 */
 	public boolean shouldRenderDamageBar() {
 		return shouldRenderDamageBar;
