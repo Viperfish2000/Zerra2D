@@ -158,9 +158,7 @@ public class TileMap {
 	 * @throws IOException
 	 * 				Potentially thrown due to world files not being found.
 	 */
-	public void save(File saveFolder) throws IOException {
-		String worldName = "world";// TODO add different names so you can have multiple saves
-
+	public void save(File saveFolder, String worldName) throws IOException {
 		/** The folder the world is actually in */
 		worldFolder = new File(saveFolder, worldName);
 		/** The file the chunk files are able to be identified. ex. (0,0=741261b0-b0e9-4466-9df5-0c7f76101925) */

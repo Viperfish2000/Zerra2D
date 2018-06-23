@@ -185,7 +185,7 @@ public class Zerra implements Runnable {
 	 */
 	private void cleanUp() {
 		this.addTask(() -> {
-			this.save();
+			this.save("world");
 		});
 		Display.destroy();
 		pool.join();
@@ -199,14 +199,14 @@ public class Zerra implements Runnable {
 	/**
 	 * Saves current world.
 	 */
-	private void save() {
+	private void save(String worldName) {
 		try {
 			File saveFolder = new File("data/saves");
 			if (!saveFolder.exists()) {
 				saveFolder.mkdirs();
 			}
 			logger.info("Saving world...");
-			map.save(saveFolder);
+			map.save(saveFolder, worldName);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -263,7 +263,6 @@ public class Zerra implements Runnable {
 	/**
 	 * @return The camera for the game.
 	 */
-	//TODO: Move this out of this class! We don't need a camera object until we are in a world!!!
 	public Camera getCamera() {
 		return camera;
 	}
