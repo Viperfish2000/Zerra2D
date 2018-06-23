@@ -340,10 +340,10 @@ public class TileMap {
 					Chunk chunk = new Chunk(chunkId, gridX, gridY);
 					DataInputStream stream = new DataInputStream(new FileInputStream(chunkFile));
 					chunk.getTileData().read(stream);
-					Game.logger.info("Attempting to load chunk at x: " + gridX + " y: " + gridY);
+					Game.logger().info("Attempting to load chunk at x: " + gridX + " y: " + gridY);
 					return chunk;
 				}
-				Game.logger.error("Unable to find chunk file!");
+				Game.logger().error("Unable to find chunk file!");
 			}
 		}
 		return null;

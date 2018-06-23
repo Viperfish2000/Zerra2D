@@ -28,7 +28,7 @@ public class Game implements Runnable {
 	public static int WIDTH = 1280;
 	public static int HEIGHT = 720;
 
-	public static Logger logger = LogManager.getLogger();
+	private static Logger logger = LogManager.getLogger();
 	private static Game instance = new Game();
 	private static final Timer TIMER = new Timer(60);
 
