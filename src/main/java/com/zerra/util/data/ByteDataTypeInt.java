@@ -17,7 +17,7 @@ public class ByteDataTypeInt extends ByteDataTypePrimitive {
 
 	@Override
 	public void write(DataOutput output) throws IOException {
-		output.writeShort(data);
+		output.writeInt(data);
 	}
 
 	@Override
