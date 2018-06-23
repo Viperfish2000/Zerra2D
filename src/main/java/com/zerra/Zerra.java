@@ -2,15 +2,18 @@ package com.zerra;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
-import com.zerra.game.manager.EntityManager;
-import com.zerra.game.map.TileMap;
+import com.zerra.game.entity.EntityPlayer;
+import com.zerra.game.registry.EntityRegistry;
+import com.zerra.game.world.World;
 import com.zerra.gfx.GlWrapper;
 import com.zerra.gfx.light.Light;
 import com.zerra.gfx.post.PostProcessing;
@@ -20,7 +23,6 @@ import com.zerra.object.Camera;
 import com.zerra.util.Display;
 import com.zerra.util.Loader;
 import com.zerra.util.LoadingUtils;
-import com.zerra.util.Maths;
 import com.zerra.util.ResourceLocation;
 import com.zerra.util.Timer;
 import com.zerra.util.thread.ThreadPool;
@@ -39,13 +41,9 @@ public class Zerra implements Runnable {
 	private Camera camera;
 	private ThreadPool pool;
 
-	private TileMap map;
-	private float worldTime = 0.0F;
-	private float time = 1.0F;
+	private World world;
 
 	private boolean running;
-
-	public static EntityManager manager = new EntityManager();
 
 	private Zerra() {
 	}
@@ -68,7 +66,6 @@ public class Zerra implements Runnable {
 		if (running)
 			return;
 
-		logger.info("Shutting down game...");
 		running = false;
 	}
 
@@ -82,7 +79,7 @@ public class Zerra implements Runnable {
 		logger.info("Creating display...");
 		Display.createDisplay("Zerra", WIDTH, HEIGHT);
 		Display.setIcon(LoadingUtils.loadImage("icon", new ResourceLocation("icons/32.png").getInputStream()));
-		
+
 		GlWrapper.enableDepth();
 		GL11.glClearColor(1.0F, 1.0F, 1.0F, 1.0F);
 		PostProcessing.init();
@@ -92,14 +89,14 @@ public class Zerra implements Runnable {
 		camera = new Camera();
 		pool = new ThreadPool(4);
 
-		map = new TileMap();
+		EntityRegistry.register("player", EntityPlayer.class);
+		
+		world = new World();
+		world.add(new EntityPlayer());
 
-		logger.info("Loading world...");
-
-		/** This is where world loading is first called. */
-		load("world");
-		logger.info("Generating terrain...");
-		map.generate();
+		logger.info("Loading game...");
+		/** This is where game loading is first called. */
+		load();
 	}
 
 	/**
@@ -152,34 +149,18 @@ public class Zerra implements Runnable {
 	 */
 	private void update() {
 		camera.update();
-		map.update();
-
-		/** Day/Night Cycle **/
-		time = (float) (Math.cos(worldTime) + 0.5);
-		// System.out.println(time);
-		time = (float) Maths.clamp(time, 0.2F, 1.0F);
-		if (time > 1.0F || time < 0.2F) {
-			worldTime += 0.0005F;
-		} else {
-			worldTime += 0.0001F;
-		}
-		if (Display.getMouseButton() == 0) {
-			worldTime += 0.01f;
-			System.out.println(worldTime);
-		}
-		if (Display.getMouseButton() == 1) {
-			worldTime -= 0.01f;
-			System.out.println(worldTime);
-		}
+		world.update();
 	}
 
 	/**
 	 * Renders game.
 	 */
 	private void render() {
+		/** Debug Code */
 		renderer.renderLights(new Light(new Vector2f((float) Display.getMouseX() / MasterRenderer.SCALE + camera.getPosition().x, (float) Display.getMouseY() / MasterRenderer.SCALE + camera.getPosition().y), new Vector4f(1, 1, 1, 50), 25));
-		renderer.setAmbientLight(time, time, time);
-		map.render(renderer);
+		
+		/** Actual code that will stay */
+		world.render(renderer, TIMER.renderPartialTicks);
 		renderer.render(camera);
 	}
 
@@ -188,10 +169,14 @@ public class Zerra implements Runnable {
 	 */
 	private void cleanUp() {
 		this.addTask(() -> {
-			this.save("world");
+			this.save();
 		});
 		Display.destroy();
+		logger.info("Closing Current Processes");
+		StopWatch watch = StopWatch.createStarted();
 		pool.join();
+		logger.info("Closed Processes in " + watch.getTime(TimeUnit.MILLISECONDS) + "ms");
+		logger.info("Cleaning up resources");
 		PostProcessing.cleanUp();
 		Loader.cleanUp();
 		renderer.cleanUp();
@@ -200,36 +185,33 @@ public class Zerra implements Runnable {
 	}
 
 	/**
-	 * Saves current world.
+	 * Saves current game.
 	 */
-	private void save(String worldName) {
+	private void save() {
 		try {
 			File saveFolder = new File("data/saves");
 			if (!saveFolder.exists()) {
 				saveFolder.mkdirs();
 			}
-			logger.info("Saving world...");
-			map.save(saveFolder, worldName);
+			world.save(saveFolder);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Loads up a world.
-	 * 
-	 * @param worldName
-	 *            The name of the world to load up.
+	 * Loads up the game.
 	 */
-	private void load(String worldName) {
+	private void load() {
 		try {
 			File saveFolder = new File("data/saves");
 			if (saveFolder.exists()) {
-				map.load(saveFolder, worldName);
+				world.load(saveFolder);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		world.generate();
 	}
 
 	/**

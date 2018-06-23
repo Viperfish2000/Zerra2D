@@ -15,7 +15,7 @@ public abstract class EntityLiving extends Entity {
 		super(0, 0, EntityType.NEUTRAL);
 	}
 
-	public EntityLiving(int x, int y, EntityType type) {
+	public EntityLiving(float x, float y, EntityType type) {
 		super(x, y, type);
 	}
 

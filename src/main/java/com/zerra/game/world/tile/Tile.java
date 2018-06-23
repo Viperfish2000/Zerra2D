@@ -6,7 +6,7 @@ import org.joml.Vector2f;
 
 import com.google.common.collect.Maps;
 import com.zerra.annotation.Review;
-import com.zerra.game.map.TileMap;
+import com.zerra.game.world.map.TileMap;
 import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.gfx.renderer.TileRenderer;
 import com.zerra.util.AxisAlignedBB;
@@ -29,7 +29,7 @@ public abstract class Tile {
 	public static final Tile SNOW = new TileBase("snow", "snow", new Vector2f(6, 0));
 
 	public static final Tile PLANKS = new TileBase("planks", "planks", new Vector2f(5, 0));
-	
+
 	public static final Tile OBSIDIAN = new TileBase("obsidian", "obsidian", new Vector2f(3, 1));
 	public static final Tile GOLD_ORE = new TileBase("gold_ore", "gold_ore", new Vector2f(7, 0));
 
@@ -54,16 +54,16 @@ public abstract class Tile {
 	 * Called when the tile is rendered. Please Note, this does <b><i>NOT</i></b> render the tile! This is only called when the tile is rendered.
 	 * 
 	 * @param x
-	 * 		The x position of the tile instance
+	 *            The x position of the tile instance
 	 * 
 	 * @param y
-	 * 		The y position of the tile instance
+	 *            The y position of the tile instance
 	 * 
 	 * @param renderer
-	 * 		the main rendering handler
+	 *            the main rendering handler
 	 * 
 	 * @param tileRenderer
-	 * 		the renderer that actually renders the tile
+	 *            the renderer that actually renders the tile
 	 */
 	public void render(float x, float y, MasterRenderer renderer, TileRenderer tileRenderer) {
 	}
@@ -77,13 +77,13 @@ public abstract class Tile {
 	 * Called when the tile is added into the world.
 	 * 
 	 * @param map
-	 * 		The world the tile is being placed in.
+	 *            The world the tile is being placed in.
 	 * 
 	 * @param x
-	 * 		The x position of where the tile is placed at.
+	 *            The x position of where the tile is placed at.
 	 * 
 	 * @param y
-	 * 		The y position of where the tile is placed at.
+	 *            The y position of where the tile is placed at.
 	 */
 	public void onTilePlaced(TileMap map, float x, float y) {
 	}
@@ -92,13 +92,13 @@ public abstract class Tile {
 	 * Called when the tile is removed from the world.
 	 * 
 	 * @param map
-	 * 		The world the tile is being removed from.
+	 *            The world the tile is being removed from.
 	 * 
 	 * @param x
-	 * 		The x position of where the tile is removed from.
+	 *            The x position of where the tile is removed from.
 	 * 
 	 * @param y
-	 * 		The y position of where the tile is removed from.
+	 *            The y position of where the tile is removed from.
 	 */
 	public void onTileDestroyed(TileMap map, float x, float y) {
 	}
@@ -112,7 +112,7 @@ public abstract class Tile {
 	 * @return The resource location for the texture the tile uses
 	 */
 	public abstract ResourceLocation getTexture();
-	
+
 	/**
 	 * @return The width (in tiles) of the texture atlas. This will <b><i>ONLY</u></b> work properly if you use a different texture than another tile with the same texture
 	 */
@@ -156,8 +156,8 @@ public abstract class Tile {
 	/**
 	 * Checks whether or not this object equals the specified object.
 	 * 
-	 * @param Object obj
-	 * 				The object this class is being compared against.
+	 * @param Object
+	 *            obj The object this class is being compared against.
 	 * 
 	 * @return Whether or not this object is equal to the specified object
 	 */
@@ -183,7 +183,7 @@ public abstract class Tile {
 	 * Gets the tile type based on the registry name.
 	 * 
 	 * @param registryName
-	 * 				The registry name used to search the registry with.
+	 *            The registry name used to search the registry with.
 	 * 
 	 * @return The tile retrieved from the registry
 	 */

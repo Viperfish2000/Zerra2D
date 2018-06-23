@@ -27,12 +27,12 @@ public class QuadShader extends ShaderProgram {
 		location_color = super.getUniformLocation("color");
 	}
 
-	public void loadTransformationMatrix(Matrix4f matrix) {
-		super.loadMatrix(location_transformationMatrix, matrix);
-	}
-
 	public void loadProjectionMatrix(Matrix4f matrix) {
 		super.loadMatrix(location_projectionMatrix, matrix);
+	}
+
+	public void loadTransformationMatrix(Matrix4f matrix) {
+		super.loadMatrix(location_transformationMatrix, matrix);
 	}
 
 	public void loadColor(Vector4f color) {

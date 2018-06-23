@@ -6,7 +6,7 @@ import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 import com.google.common.collect.Maps;
-import com.zerra.game.map.TileMap;
+import com.zerra.game.world.map.TileMap;
 import com.zerra.gfx.light.Light;
 import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.gfx.renderer.TileRenderer;
@@ -33,10 +33,10 @@ public class TileLava extends TileBase {
 	 * Gets the light object at the specified position.
 	 * 
 	 * @param x
-	 * 		The x position to get the light.
+	 *            The x position to get the light.
 	 * 
 	 * @param y
-	 * 		The y position to get the light.
+	 *            The y position to get the light.
 	 * 
 	 * @return The light object from the given tile position.
 	 */

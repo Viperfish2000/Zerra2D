@@ -1,47 +1,119 @@
 package com.zerra.game;
 
-import javax.swing.Renderer;
+import javax.annotation.Nonnull;
+
+import org.joml.Vector2f;
 
 import com.zerra.gfx.renderer.EntityRenderer;
+import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.util.AxisAlignedBB;
 import com.zerra.util.ResourceLocation;
 
+/**
+ * <em><b>Copyright (c) 2018 The Zerra Team.</b></em>
+ * 
+ * <br>
+ * </br>
+ * 
+ * A basic, abstract, object that can be added to the game. It has an x and a y position.
+ * 
+ * @author Ocelot5836
+ */
 public abstract class GameObject {
 
-	private int x, y;
-	private String unlocalizedName;
+	/** The x and y position of the object */
+	protected float x, y;
 
+	/**
+	 * Updates the object. Called 60 times per second.
+	 */
 	public abstract void update();
 
-	public abstract void render(Renderer renderer, EntityRenderer entityRenderer, float x, float y);
+	/**
+	 * Called when the object is rendered. Does not actually render the object.
+	 * 
+	 * @param renderer
+	 *            The renderer for the game
+	 * @param entityRenderer
+	 *            The renderer that rendered this entity
+	 */
+	public abstract void render(MasterRenderer renderer, EntityRenderer entityRenderer);
 
+	/**
+	 * Used for collisions. If you want to use null, use {@link AxisAlignedBB#EMPTY_AABB} instead.
+	 * 
+	 * @return The x, y, and size of the entity
+	 */
+	@Nonnull
 	public abstract AxisAlignedBB getCollisionBox();
 
+	/**
+	 * Used when rendering to texture this object.
+	 * 
+	 * @return The texture of this object
+	 */
+	@Nonnull
 	public abstract ResourceLocation getTexture();
 
+	/**
+	 * Used when rendering to texture this object. Only really used in a texture atlas.
+	 * 
+	 * @return The offset
+	 */
+	@Nonnull
+	public abstract Vector2f getTextureOffset();
+
+	/**
+	 * This is used in a texture atlas when rendering. This cannot be zero
+	 * 
+	 * @return The width of the texture in tiles
+	 */
 	public abstract int getTextureWidth();
 
-	public int getX() {
+	/**
+	 * @return This object's x position
+	 */
+	public float getX() {
 		return x;
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
+	/**
+	 * @return This object's y position
+	 */
+	public float getY() {
 		return y;
 	}
 
-	public void setY(int y) {
+	/**
+	 * Sets this entity's position.
+	 * 
+	 * @param x
+	 *            The new x position for the entity
+	 * @param y
+	 *            The new y position for the entity
+	 */
+	public void setPosition(float x, float y) {
+		this.x = x;
 		this.y = y;
 	}
 
-	public String getUnlocalizedName() {
-		return unlocalizedName;
+	/**
+	 * Sets this entity's y position
+	 * 
+	 * @param y
+	 *            The new y position for the entity
+	 */
+	public void setY(float y) {
+		this.y = y;
 	}
 
-	public void setUnlocalizedName(String unlocalizedName) {
-		this.unlocalizedName = unlocalizedName;
+	/**
+	 * Sets this entity's x position
+	 * 
+	 * @param x
+	 *            The new x position for the entity
+	 */
+	public void setX(float x) {
+		this.x = x;
 	}
 }
