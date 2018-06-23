@@ -70,8 +70,6 @@ public class Display {
 		GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
 		GLFW.glfwSetWindowPos(windowID, (int) ((vidMode.width() * 0.5) - (width * 0.5)), (int) ((vidMode.height() * 0.5) - (height * 0.5)));
 
-		GLFW.glfwSwapInterval(1);
-
 		GLFW.glfwMakeContextCurrent(windowID);
 		GL.createCapabilities();
 	}
