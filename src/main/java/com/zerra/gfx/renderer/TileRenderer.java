@@ -26,7 +26,7 @@ import com.zerra.util.ResourceLocation;
 public class TileRenderer {
 
 	private static final float[] POSITIONS = new float[] { 0, 0, 0, 1, 1, 0, 1, 1 };
-	private static final int MAX_INSTANCES = 1000;
+	private static final int MAX_INSTANCES = 100000;
 	private static final int INSTANCE_DATA_LENGTH = 18;
 
 	private static final FloatBuffer buffer = BufferUtils.createFloatBuffer(MAX_INSTANCES * INSTANCE_DATA_LENGTH);
