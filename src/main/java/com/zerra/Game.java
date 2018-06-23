@@ -134,7 +134,6 @@ public class Game implements Runnable {
 		} else {
 			worldTime += 0.0001F;
 		}
-		time = 0.2f;
 	}
 
 	private void render() {
