@@ -1,100 +1,102 @@
 package com.zerra.game.item;
 
-public class ItemStack {
+import com.zerra.util.I18n;
+import com.zerra.util.ISerializable;
+import com.zerra.util.data.ByteDataContainer;
+
+public class ItemStack implements ISerializable<ByteDataContainer> {
+
+	public static final ItemStack EMPTY = new ItemStack((Item) null);
 
 	private Item item;
-	private int size = 0;
-	private int maxSize = 100;
-	
-	public ItemStack(Item item, byte size) {
-		this.setItem(item);
-		this.setSize(size);
+	private int count;
+
+	private ItemStack() {
 	}
 
-	/**
-	 * @return The item the ItemStack contains.
-	 */
+	public ItemStack(Item item) {
+		this(item, 1);
+	}
+
+	public ItemStack(Item item, int count) {
+		this.item = item;
+		this.count = count;
+	}
+
+	public ItemStack(ByteDataContainer data) {
+		this.deserialize(data);
+	}
+
+	public void shrink(int amount) {
+		this.grow(-amount);
+	}
+
+	public void grow(int amount) {
+		this.setCount(count + amount);
+	}
+
+	public boolean isEmpty() {
+		return this.item == null || this.count <= 0;
+	}
+
 	public Item getItem() {
 		return item;
 	}
-	
-	/**
-	 * Sets the item that the ItemStack contains. This should not be accessible to the outside world.
-	 * 
-	 * @param item 
-	 * 			The item that the ItemStack will hold.
-	 */
-	private void setItem(Item item) {
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setItem(Item item) {
+		if (this == ItemStack.EMPTY)
+			return;
 		this.item = item;
 	}
 
-	/**
-	 * @return The number of items in the ItemStack.
-	 */
-	public int getSize() {
-		return size;
-	}
-	
-	/**
-	 * Sets the size of the ItemStack.
-	 * 
-	 * @param size
-	 * 			The amount the ItemStack will hold.
-	 */
-	public void setSize(int size) {
-		this.size = size;
+	public void setCount(int count) {
+		if (this == ItemStack.EMPTY)
+			return;
+		this.count = count;
 	}
 
-	/**
-	 * @return Gets the max size an ItemStack can hold.
-	 */
-	public int getMaxSize() {
-		return maxSize;
-	}
-	
-	/**
-	 * Adds 1 to the ItemStack size.
-	 */
-	public void incrementStack() {
-		if(this.getSize() < 64) {
-			this.setSize((byte) (this.getSize()+1));
-		}
-	}
-	
-	/**
-	 * Subtracts 1 from the ItemStack size.
-	 */
-	public void decrementStack() {
-		if(this.getSize() > 0) {
-			this.setSize((byte) (this.getSize()-1));
-		}
+	public ItemStack copy() {
+		return this.copy(new ItemStack());
 	}
 
-	/**
-	 * Increments the stack size by the specified amount.
-	 * 
-	 * @param amount
-	 * 			The amount to add to the stack. If the amount added to the stack results in a stack size above 100, the stack size will simply be set to 100.
-	 */
-	public void incrementStackBy(int amount) {
-		if(this.getSize() + amount < this.getMaxSize()) {
-			this.setSize(this.getSize() + amount);
-		}else {
-			this.setSize(this.getMaxSize());
-		}
+	public ItemStack copy(ItemStack stack) {
+		stack.item = this.item;
+		stack.count = this.count;
+		return stack;
 	}
 
-	/**
-	 * Decrements the stack size by the specified amount.
-	 * 
-	 * @param amount
-	 * 			The amount to remove from the stack. If the amount removed from the stack results in a stack size below 0, the stack size will simply be set to 0.
-	 */
-	public void decrementStackBy(int amount) {
-		if(this.getSize() - amount > 0) {
-			this.setSize(this.getSize() - amount);
-		}else {
-			this.setSize(0);
+	public ByteDataContainer serialize() {
+		ByteDataContainer container = new ByteDataContainer();
+		container.setString("id", this.item.getRegistryName());
+		container.setInt("c", this.count);
+		return container;
+	}
+
+	public void deserialize(ByteDataContainer data) {
+		this.item = Item.byName(data.getString("id"));
+		this.count = data.getInt("c");
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return this.copy();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ItemStack) {
+			ItemStack stack = (ItemStack) obj;
+			return stack.getItem() != null && stack.getItem().equals(this.getItem());
 		}
+		return super.equals(obj);
+	}
+
+	@Override
+	public String toString() {
+		return this.item == null ? I18n.format("item.null.name") : this.item + "x" + this.count;
 	}
 }
