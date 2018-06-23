@@ -7,6 +7,7 @@ import com.zerra.game.entity.Entity;
 import com.zerra.game.entity.EntityType;
 import com.zerra.game.manager.EntityManager;
 
+@Deprecated
 public class KeyInput extends KeyAdapter {
 
 	private EntityManager manager;

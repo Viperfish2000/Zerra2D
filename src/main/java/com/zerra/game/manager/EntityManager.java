@@ -53,7 +53,7 @@ public class EntityManager {
 
 	@Deprecated
 	public void render(Graphics g) {
-		for (Entity entity : entities.keySet()) {
+		for (@SuppressWarnings("unused") Entity entity : entities.keySet()) {
 			// entity.render(g);
 		}
 	}
