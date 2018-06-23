@@ -60,15 +60,15 @@ public class TileEntry implements ISerializable<ByteDataContainer> {
 	@Override
 	public ByteDataContainer serialize() {
 		ByteDataContainer container = new ByteDataContainer();
-		container.setString("registryName", this.tile.getRegistryName());
-		container.setByte("biome", (byte) this.biome.ordinal());
+		container.setString("rn", this.tile.getRegistryName());
+		container.setByte("b", (byte) this.biome.ordinal());
 		return container;
 	}
 
 	@Override
 	public void deserialize(ByteDataContainer data) {
-		this.tile = Tile.byName(data.getString("registryName"));
-		this.biome = EnumBiome.values()[data.getByte("biome")];
+		this.tile = Tile.byName(data.getString("rn"));
+		this.biome = EnumBiome.values()[data.getByte("b")];
 	}
 
 	public static TileEntry fromTag(float x, float y, int layer, ByteDataContainer data) {
