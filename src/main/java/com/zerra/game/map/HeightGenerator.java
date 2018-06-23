@@ -49,7 +49,7 @@ public class HeightGenerator {
 	}
 
 	private float getNoise(int x, int y) {
-		random.setSeed(x * 49632 + y * 325176 + seed);
-		return random.nextFloat() * 2f - 1;
+		random.setSeed(x * 4956132 + y * 125176 + seed);
+		return random.nextFloat();
 	}
 }

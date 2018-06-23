@@ -17,35 +17,38 @@ public class WorldGenerationManager {
 	}
 
 	public void generateTile(float x, float y) {
-		Chunk chunk = map.getChunk(x, y);
-		EnumBiome biome = chunk.getBiome();
-		Tile tile = biome.getTile();
-		generateDecorations(biome, x, y);
-		map.addTile(tile, biome, 0, x, y);
+		float height = worldGenerator.generateHeight(x, y, 4.001f, 8, 0.3f);
+		System.out.println(height);
+		generateBiome(this.getBiome(height), x, y, height);
 	}
 
-	private void generateDecorations(EnumBiome biome, float x, float y) {
-		if (biome == EnumBiome.SAND) {
-			if (worldGenerator.generateHeight(x, y, 40f, 1, 1f) > 12) {
+	private void generateBiome(EnumBiome biome, float x, float y, float height) {
+		Tile tile = biome.getTile();
+		if (biome == EnumBiome.DESERT) {
+			if (worldGenerator.generateHeight(x, y, 40f, 1, 1f) < 13) {
 				map.addTile(Tile.BOULDER, map.getChunk(x, y).getBiome(), 1, x, y);
 			}
 		}
+
+		if (biome == EnumBiome.MOUNTAIN && height > 3.85) {
+			tile = Tile.SNOW;
+		}
+
+		map.addTile(tile, biome, 0, x, y);
 	}
 
-	private int[] getNumberOfBiomes(EnumBiome[] biomes) {
-		int[] result = new int[EnumBiome.values().length];
-		for (int i = 0; i < biomes.length; i++) {
-			EnumBiome biome = biomes[i];
-			result[biome.getId()]++;
-		}
-		return result;
+	private EnumBiome getBiome(float random) {
+		if (random < 2.8)
+			return EnumBiome.OCEAN;
+		else if (random < 2.95)
+			return EnumBiome.BEACH;
+		else if (random < 3.6)
+			return EnumBiome.FOREST;
+		else
+			return EnumBiome.MOUNTAIN;
 	}
 
 	public EnumBiome getBiome(int gridX, int gridY) {
-		EnumBiome biome = EnumBiome.values()[random.nextInt(EnumBiome.values().length)];
-		if (random.nextFloat() < biome.getSpawnChance()) {
-			return biome;
-		}
-		return getBiome(gridX, gridY);
+		return EnumBiome.values()[random.nextInt(EnumBiome.values().length)];
 	}
 }
