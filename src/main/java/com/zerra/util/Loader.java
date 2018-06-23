@@ -52,8 +52,8 @@ public class Loader {
 		pixels = image.getRGB(0, 0, width, height, null, 0, width);
 
 		ByteBuffer buffer = BufferUtils.createByteBuffer(width * height * 4);
+		for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
 				int color = pixels[x + y * width];
 				buffer.put((byte) ((color >> 16) & 0xff));
 				buffer.put((byte) ((color >> 8) & 0xff));
