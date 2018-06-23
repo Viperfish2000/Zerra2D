@@ -113,7 +113,7 @@ public class TileMap {
 						int xPos = (int) (x / 16 + tileX);
 						int yPos = (int) Math.floor(tileY + height + y / 16);
 						if (getTile(xPos * 16, yPos * 16) == null)
-							this.worldGenerator.generateTile(xPos*16, yPos*16);
+							this.worldGenerator.generateTile(xPos * 16, yPos * 16);
 					}
 				}
 			}
@@ -142,12 +142,16 @@ public class TileMap {
 		worldFolder = new File(saveFolder, worldName);
 		/** The file the chunk files are able to be identified. ex. (0,0=741261b0-b0e9-4466-9df5-0c7f76101925) */
 		File tileDataFile = new File(worldFolder, "tiles.bit");
+		/** The file that defines what id corresponds to each tile */
+		File tileIndexFile = new File(worldFolder, "index.bit");
 		/** Creates the world folder if it does not yet exist */
 		if (!worldFolder.exists()) {
 			worldFolder.mkdirs();
 		}
 		/** Creates the tile data file and clears it if it already exists */
 		tileDataFile.createNewFile();
+		/** Creates a new index file */
+		tileIndexFile.createNewFile();
 
 		/** This is used to write the position and id of the chunks */
 		ByteDataContainer chunks = new ByteDataContainer();
@@ -158,8 +162,6 @@ public class TileMap {
 			ByteDataContainer chunkData = new ByteDataContainer();
 			/** Sets the name of the chunk file and associates it with a position */
 			chunkData.setUUID("chunkName", chunkName);
-			/** Sets the biome of the chunk */
-			chunkData.setByte("biome", (byte) chunk.getBiome().ordinal());
 			/** Creates the chunk file and folder if they don't exist */
 			File file = new File(worldFolder, "chunks/" + chunkName.toString());
 			if (!file.getParentFile().exists()) {
@@ -174,6 +176,13 @@ public class TileMap {
 		/** Writes the chunk identifiers to file */
 		DataOutputStream tileStream = new DataOutputStream(new FileOutputStream(tileDataFile));
 		chunks.write(tileStream);
+		
+		ByteDataContainer tileIndex = new ByteDataContainer();
+		tileIndex.setLong("randomSeed", worldGenerator.getRandomSeed());
+		tileIndex.setInt("seed", worldGenerator.getSeed());
+		
+		DataOutputStream tileIndexStream = new DataOutputStream(new FileOutputStream(tileIndexFile));
+		tileIndex.write(tileIndexStream);
 	}
 
 	public void load(File saveFolder) throws IOException {
@@ -181,10 +190,19 @@ public class TileMap {
 
 		worldFolder = new File(saveFolder, worldName);
 		File tileDataFile = new File(worldFolder, "tiles.bit");
+		File tileIndexFile = new File(worldFolder, "index.bit");
+		
 		/** Attempts to load the data file to know what files to load on the fly */
 		if (tileDataFile.exists()) {
 			DataInputStream tileStream = new DataInputStream(new FileInputStream(tileDataFile));
 			chunksList.read(tileStream);
+		}
+		
+		if(tileIndexFile.exists()) {
+			DataInputStream tileIndexStream = new DataInputStream(new FileInputStream(tileIndexFile));
+			ByteDataContainer tileIndex = new ByteDataContainer();
+			tileIndex.read(tileIndexStream);
+			worldGenerator.setSeeds(tileIndex.getLong("randomSeed"), tileIndex.getInt("seed"));
 		}
 	}
 
@@ -204,9 +222,9 @@ public class TileMap {
 		if (this.getChunk(x, y).getTileData().hasKey(x + "," + y, 10)) {
 			entry = TileEntry.fromTag(x, y, layer, this.getChunk(x, y).getTileData().getByteContainer(x + "," + y + "," + layer));
 		}
-		
-		if(entry == null) {
-			entry = new TileEntry(tile, biome,layer, x, y);
+
+		if (entry == null) {
+			entry = new TileEntry(tile, biome, layer, x, y);
 		}
 		entry.getTile().onTilePlaced(this, x, y);
 		tiles.add(entry);
@@ -236,7 +254,7 @@ public class TileMap {
 		}
 		if (chunk == null) {
 			Game.logger().info("Created new chunk at " + gridX + "," + gridY);
-			chunk = new Chunk(UUID.randomUUID(), worldGenerator.getBiome(gridX, gridY), gridX, gridY);
+			chunk = new Chunk(UUID.randomUUID(), gridX, gridY);
 		}
 		chunks.add(chunk);
 		return chunk;
@@ -258,11 +276,10 @@ public class TileMap {
 		ByteDataContainer container = chunksList.getByteContainer(gridX + "," + gridY);
 		if (container != null) {
 			UUID chunkId = container.getUUID("chunkName");
-			EnumBiome biome = EnumBiome.values()[container.getByte("biome")];
 			if (chunkId != null) {
 				File chunkFile = new File(worldFolder, "chunks/" + chunkId);
 				if (chunkFile.exists()) {
-					Chunk chunk = new Chunk(chunkId, biome, gridX, gridY);
+					Chunk chunk = new Chunk(chunkId, gridX, gridY);
 					DataInputStream stream = new DataInputStream(new FileInputStream(chunkFile));
 					chunk.getTileData().read(stream);
 					return chunk;

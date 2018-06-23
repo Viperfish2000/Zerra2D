@@ -1,18 +1,14 @@
 package com.zerra.game.map;
 
-import java.util.Random;
-
 import com.zerra.game.world.tile.Tile;
 
 public class WorldGenerationManager {
 
 	private TileMap map;
-	private Random random;
 	private HeightGenerator worldGenerator;
 
 	public WorldGenerationManager(TileMap map) {
 		this.map = map;
-		this.random = new Random();
 		this.worldGenerator = new HeightGenerator();
 	}
 
@@ -26,7 +22,7 @@ public class WorldGenerationManager {
 		Tile tile = biome.getTile();
 		if (biome == EnumBiome.DESERT) {
 			if (worldGenerator.generateHeight(x, y, 40f, 1, 1f) < 13) {
-				map.addTile(Tile.BOULDER, map.getChunk(x, y).getBiome(), 1, x, y);
+				map.addTile(Tile.BOULDER, biome, 1, x, y);
 			}
 		}
 
@@ -48,7 +44,15 @@ public class WorldGenerationManager {
 			return EnumBiome.MOUNTAIN;
 	}
 
-	public EnumBiome getBiome(int gridX, int gridY) {
-		return EnumBiome.values()[random.nextInt(EnumBiome.values().length)];
+	public long getRandomSeed() {
+		return this.worldGenerator.getRandomSeed();
+	}
+
+	public int getSeed() {
+		return this.worldGenerator.getSeed();
+	}
+
+	public void setSeeds(long randomSeed, int seed) {
+		this.worldGenerator = new HeightGenerator(randomSeed, seed);
 	}
 }

@@ -7,11 +7,18 @@ import com.zerra.util.Maths;
 public class HeightGenerator {
 
 	private Random random;
+	private long randomSeed;
 	private int seed;
 
 	public HeightGenerator() {
-		this.random = new Random();
+		this.randomSeed = System.nanoTime();
+		this.random = new Random(this.randomSeed);
 		this.seed = random.nextInt(1000000000);
+	}
+
+	public HeightGenerator(long randomSeed, int seed) {
+		this.random = new Random(randomSeed);
+		this.seed = seed;
 	}
 
 	public float generateHeight(float x, float y, float amplitude, int octaves, float roughness) {
@@ -51,5 +58,13 @@ public class HeightGenerator {
 	private float getNoise(int x, int y) {
 		random.setSeed(x * 4956132 + y * 125176 + seed);
 		return random.nextFloat();
+	}
+
+	public int getSeed() {
+		return seed;
+	}
+	
+	public long getRandomSeed() {
+		return randomSeed;
 	}
 }
