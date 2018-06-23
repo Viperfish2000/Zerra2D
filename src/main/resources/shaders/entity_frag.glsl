@@ -9,12 +9,7 @@ uniform sampler2D entityTexture;
 // uniform sampler2D entityGlowTexture;
 
 void main() {
-	vec4 textureColor = texture(entityTexture, pass_TextureCoords);
-	// vec4 textureGlowColor = texture(tileGlowTexture, pass_TextureCoords);
-	if (textureColor.a < 0.5) {
-		discard;
-	}
-	out_Color = textureColor;
-	// out_BrightColor = textureGlowColor;
+	out_Color = texture(entityTexture, pass_TextureCoords);
+	// out_BrightColor = texture(tileGlowTexture, pass_TextureCoords);
 	out_BrightColor = vec4(0.0, 0.0, 0.0, 0.0);
 }
