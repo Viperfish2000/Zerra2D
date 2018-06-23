@@ -10,5 +10,5 @@ uniform mat4 transformationMatrix;
 void main() {
 	gl_Position = projectionMatrix * transformationMatrix * vec4(position, 0.0, 1.0);
 
-	pass_TextureCoords = position.yx;
+	pass_TextureCoords = position;
 }
