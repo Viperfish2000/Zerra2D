@@ -52,7 +52,7 @@ public class MasterRenderer {
 		this.quadRenderer = new QuadRenderer(quadShader);
 		this.lightShader = new LightShader();
 		this.lightRenderer = new LightRenderer(lightShader);
-		this.fbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_RENDER_BUFFER);
+		this.fbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_RENDER_BUFFER, 2);
 		this.lightFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.NONE);
 		this.tiles = new HashMap<ResourceLocation, List<TileEntry>>();
 		this.quads = new ArrayList<Quad>();
@@ -73,7 +73,7 @@ public class MasterRenderer {
 		this.lightRenderer.render(this.lights, camera);
 		this.lightFbo.unbindFrameBuffer();
 
-		PostProcessing.doPostProcessing(fbo.getColorTexture(), lightFbo.getColorTexture());
+		PostProcessing.doPostProcessing(fbo.getColorTexture(0), fbo.getColorTexture(1), lightFbo.getColorTexture());
 
 		this.tiles.clear();
 		this.quads.clear();

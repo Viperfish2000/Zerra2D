@@ -62,6 +62,7 @@ public class TileMap {
 				tiles.remove(i);
 				i--;
 				hasRemovedTiles = true;
+				tile.getTile().onTileDestroyed(this, tile.getX(), tile.getY());
 				this.getChunk(tile.getX(), tile.getY()).getTileData().setTag(tile.getX() + "," + tile.getY() + "," + tile.getLayer(), tile.serialize());
 			}
 		}
@@ -207,6 +208,7 @@ public class TileMap {
 		if(entry == null) {
 			entry = new TileEntry(tile, biome,layer, x, y);
 		}
+		entry.getTile().onTilePlaced(this, x, y);
 		tiles.add(entry);
 	}
 

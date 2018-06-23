@@ -3,7 +3,7 @@ package com.zerra.game.map;
 import com.zerra.game.world.tile.Tile;
 
 public enum EnumBiome {
-	GRASS(0, 0.75f, Tile.GRASS), SAND(1, 0.5f, Tile.SAND), STONE(2, 0.25f, Tile.STONE);
+	GRASS(0, 0.75f, Tile.GRASS), SAND(1, 0.5f, Tile.SAND), STONE(2, 0.25f, Tile.STONE), LAVA(3, 1f, Tile.LAVA);
 
 	private int id;
 	private float spawnChance;
@@ -22,7 +22,7 @@ public enum EnumBiome {
 	public float getSpawnChance() {
 		return spawnChance;
 	}
-	
+
 	public Tile getTile() {
 		return tile;
 	}

@@ -31,6 +31,8 @@ public class TileRenderer {
 
 	private static final FloatBuffer buffer = BufferUtils.createFloatBuffer(MAX_INSTANCES * INSTANCE_DATA_LENGTH);
 
+	private static final ResourceLocation GLOW_LOCATION = new ResourceLocation("textures/tile_glow.png");
+
 	private Model quad;
 	private int vboID;
 	private int pointer;
@@ -40,6 +42,7 @@ public class TileRenderer {
 	public TileRenderer(TileShader shader) {
 		this.shader = shader;
 		this.shader.start();
+		this.shader.connectTextureUnits();
 		this.shader.loadProjectionMatrix(MasterRenderer.getProjectionMatrix());
 		this.shader.stop();
 		this.quad = Loader.loadToVAO(POSITIONS, 2);
@@ -59,6 +62,7 @@ public class TileRenderer {
 			pointer = 0;
 			float[] vboData = new float[batch.size() * INSTANCE_DATA_LENGTH];
 			for (TileEntry tile : batch) {
+				tile.getTile().render(tile.getX(), tile.getY(), Game.getInstance().getRenderer(), this);
 				this.updateModelViewMatrix(tile.getX(), tile.getY(), tile.getLayer(), 0, 16, Maths.createViewMatrix(camera), vboData);
 				this.updateTextureCoords(tile.getTile(), vboData);
 			}
@@ -69,7 +73,10 @@ public class TileRenderer {
 	}
 
 	private void bindTexture(ResourceLocation texture) {
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		Game.getInstance().getTextureManager().bind(texture);
+		GL13.glActiveTexture(GL13.GL_TEXTURE1);
+		Game.getInstance().getTextureManager().bind(GLOW_LOCATION);
 		shader.loadNumberOfRows(16);
 	}
 
@@ -82,7 +89,6 @@ public class TileRenderer {
 		GL20.glEnableVertexAttribArray(2);
 		GL20.glEnableVertexAttribArray(3);
 		GL20.glEnableVertexAttribArray(5);
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 	}
 
 	private void unbind() {

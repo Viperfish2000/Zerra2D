@@ -42,7 +42,7 @@ public abstract class ShaderProgram {
 	 *            Takes the name and looks for files named baseName_vertex.glsl and baseName_fragment.glsl. The folder these are also searched for is res/shaders.
 	 */
 	public ShaderProgram(String baseName) {
-		this("shaders/" + baseName + "_vert", "shaders/" + baseName + "_frag");
+		this(baseName + "_vert", baseName + "_frag");
 	}
 
 	/**
@@ -54,8 +54,8 @@ public abstract class ShaderProgram {
 	 *            The fragment shader file location found as /fragmentFile.glsl
 	 */
 	public ShaderProgram(String vertexFile, String fragmentFile) {
-		vertexShaderID = loadShader("/" + vertexFile + ".glsl", GL20.GL_VERTEX_SHADER);
-		fragmentShaderID = loadShader("/" + fragmentFile + ".glsl", GL20.GL_FRAGMENT_SHADER);
+		vertexShaderID = loadShader("/shaders/" + vertexFile + ".glsl", GL20.GL_VERTEX_SHADER);
+		fragmentShaderID = loadShader("/shaders/" + fragmentFile + ".glsl", GL20.GL_FRAGMENT_SHADER);
 		programID = GL20.glCreateProgram();
 		GL20.glAttachShader(programID, vertexShaderID);
 		GL20.glAttachShader(programID, fragmentShaderID);

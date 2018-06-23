@@ -43,7 +43,7 @@ public class WorldGenerationManager {
 
 	public EnumBiome getBiome(int gridX, int gridY) {
 		EnumBiome biome = EnumBiome.values()[random.nextInt(EnumBiome.values().length)];
-		if(random.nextFloat() < biome.getSpawnChance()) {
+		if (random.nextFloat() < biome.getSpawnChance()) {
 			return biome;
 		}
 		return getBiome(gridX, gridY);

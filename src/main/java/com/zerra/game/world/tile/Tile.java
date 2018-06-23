@@ -5,6 +5,9 @@ import java.util.Map;
 import org.joml.Vector2f;
 
 import com.google.common.collect.Maps;
+import com.zerra.game.map.TileMap;
+import com.zerra.gfx.renderer.MasterRenderer;
+import com.zerra.gfx.renderer.TileRenderer;
 import com.zerra.util.AxisAlignedBB;
 import com.zerra.util.I18n;
 import com.zerra.util.ResourceLocation;
@@ -18,8 +21,10 @@ public abstract class Tile {
 	public static final Tile VOID = new TileBase("void", "void", new Vector2f(0, 0));
 	public static final Tile GRASS = new TileBase("grass", "grass", new Vector2f(1, 0));
 	public static final Tile STONE = new TileBase("stone", "stone", new Vector2f(2, 0));
-	public static final Tile SAND = new TileBase("sand", "sand", new Vector2f(3, 0));
-	
+	public static final Tile COBBLESTONE = new TileBase("cobblestone", "cobblestone", new Vector2f(3, 0));
+	public static final Tile SAND = new TileBase("sand", "sand", new Vector2f(4, 0));
+	public static final Tile LAVA = new TileLava("lava", "lava", new Vector2f(2, 1));
+
 	public static final Tile BOULDER = new TileBase("boulder", "boulder", new Vector2f(0, 1));
 
 	private String registryName;
@@ -37,7 +42,16 @@ public abstract class Tile {
 		}
 	}
 
+	public void render(float x, float y, MasterRenderer renderer, TileRenderer tileRenderer) {
+	}
+
 	public abstract void update();
+
+	public void onTilePlaced(TileMap map, float x, float y) {
+	}
+
+	public void onTileDestroyed(TileMap map, float x, float y) {
+	}
 
 	public abstract Vector2f getTextureCoords();
 

@@ -10,7 +10,7 @@ public class LightApplier {
 	private ImageRenderer renderer;
 	private LightApplierShader shader;
 
-	public LightApplier() {
+	public LightApplier(int width, int height) {
 		this.renderer = new ImageRenderer();
 		this.shader = new LightApplierShader();
 		this.shader.start();
