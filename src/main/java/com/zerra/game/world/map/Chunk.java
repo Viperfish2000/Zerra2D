@@ -1,0 +1,66 @@
+package com.zerra.game.world.map;
+
+import java.util.UUID;
+
+import com.zerra.util.data.ByteDataContainer;
+
+/**
+ * <em><b>Copyright (c) 2018 Ocelot5836.</b></em>
+ * 
+ * <br>
+ * </br>
+ * 
+ * This is a single 100x100 tile area. Chunks are only used for saving/loading data from file.
+ * 
+ * @author Ocelot5836
+ */
+public class Chunk {
+	
+	private ByteDataContainer tileData;
+	private UUID chunkId;
+	private int gridX;
+	private int gridY;
+
+	/**
+	 * @param id
+	 *            The id that will be used to identify the chunk
+	 * @param gridX
+	 *            The x position on the chunk grid
+	 * @param gridY
+	 *            The y position on the chunk grid
+	 */
+	public Chunk(UUID id, int gridX, int gridY) {
+		this.tileData = new ByteDataContainer();
+		this.chunkId = id;
+		this.gridX = gridX;
+		this.gridY = gridY;
+	}
+
+	/**
+	 * @return The tile data compacted into a byte data container
+	 */
+	public ByteDataContainer getTileData() {
+		return tileData;
+	}
+
+	/**
+	 * @return The id of this chunk. Used to identify the file the tiles are saved to
+	 */
+	public UUID getId() {
+		return chunkId;
+	}
+
+	/**
+	 * @return The x position on the chunk grid
+	 */
+	public int getGridX() {
+		return gridX;
+	}
+
+	/**
+	 * @return The y position on the chunk grid
+	 */
+	public int getGridY() {
+		return gridY;
+	}
+}
