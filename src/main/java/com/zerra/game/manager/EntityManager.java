@@ -25,9 +25,9 @@ public class EntityManager {
 		entities.remove(entity);
 	}
 	
-	public void tick() {
+	public void updateEntities() {
 		for (Entity entity : entities.keySet()) {
-			entity.tick();
+			entity.onUpdate();
 		}
 	}
 	

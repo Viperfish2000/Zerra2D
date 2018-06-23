@@ -22,7 +22,7 @@ public class Entity extends GameObject {
 	}
 
 	@Override
-	public void tick() {
+	public void onUpdate() {
 		setTicksExisted(getTicksExisted() + 1);
 	}
 

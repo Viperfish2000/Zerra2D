@@ -18,8 +18,8 @@ public class EntityMob extends Entity {
 	}
 	
 	@Override
-	public void tick() {
-		super.tick();
+	public void onUpdate() {
+		super.onUpdate();
 		
 	}
 	
