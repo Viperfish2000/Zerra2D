@@ -74,7 +74,7 @@ public class Zerra implements Runnable {
 	 * Initializes the game.
 	 * 
 	 * @throws Exception
-	 * 				May be unable to load missing world files.
+	 *             May be unable to load missing world files.
 	 */
 	private void init() throws Exception {
 		logger.info("Creating display...");
@@ -92,8 +92,8 @@ public class Zerra implements Runnable {
 		map = new TileMap();
 
 		logger.info("Loading world...");
-		
-		//TODO: This is where world loading is first called.
+
+		/** This is where world loading is first called. */
 		load("world");
 		logger.info("Generating terrain...");
 		map.generate();
@@ -160,12 +160,12 @@ public class Zerra implements Runnable {
 		} else {
 			worldTime += 0.0001F;
 		}
-		if(Display.getMouseButton() == 0) {
-			worldTime+=0.01f;
+		if (Display.getMouseButton() == 0) {
+			worldTime += 0.01f;
 			System.out.println(worldTime);
 		}
-		if(Display.getMouseButton() == 1) {
-			worldTime-=0.01f;
+		if (Display.getMouseButton() == 1) {
+			worldTime -= 0.01f;
 			System.out.println(worldTime);
 		}
 	}
@@ -216,7 +216,7 @@ public class Zerra implements Runnable {
 	 * Loads up a world.
 	 * 
 	 * @param worldName
-	 * 			The name of the world to load up.
+	 *            The name of the world to load up.
 	 */
 	private void load(String worldName) {
 		try {
@@ -233,7 +233,7 @@ public class Zerra implements Runnable {
 	 * Adds a task to the thread pool.
 	 * 
 	 * @param task
-	 * 			The task to add.
+	 *            The task to add.
 	 */
 	public void addTask(Runnable task) {
 		pool.addScheduledTask(task);
@@ -285,7 +285,7 @@ public class Zerra implements Runnable {
 	 * The main method. This is where it all began...
 	 * 
 	 * @param args
-	 * 		You know what these do... or don't. Don't think it really matters, to be honest.
+	 *            You know what these do... or don't. Don't think it really matters, to be honest.
 	 */
 	public static void main(String[] args) {
 		logger.info("Setting up game...");
