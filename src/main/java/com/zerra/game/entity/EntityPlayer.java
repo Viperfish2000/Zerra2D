@@ -60,7 +60,7 @@ public class EntityPlayer extends EntityLiving {
 		y += dy;
 
 		Zerra.getInstance().getCamera().move(dx, dy, 0);
-		Zerra.getInstance().getCamera().setPosition(x - Display.getWidth() / MasterRenderer.SCALE / 2, y - Display.getHeight() / MasterRenderer.SCALE / 2, 0);
+		Zerra.getInstance().getCamera().setPosition(x - Display.getWidth() / MasterRenderer.scale / 2, y - Display.getHeight() / MasterRenderer.scale / 2, 0);
 	}
 	
 	@Override
@@ -75,7 +75,7 @@ public class EntityPlayer extends EntityLiving {
 	
 	@Override
 	public Vector2f getRenderOffset() {
-		return new Vector2f(-8, -8);
+		return new Vector2f(-16, -10);
 	}
 
 	public int getExp() {

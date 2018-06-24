@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import com.zerra.game.entity.EntityFirefly;
@@ -174,6 +175,16 @@ public class Zerra implements Runnable {
 		if (Display.getMouseButton() == 2) {
 			world.add(new EntityFirefly());
 		}
+
+		if (Display.isKeyPressed(GLFW.GLFW_KEY_MINUS)) {
+			renderer.setScale(MasterRenderer.scale - 1f);
+		}
+
+		if (Display.isKeyPressed(GLFW.GLFW_KEY_EQUAL)) {
+			renderer.setScale(MasterRenderer.scale + 1f);
+		}
+		if(MasterRenderer.scale < 3)
+			renderer.setScale(3);
 	}
 
 	/**
@@ -181,7 +192,7 @@ public class Zerra implements Runnable {
 	 */
 	private void render() {
 		/** Debug Code */
-		renderer.renderLights(new Light(new Vector2f((float) Display.getMouseX() / MasterRenderer.SCALE + camera.getPosition().x, (float) Display.getMouseY() / MasterRenderer.SCALE + camera.getPosition().y), new Vector4f(1, 1, 1, 50), 25));
+		renderer.renderLights(new Light(new Vector2f((float) Display.getMouseX() / MasterRenderer.scale + camera.getPosition().x, (float) Display.getMouseY() / MasterRenderer.scale + camera.getPosition().y), new Vector4f(1, 1, 1, 50), 25));
 		/** Actual code that will stay */
 		world.render(renderer, camera, TIMER.renderPartialTicks);
 		renderer.render(camera, TIMER.renderPartialTicks);

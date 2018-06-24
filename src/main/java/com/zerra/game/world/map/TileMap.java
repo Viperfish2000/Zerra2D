@@ -55,8 +55,8 @@ public class TileMap {
 		chunksList = new ByteDataContainer();
 		chunks = new ArrayList<Chunk>();
 		tiles = new ArrayList<TileEntry>();
-		width = Display.getWidth() / MasterRenderer.SCALE / 16;
-		height = Display.getHeight() / MasterRenderer.SCALE / 16;
+		width = Display.getWidth() / MasterRenderer.scale / 16;
+		height = Display.getHeight() / MasterRenderer.scale / 16;
 	}
 
 	/**

@@ -26,8 +26,8 @@ import com.zerra.util.ResourceLocation;
 
 public class MasterRenderer {
 
-	public static final float SCALE = 3;
-	private static final Matrix4f projectionMatrix = new Matrix4f().ortho(0, Display.getWidth() / SCALE, Display.getHeight() / SCALE, 0, 0.3f, 1000f);
+	public static float scale = 3f;
+	private static Matrix4f projectionMatrix = new Matrix4f().ortho(0, Display.getWidth() / scale, Display.getHeight() / scale, 0, 0.3f, 1000f);
 
 	private TileShader tileShader;
 	private TileRenderer tileRenderer;
@@ -134,6 +134,14 @@ public class MasterRenderer {
 
 	public void setAmbientLight(float red, float green, float blue) {
 		LIGHT.getColor().set(red, green, blue, 1);
+	}
+
+	public void setScale(float scale) {
+		MasterRenderer.scale = scale;
+		MasterRenderer.projectionMatrix = new Matrix4f().ortho(0, Display.getWidth() / scale, Display.getHeight() / scale, 0, 0.3f, 1000f);
+		this.tileRenderer.updateProjectionMatrix(projectionMatrix);
+		this.entityRenderer.updateProjectionMatrix(projectionMatrix);
+		this.lightRenderer.updateProjectionMatrix(projectionMatrix);
 	}
 
 	public static Matrix4f getProjectionMatrix() {

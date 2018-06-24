@@ -2,6 +2,7 @@ package com.zerra.gfx.renderer;
 
 import java.util.List;
 
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
@@ -51,6 +52,12 @@ public class LightRenderer {
 		GL30.glBindVertexArray(0);
 		shader.stop();
 		GlWrapper.disableBlend();
+	}
+	
+	public void updateProjectionMatrix(Matrix4f matrix) {
+		this.shader.start();
+		this.shader.loadProjectionMatrix(MasterRenderer.getProjectionMatrix());
+		this.shader.stop();
 	}
 
 	public void cleanUp() {

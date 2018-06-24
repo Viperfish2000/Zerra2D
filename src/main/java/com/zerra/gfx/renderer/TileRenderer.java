@@ -139,6 +139,12 @@ public class TileRenderer {
 		matrix.get(data, pointer);
 		pointer += 16;
 	}
+	
+	public void updateProjectionMatrix(Matrix4f matrix) {
+		this.shader.start();
+		this.shader.loadProjectionMatrix(MasterRenderer.getProjectionMatrix());
+		this.shader.stop();
+	}
 
 	public void cleanUp() {
 		shader.cleanUp();

@@ -3,6 +3,7 @@ package com.zerra.gfx.renderer;
 import java.util.List;
 import java.util.Map;
 
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -83,6 +84,12 @@ public class EntityRenderer {
 		shader.stop();
 		GlWrapper.enableBlend();
 		GlWrapper.enableDepth();
+	}
+	
+	public void updateProjectionMatrix(Matrix4f matrix) {
+		this.shader.start();
+		this.shader.loadProjectionMatrix(MasterRenderer.getProjectionMatrix());
+		this.shader.stop();
 	}
 
 	public void cleanUp() {
