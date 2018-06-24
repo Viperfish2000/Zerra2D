@@ -18,7 +18,7 @@ public class ByteDataTypeByteArray extends ByteDataBase {
 
 	@Override
 	public void write(DataOutput output) throws IOException {
-		output.writeInt(data.length);
+		output.writeByte(data.length);
 		output.write(data);
 	}
 
