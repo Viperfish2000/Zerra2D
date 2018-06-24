@@ -32,7 +32,7 @@ public class WorldGenerationManager {
 	 *            The y position the tile will be generated at.
 	 */
 	public void generateTile(int x, int y) {
-		float height = worldGenerator.generateHeight(x, y, 4f, 8, 0.3f);
+		float height = worldGenerator.generateHeight(x, y, 4, 10, 0.5f);
 		generateBiome(this.getBiome(height), x, y, height);
 	}
 
@@ -53,8 +53,8 @@ public class WorldGenerationManager {
 	 */
 	private void generateBiome(EnumBiome biome, int x, int y, float height) {
 		Tile tile = biome.getTile();
-		if (biome == EnumBiome.DESERT) {
-			if (worldGenerator.generateHeight(x, y, 40f, 1, 1f) < 13) {
+		if (biome == EnumBiome.BEACH) {
+			if (worldGenerator.generateHeight(x, y, 40f, 1, 1f) < -15.5) {
 				map.addTile(Tile.BOULDER, biome, 1, x, y);
 			}
 		}
@@ -80,11 +80,12 @@ public class WorldGenerationManager {
 	 * @return The biome type based on the height value.
 	 */
 	private EnumBiome getBiome(float height) {
-		if (height < 2.8)
+		System.out.println(height);
+		if (height < 3.6)
 			return EnumBiome.OCEAN;
-		else if (height < 2.95)
+		else if (height < 3.7)
 			return EnumBiome.BEACH;
-		else if (height < 3.6)
+		else if (height < 3.725)
 			return EnumBiome.FOREST;
 		else
 			return EnumBiome.MOUNTAIN;

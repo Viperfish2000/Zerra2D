@@ -249,10 +249,10 @@ public class TileMap {
 	 * @return The tile at the position.
 	 */
 	@Nullable
-	public Tile getTile(float x, float y) {
+	public Tile getTile(int x, int y) {
 		for (int i = 0; i < tiles.size(); i++) {
 			TileEntry tile = tiles.get(i);
-			if (tile.getX() == x && tile.getY() == y) {
+			if ((int)Math.floor(tile.getX()) == x && (int)Math.floor(tile.getY()) == y) {
 				return tile.getTile();
 			}
 		}
