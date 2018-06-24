@@ -28,7 +28,7 @@ public class LightRenderer {
 		this.quad = Loader.loadToVAO(POSITIONS, 2);
 	}
 
-	public void render(List<Light> lights, ICamera camera) {
+	public void render(List<Light> lights, ICamera camera, float partialTicks) {
 		this.bind();
 		shader.loadViewMatrix(camera);
 		for (Light light : lights) {

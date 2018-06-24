@@ -29,7 +29,7 @@ public class QuadRenderer {
 		this.quad = Loader.loadToVAO(POSITIONS, 2);
 	}
 
-	public void render(List<Quad> quads, ICamera camera) {
+	public void render(List<Quad> quads, ICamera camera, float partialTicks) {
 		this.bind();
 		for (Quad quad : quads) {
 			shader.loadColor(quad.getColor());

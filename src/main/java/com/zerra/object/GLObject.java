@@ -100,6 +100,13 @@ public class GLObject {
 		return this;
 	}
 
+	public GLObject setLastPosition(float x, float y, float z) {
+		this.lastPosition.x = x;
+		this.lastPosition.y = y;
+		this.lastPosition.z = z;
+		return this;
+	}
+
 	public GLObject move(float x, float y, float z) {
 		this.direction.x = x;
 		this.direction.y = y;

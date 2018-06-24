@@ -41,11 +41,13 @@ public abstract class Entity extends GameObject {
 
 	@Override
 	public void update() {
+		this.lastX = x;
+		this.lastY = y;
 		this.ticksExisted++;
 	}
 
 	@Override
-	public void render(MasterRenderer renderer, EntityRenderer entityRenderer) {
+	public void render(MasterRenderer renderer, EntityRenderer entityRenderer, float partialTicks) {
 	}
 
 	public void onRemove() {

@@ -54,7 +54,7 @@ public class TileRenderer {
 		Loader.storeInstancedDataInAttributeList(quad.getVaoID(), vboID, 5, 2, INSTANCE_DATA_LENGTH, 16);
 	}
 
-	public void render(Map<ResourceLocation, List<TileEntry>> tiles, ICamera camera) {
+	public void render(Map<ResourceLocation, List<TileEntry>> tiles, ICamera camera, float partialTicks) {
 		this.prepare();
 		for (ResourceLocation texture : tiles.keySet()) {
 			List<TileEntry> batch = tiles.get(texture);

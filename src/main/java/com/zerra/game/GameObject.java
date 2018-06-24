@@ -23,7 +23,9 @@ public abstract class GameObject {
 
 	/** The x and y position of the object */
 	protected float x, y;
-
+	/** The last x and y position of the object */
+	protected float lastX, lastY;
+	
 	/**
 	 * Updates the object. Called 60 times per second.
 	 */
@@ -37,7 +39,7 @@ public abstract class GameObject {
 	 * @param entityRenderer
 	 *            The renderer that rendered this entity
 	 */
-	public abstract void render(MasterRenderer renderer, EntityRenderer entityRenderer);
+	public abstract void render(MasterRenderer renderer, EntityRenderer entityRenderer, float partialTicks);
 
 	/**
 	 * Used for collisions. If you want to use null, use {@link AxisAlignedBB#EMPTY_AABB} instead.
@@ -82,6 +84,20 @@ public abstract class GameObject {
 	 */
 	public float getY() {
 		return y;
+	}
+
+	/**
+	 * @return This object's rendering y position
+	 */
+	public float getPartialRenderX(float partialTicks) {
+		return lastX + (x - lastX) * partialTicks;
+	}
+
+	/**
+	 * @return This object's rendering y position
+	 */
+	public float getPartialRenderY(float partialTicks) {
+		return lastY + (y - lastY) * partialTicks;
 	}
 
 	/**

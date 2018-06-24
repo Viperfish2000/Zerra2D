@@ -44,17 +44,17 @@ public class EntityRenderer {
 		this.quad = Loader.loadToVAO(POSITIONS, 2);
 	}
 
-	public void render(Map<ResourceLocation, List<Entity>> entities, ICamera camera) {
+	public void render(Map<ResourceLocation, List<Entity>> entities, ICamera camera, float partialTicks) {
 		this.prepare();
 		for (ResourceLocation texture : entities.keySet()) {
 			this.bindTexture(texture);
 			shader.loadViewMatrix(camera);
 			List<Entity> batch = entities.get(texture);
 			for (Entity entity : batch) {
-				shader.loadTransformationMatrix(Maths.createTransformationMatrix(entity.getX(), entity.getY(), entity.getRotation(), 32 * entity.getScale()));
+				shader.loadTransformationMatrix(Maths.createTransformationMatrix(entity.getPartialRenderX(partialTicks), entity.getPartialRenderY(partialTicks), entity.getRotation(), 32 * entity.getScale()));
 				shader.loadTextureOffset(entity.getTextureOffset().x / (float) entity.getTextureWidth(), entity.getTextureOffset().y / (float) entity.getTextureWidth());
 				shader.loadNumberOfRows(entity.getTextureWidth());
-				entity.render(Zerra.getInstance().getRenderer(), this);
+				entity.render(Zerra.getInstance().getRenderer(), this, partialTicks);
 				GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
 			}
 		}

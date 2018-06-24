@@ -68,19 +68,19 @@ public class MasterRenderer {
 		this.lights = new ArrayList<Light>();
 	}
 
-	public void render(ICamera camera) {
+	public void render(ICamera camera, float partialTicks) {
 		this.quads.add(LIGHT);
 
 		this.fbo.bindFrameBuffer();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		this.tileRenderer.render(this.tiles, camera);
-		this.entityRenderer.render(entities, camera);
+		this.tileRenderer.render(this.tiles, camera, partialTicks);
+		this.entityRenderer.render(entities, camera, partialTicks);
 		this.fbo.unbindFrameBuffer();
 
 		this.lightFbo.bindFrameBuffer();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		this.quadRenderer.render(this.quads, camera);
-		this.lightRenderer.render(this.lights, camera);
+		this.quadRenderer.render(this.quads, camera, partialTicks);
+		this.lightRenderer.render(this.lights, camera, partialTicks);
 		this.lightFbo.unbindFrameBuffer();
 
 		PostProcessing.doPostProcessing(fbo.getColorTexture(0), fbo.getColorTexture(1), lightFbo.getColorTexture());
