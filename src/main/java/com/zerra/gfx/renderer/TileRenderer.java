@@ -41,7 +41,7 @@ public class TileRenderer {
 
 	private TileShader shader;
 
-	public TileRenderer(TileShader shader) {//test
+	public TileRenderer(TileShader shader) {//test1
 		this.shader = shader;
 		this.shader.start();
 		this.shader.connectTextureUnits();
