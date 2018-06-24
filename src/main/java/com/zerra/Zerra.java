@@ -11,6 +11,7 @@ import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
+import com.zerra.game.entity.EntityFirefly;
 import com.zerra.game.entity.EntityPlayer;
 import com.zerra.game.registry.EntityRegistry;
 import com.zerra.game.world.World;
@@ -90,8 +91,10 @@ public class Zerra implements Runnable {
 		pool = new ThreadPool(4);
 
 		EntityRegistry.register("player", EntityPlayer.class);
+		EntityRegistry.register("firefly", EntityFirefly.class);
 		
 		world = new World();
+		world.add(new EntityFirefly());
 		world.add(new EntityPlayer());
 
 		logger.info("Loading game...");

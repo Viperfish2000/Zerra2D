@@ -35,6 +35,21 @@ public class Maths {
 		return matrix;
 	}
 
+	public static Matrix4f createTransformationMatrix(float x, float y, Vector3f rotation, float scale) {
+		Matrix4f matrix = TRANSFORMATION_MATRICES.get(x + "," + y + "," + rotation.x + "," + rotation.y + "," + rotation.z + "," + scale);
+		if (matrix == null) {
+			matrix = new Matrix4f();
+			matrix.identity();
+			matrix.translate(x, y, -1);
+			matrix.rotate((float)Math.toRadians(rotation.x), 1, 0, 0);
+			matrix.rotate((float)Math.toRadians(rotation.y), 0, 1, 0);
+			matrix.rotate((float)Math.toRadians(rotation.z), 0, 0, 1);
+			matrix.scale(scale);
+			TRANSFORMATION_MATRICES.put(x + "," + y + "," + rotation.x + "," + rotation.y + "," + rotation.z + "," + scale, matrix);
+		}
+		return matrix;
+	}
+
 	/**
 	 * Creates a 3d transformation matrix.
 	 * 

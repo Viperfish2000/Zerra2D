@@ -1,7 +1,6 @@
 package com.zerra.gfx.shader;
 
 import org.joml.Matrix4f;
-import org.joml.Vector2f;
 
 import com.zerra.object.ICamera;
 import com.zerra.util.Maths;
@@ -56,7 +55,7 @@ public class EntityShader extends ShaderProgram {
 		super.loadFloat(location_numberOfRows, numberOfRows);
 	}
 
-	public void loadTextureOffset(Vector2f textureOffset) {
-		super.loadVector(location_textureOffset, textureOffset);
+	public void loadTextureOffset(float textureOffsetX, float textureOffsetY) {
+		super.loadVector(location_textureOffset, textureOffsetX, textureOffsetY);
 	}
 }

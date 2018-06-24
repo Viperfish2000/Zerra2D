@@ -91,6 +91,9 @@ public class World {
 	public void load(File saveFolder) throws IOException {
 		Zerra.logger().info("Loading World");
 		this.tileMap.load(saveFolder, worldName);
-		this.tileMap.generate();
+	}
+
+	public float getTime() {
+		return worldTime;
 	}
 }

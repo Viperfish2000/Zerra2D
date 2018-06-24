@@ -1,5 +1,7 @@
 package com.zerra.game.entity;
 
+import org.joml.Vector3f;
+
 import com.zerra.game.GameObject;
 import com.zerra.game.world.World;
 import com.zerra.gfx.renderer.EntityRenderer;
@@ -9,11 +11,15 @@ import com.zerra.util.ResourceLocation;
 public abstract class Entity extends GameObject {
 	
 	public static final ResourceLocation ENTITY_TEXTURE_LOCATION = new ResourceLocation("textures/entities.png");
+	public static final ResourceLocation SMALL_ENTITY_TEXTURE_LOCATION = new ResourceLocation("textures/entities_small.png");
 
 	protected World world;
 	protected EntityType type;
 	protected long ticksExisted = 0;
 	protected int velX, velY;
+	
+	protected Vector3f rotation;
+	protected float scale;
 
 	private boolean dead;
 
@@ -25,6 +31,8 @@ public abstract class Entity extends GameObject {
 		this.setX(x);
 		this.setY(y);
 		this.setType(type);
+		this.rotation = new Vector3f();
+		this.scale = 1;
 	}
 
 	public void init(World world) {
@@ -73,6 +81,14 @@ public abstract class Entity extends GameObject {
 
 	public void setTicksExisted(long ticksExisted) {
 		this.ticksExisted = ticksExisted;
+	}
+	
+	public Vector3f getRotation() {
+		return rotation;
+	}
+	
+	public float getScale() {
+		return scale;
 	}
 
 	public boolean isDead() {

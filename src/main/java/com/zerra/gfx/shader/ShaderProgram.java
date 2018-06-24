@@ -102,26 +102,38 @@ public abstract class ShaderProgram {
 	}
 
 	protected void loadVector(int location, Vector2f vector) {
+		this.loadVector(location, vector.x, vector.y);
+	}
+
+	protected void loadVector(int location, float x, float y) {
 		float[] uniformValues = new float[2];
 		GL20.glGetUniformfv(programID, location, uniformValues);
-		if (uniformValues[0] != vector.x || uniformValues[1] != vector.y) {
-			GL20.glUniform2f(location, vector.x, vector.y);
+		if (uniformValues[0] != x || uniformValues[1] != y) {
+			GL20.glUniform2f(location, x, y);
 		}
 	}
 
 	protected void loadVector(int location, Vector3f vector) {
+		this.loadVector(location, vector.x, vector.y, vector.z);
+	}
+
+	protected void loadVector(int location, float x, float y, float z) {
 		float[] uniformValues = new float[3];
 		GL20.glGetUniformfv(programID, location, uniformValues);
-		if (uniformValues[0] != vector.x || uniformValues[1] != vector.y || uniformValues[2] != vector.z) {
-			GL20.glUniform3f(location, vector.x, vector.y, vector.z);
+		if (uniformValues[0] != x || uniformValues[1] != y || uniformValues[2] != z) {
+			GL20.glUniform3f(location, x, y, z);
 		}
 	}
 
 	protected void loadVector(int location, Vector4f vector) {
+		this.loadVector(location, vector.x, vector.y, vector.z, vector.w);
+	}
+
+	protected void loadVector(int location, float x, float y, float z, float w) {
 		float[] uniformValues = new float[4];
 		GL20.glGetUniformfv(programID, location, uniformValues);
-		if (uniformValues[0] != vector.x || uniformValues[1] != vector.y || uniformValues[2] != vector.z || uniformValues[3] != vector.w) {
-			GL20.glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
+		if (uniformValues[0] != x || uniformValues[1] != y || uniformValues[2] != z || uniformValues[3] != w) {
+			GL20.glUniform4f(location, x, y, z, w);
 		}
 	}
 

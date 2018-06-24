@@ -67,67 +67,73 @@ public class TileMap {
 		filter.updateFrustum(MasterRenderer.getProjectionMatrix(), Maths.createViewMatrix(camera));
 		filter.filterTiles(tiles);
 
-		boolean hasRemovedTiles = false;
 		for (int i = 0; i < tiles.size(); i++) {
 			TileEntry tile = tiles.get(i);
 			tile.getTile().update();
 			if (tile.isRemoved()) {
 				tiles.remove(i);
 				i--;
-				hasRemovedTiles = true;
 				tile.getTile().onTileDestroyed(this, tile.getX(), tile.getY());
 				this.getChunk(tile.getX(), tile.getY()).getTileData().setTag(tile.getX() + "," + tile.getY() + "," + tile.getLayer(), tile.serialize());
 			}
 		}
 
-		if (hasRemovedTiles) {
-			Vector3f cameraDirection = camera.getDirection();
-			float x = camera.getPosition().x;
-			float y = camera.getPosition().y;
-			if (cameraDirection.x < 0) {
-				for (int tileX = 1; tileX < 5; tileX++) {
-					for (int tileY = -1; tileY < height + 1; tileY++) {
-						int xPos = (int) (tileX + (Math.ceil(x - 64) / 16));
-						int yPos = (int) (y / 16 + tileY);
-						if (getTile(xPos * 16, yPos * 16) == null)
-							this.worldGenerator.generateTile(xPos * 16, yPos * 16);
-					}
-				}
-			}
-
-			if (cameraDirection.x > 0) {
-				for (int tileX = 4; tileX < 7; tileX++) {
-					for (int tileY = -1; tileY < height + 1; tileY++) {
-						int xPos = (int) (tileX + width + (Math.ceil(x - 64) / 16));
-						int yPos = (int) (y / 16 + tileY);
-						if (getTile(xPos * 16, yPos * 16) == null)
-							this.worldGenerator.generateTile(xPos * 16, yPos * 16);
-					}
-				}
-			}
-
-			if (cameraDirection.y < 0) {
-				for (int tileX = -1; tileX < width + 1; tileX++) {
-					for (int tileY = -2; tileY < 0; tileY++) {
-						int xPos = (int) (x / 16 + tileX);
-						int yPos = (int) Math.ceil(tileY + y / 16);
-						if (getTile(xPos * 16, yPos * 16) == null)
-							this.worldGenerator.generateTile(xPos * 16, yPos * 16);
-					}
-				}
-			}
-
-			if (cameraDirection.y > 0) {
-				for (int tileX = -1; tileX < width + 1; tileX++) {
-					for (int tileY = 1; tileY < 3; tileY++) {
-						int xPos = (int) (x / 16 + tileX);
-						int yPos = (int) Math.floor(tileY + height + y / 16);
-						if (getTile(xPos * 16, yPos * 16) == null)
-							this.worldGenerator.generateTile(xPos * 16, yPos * 16);
-					}
-				}
+		Vector3f position = camera.getPosition();
+		for (int x = (int) Math.floor(position.x / 16 - 1); x < position.x / 16 + width + 2; x++) {
+			for (int y = (int) Math.floor(position.y / 16 - 1); y < (int) position.y / 16 + height + 2; y++) {
+				if (getTile(x * 16, y * 16) == null)
+					this.worldGenerator.generateTile(x * 16, y * 16);
 			}
 		}
+
+		// if (hasRemovedTiles) {
+		// Vector3f cameraDirection = camera.getDirection();
+		// float x = camera.getPosition().x;
+		// float y = camera.getPosition().y;
+		// if (cameraDirection.x < 0) {
+		// for (int tileX = 1; tileX < 5; tileX++) {
+		// for (int tileY = -1; tileY < height + 1; tileY++) {
+		// int xPos = (int) (tileX + (Math.ceil(x - 64) / 16));
+		// int yPos = (int) (y / 16 + tileY);
+		// if (getTile(xPos * 16, yPos * 16) == null)
+		// this.worldGenerator.generateTile(xPos * 16, yPos * 16);
+		// }
+		// }
+		// }
+		//
+		// if (cameraDirection.x > 0) {
+		// for (int tileX = 4; tileX < 7; tileX++) {
+		// for (int tileY = -1; tileY < height + 1; tileY++) {
+		// int xPos = (int) (tileX + width + (Math.ceil(x - 64) / 16));
+		// int yPos = (int) (y / 16 + tileY);
+		// if (getTile(xPos * 16, yPos * 16) == null)
+		// this.worldGenerator.generateTile(xPos * 16, yPos * 16);
+		// }
+		// }
+		// }
+		//
+		// if (cameraDirection.y < 0) {
+		// for (int tileX = -1; tileX < width + 1; tileX++) {
+		// for (int tileY = -2; tileY < 0; tileY++) {
+		// int xPos = (int) (x / 16 + tileX);
+		// int yPos = (int) Math.ceil(tileY + y / 16);
+		// if (getTile(xPos * 16, yPos * 16) == null)
+		// this.worldGenerator.generateTile(xPos * 16, yPos * 16);
+		// }
+		// }
+		// }
+		//
+		// if (cameraDirection.y > 0) {
+		// for (int tileX = -1; tileX < width + 1; tileX++) {
+		// for (int tileY = 1; tileY < 3; tileY++) {
+		// int xPos = (int) (x / 16 + tileX);
+		// int yPos = (int) Math.floor(tileY + height + y / 16);
+		// if (getTile(xPos * 16, yPos * 16) == null)
+		// this.worldGenerator.generateTile(xPos * 16, yPos * 16);
+		// }
+		// }
+		// }
+		// }
 	}
 
 	/**
@@ -139,18 +145,6 @@ public class TileMap {
 	public void render(MasterRenderer renderer) {
 		for (int i = 0; i < tiles.size(); i++) {
 			renderer.renderTile(tiles.get(i));
-		}
-	}
-
-	/**
-	 * Generates the initial tiles to the screen. This is so there is no tearing in the image.
-	 */
-	public void generate() {
-		for (int x = -1; x < width + 2; x++) {
-			for (int y = -1; y < height + 2; y++) {
-				if (getTile(x * 16, y * 16) == null)
-					this.worldGenerator.generateTile(x * 16, y * 16);
-			}
 		}
 	}
 

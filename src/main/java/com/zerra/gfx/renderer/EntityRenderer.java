@@ -3,7 +3,6 @@ package com.zerra.gfx.renderer;
 import java.util.List;
 import java.util.Map;
 
-import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
@@ -35,9 +34,6 @@ public class EntityRenderer {
 
 	private EntityShader shader;
 	private Model quad;
-	
-	private Vector2f position;
-	private Vector2f scale;
 
 	public EntityRenderer(EntityShader shader) {
 		this.shader = shader;
@@ -46,9 +42,6 @@ public class EntityRenderer {
 		this.shader.loadProjectionMatrix(MasterRenderer.getProjectionMatrix());
 		this.shader.stop();
 		this.quad = Loader.loadToVAO(POSITIONS, 2);
-		
-		this.position = new Vector2f();
-		this.scale = new Vector2f(32);
 	}
 
 	public void render(Map<ResourceLocation, List<Entity>> entities, ICamera camera) {
@@ -58,8 +51,8 @@ public class EntityRenderer {
 			shader.loadViewMatrix(camera);
 			List<Entity> batch = entities.get(texture);
 			for (Entity entity : batch) {
-				shader.loadTransformationMatrix(Maths.createTransformationMatrix(position.set(entity.getX(), entity.getY()), scale));
-				shader.loadTextureOffset(entity.getTextureOffset());
+				shader.loadTransformationMatrix(Maths.createTransformationMatrix(entity.getX(), entity.getY(), entity.getRotation(), 32 * entity.getScale()));
+				shader.loadTextureOffset(entity.getTextureOffset().x / (float) entity.getTextureWidth(), entity.getTextureOffset().y / (float) entity.getTextureWidth());
 				shader.loadNumberOfRows(entity.getTextureWidth());
 				entity.render(Zerra.getInstance().getRenderer(), this);
 				GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
@@ -74,6 +67,7 @@ public class EntityRenderer {
 	}
 
 	private void prepare() {
+		GlWrapper.disableDepth();
 		GlWrapper.enableBlend();
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		shader.start();
@@ -85,6 +79,8 @@ public class EntityRenderer {
 		GL20.glDisableVertexAttribArray(0);
 		GL30.glBindVertexArray(0);
 		shader.stop();
+		GlWrapper.enableBlend();
+		GlWrapper.enableDepth();
 	}
 
 	public void cleanUp() {
