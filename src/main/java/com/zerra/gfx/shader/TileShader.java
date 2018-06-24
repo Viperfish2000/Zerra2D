@@ -19,6 +19,7 @@ public class TileShader extends ShaderProgram {
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "modelViewMatrix");
 		super.bindAttribute(5, "textureOffset");
+		super.bindAttribute(7, "textureOffset1");
 	}
 
 	@Override

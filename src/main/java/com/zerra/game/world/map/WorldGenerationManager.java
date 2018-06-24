@@ -80,7 +80,6 @@ public class WorldGenerationManager {
 	 * @return The biome type based on the height value.
 	 */
 	private EnumBiome getBiome(float height) {
-		System.out.println(height);
 		if (height < 3.6)
 			return EnumBiome.OCEAN;
 		else if (height < 3.7)

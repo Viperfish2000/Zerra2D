@@ -2,10 +2,11 @@ package com.zerra.game.world.tile;
 
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.joml.Vector2f;
 
 import com.google.common.collect.Maps;
-import com.zerra.annotation.Review;
 import com.zerra.game.world.map.TileMap;
 import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.gfx.renderer.TileRenderer;
@@ -34,6 +35,9 @@ public abstract class Tile {
 	public static final Tile GOLD_ORE = new TileBase("gold_ore", "gold_ore", new Vector2f(7, 0));
 
 	public static final Tile BOULDER = new TileBase("boulder", "boulder", new Vector2f(0, 1));
+	public static final Tile FOREST_BUSH = new TileBase("forest_bush", "forest_bush", new Vector2f(0, 2));
+	public static final Tile DEAD_BUSH = new TileBase("dead_bush", "dead_bush", new Vector2f(1, 2));
+	public static final Tile SNOW_BUSH = new TileBase("snow_bush", "snow_bush", new Vector2f(2, 2));
 
 	private String registryName;
 	private String unlocalizedName;
@@ -48,6 +52,7 @@ public abstract class Tile {
 		} else {
 			throw new RuntimeException("Attempted to register a tile over another. OLD: " + Tile.REGISTRY.get(registryName).getLocalizedName() + ", NEW: " + this.getLocalizedName());
 		}
+		this.shouldRender = true;
 	}
 
 	/**
@@ -104,9 +109,14 @@ public abstract class Tile {
 	}
 
 	/**
+	 * If the texture layer is zero, null is not valid. If the texture layer is greater than zero, then you may pass in null.
+	 * 
+	 * @param textureLayer
+	 *            The layer that is being requested
 	 * @return The texture coordinates the tile uses
 	 */
-	public abstract Vector2f getTextureCoords();
+	@Nullable
+	public abstract Vector2f getTextureCoords(int textureLayer);
 
 	/**
 	 * @return The resource location for the texture the tile uses
@@ -114,9 +124,11 @@ public abstract class Tile {
 	public abstract ResourceLocation getTexture();
 
 	/**
-	 * @return The width (in tiles) of the texture atlas. This will <b><i>ONLY</u></b> work properly if you use a different texture than another tile with the same texture
+	 * @return The width (in tiles) of the texture atlas. This will <b><i>ONLY</i></b> work properly if you use a different texture than another tile with the same texture
 	 */
-	public abstract int getTextureWidth();
+	public int getTextureWidth() {
+		return 1;
+	}
 
 	/**
 	 * @return The collision box of the tile
@@ -151,24 +163,6 @@ public abstract class Tile {
 	 */
 	public boolean shouldRender() {
 		return shouldRender;
-	}
-
-	/**
-	 * Checks whether or not this object equals the specified object.
-	 * 
-	 * @param Object
-	 *            obj The object this class is being compared against.
-	 * 
-	 * @return Whether or not this object is equal to the specified object
-	 */
-	@Review(desc = "WARNING. THIS IS UNSAFE! YOU NEED TO OVERRIDE THE HASHCODE METHOD IF YOU EVER OVERRIDE THE EQUALS METHOD.")
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof Tile) {
-			Tile tile = (Tile) obj;
-			return tile.getRegistryName().equalsIgnoreCase(tile.getRegistryName());
-		}
-		return super.equals(obj);
 	}
 
 	/**

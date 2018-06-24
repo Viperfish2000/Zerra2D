@@ -25,9 +25,11 @@ import com.zerra.util.ResourceLocation;
 
 public class TileRenderer {
 
+	public static final int MAX_TEXTURE_LAYERS = 2;
+
 	private static final float[] POSITIONS = new float[] { 0, 0, 0, 1, 1, 0, 1, 1 };
 	private static final int MAX_INSTANCES = 100000;
-	private static final int INSTANCE_DATA_LENGTH = 18;
+	private static final int INSTANCE_DATA_LENGTH = 16 + MAX_TEXTURE_LAYERS * 2;
 
 	private static final FloatBuffer buffer = BufferUtils.createFloatBuffer(MAX_INSTANCES * INSTANCE_DATA_LENGTH);
 
@@ -52,20 +54,23 @@ public class TileRenderer {
 		Loader.storeInstancedDataInAttributeList(quad.getVaoID(), vboID, 3, 4, INSTANCE_DATA_LENGTH, 8);
 		Loader.storeInstancedDataInAttributeList(quad.getVaoID(), vboID, 4, 4, INSTANCE_DATA_LENGTH, 12);
 		Loader.storeInstancedDataInAttributeList(quad.getVaoID(), vboID, 5, 2, INSTANCE_DATA_LENGTH, 16);
+		Loader.storeInstancedDataInAttributeList(quad.getVaoID(), vboID, 6, 2, INSTANCE_DATA_LENGTH, 18);
 	}
 
 	public void render(Map<ResourceLocation, List<TileEntry>> tiles, ICamera camera, float partialTicks) {
 		this.prepare();
 		for (ResourceLocation texture : tiles.keySet()) {
 			List<TileEntry> batch = tiles.get(texture);
-			if(batch.size() > 0)
+			if (batch.size() > 0)
 				this.bindTexture(batch.get(0).getTile());
 			pointer = 0;
 			float[] vboData = new float[batch.size() * INSTANCE_DATA_LENGTH];
 			for (TileEntry tile : batch) {
-				tile.getTile().render(tile.getX(), tile.getY(), Zerra.getInstance().getRenderer(), this);
-				this.updateModelViewMatrix(tile.getX(), tile.getY(), tile.getLayer(), 0, 16, Maths.createViewMatrix(camera), vboData);
-				this.updateTextureCoords(tile.getTile(), vboData);
+				if (tile.getTile().shouldRender()) {
+					tile.getTile().render(tile.getX(), tile.getY(), Zerra.getInstance().getRenderer(), this);
+					this.updateModelViewMatrix(tile.getX(), tile.getY(), tile.getLayer(), 0, 16, Maths.createViewMatrix(camera), vboData);
+					this.updateTextureCoords(tile.getTile(), vboData);
+				}
 			}
 			Loader.updateVboData(vboID, vboData, buffer);
 			GL31.glDrawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount(), batch.size());
@@ -90,9 +95,11 @@ public class TileRenderer {
 		GL20.glEnableVertexAttribArray(2);
 		GL20.glEnableVertexAttribArray(3);
 		GL20.glEnableVertexAttribArray(5);
+		GL20.glEnableVertexAttribArray(6);
 	}
 
 	private void unbind() {
+		GL20.glDisableVertexAttribArray(6);
 		GL20.glDisableVertexAttribArray(5);
 		GL20.glDisableVertexAttribArray(4);
 		GL20.glDisableVertexAttribArray(3);
@@ -114,9 +121,18 @@ public class TileRenderer {
 
 	private void updateTextureCoords(Tile tile, float[] data) {
 		float numberOfRows = tile.getTextureWidth();
-		Vector2f textureCoords = tile.getTextureCoords();
-		data[pointer++] = textureCoords.x / numberOfRows;
-		data[pointer++] = textureCoords.y / numberOfRows;
+		for (int i = 0; i < MAX_TEXTURE_LAYERS; i++) {
+			Vector2f textureCoords = tile.getTextureCoords(i);
+			if (textureCoords != null) {
+				data[pointer++] = textureCoords.x / numberOfRows;
+				data[pointer++] = textureCoords.y / numberOfRows;
+			} else {
+				if (i == 0)
+					throw new IllegalArgumentException("Tile " + tile + " attempted to pass in null texture coords for layer 0. This is invalid and should be fixed immediately.");
+				data[pointer++] = -1;
+				data[pointer++] = -1;
+			}
+		}
 	}
 
 	private void storeMatrixData(Matrix4f matrix, float[] data) {
