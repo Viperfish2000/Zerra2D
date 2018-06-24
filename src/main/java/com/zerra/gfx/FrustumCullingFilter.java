@@ -6,6 +6,8 @@ import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
 
 import com.zerra.game.entity.Entity;
+import com.zerra.game.world.map.Chunk;
+import com.zerra.game.world.map.TileMap;
 import com.zerra.game.world.tile.TileEntry;
 import com.zerra.util.AxisAlignedBB;
 
@@ -36,6 +38,12 @@ public class FrustumCullingFilter {
 	public void filterTiles(List<TileEntry> tiles) {
 		for (TileEntry tile : tiles) {
 			tile.setRemoved(!insideFrustum(tile.getX() + 8, tile.getY() + 8, 0, 16));
+		}
+	}
+
+	public void filterChunks(List<Chunk> chunks) {
+		for (Chunk chunk : chunks) {
+			chunk.setOffScreen(!insideFrustum(chunk.getGridX() * TileMap.CHUNK_SIZE * 16 - TileMap.CHUNK_SIZE / 2, chunk.getGridX() * TileMap.CHUNK_SIZE * 16 - TileMap.CHUNK_SIZE / 2, 0, TileMap.CHUNK_SIZE * 16 * 3));
 		}
 	}
 

@@ -63,11 +63,6 @@ public class WorldGenerationManager {
 			tile = Tile.SNOW;
 		}
 
-		if (tile == Tile.WATER) {
-			tile = Tile.SAND;
-			map.addTile(Tile.WATER, biome, 1, x, y);
-		}
-
 		map.addTile(tile, biome, 0, x, y);
 	}
 

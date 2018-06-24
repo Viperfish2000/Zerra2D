@@ -112,11 +112,11 @@ public class AxisAlignedBB {
 	public double getHeight() {
 		return height;
 	}
-	
+
 	public void setWidth(double width) {
 		this.width = width;
 	}
-	
+
 	public void setHeight(double height) {
 		this.height = height;
 	}
@@ -141,5 +141,9 @@ public class AxisAlignedBB {
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName() + "[" + this.x + ", " + this.y + ", " + this.x + this.width + ", " + this.y + this.height + "]";
+	}
+
+	public static boolean intersects(double x, double y, double width, double height, double otherX, double otherY, double otherWidth, double otherHeight) {
+		return !(x + width < otherX || otherX + otherWidth < x || y + height < y || otherY + otherHeight < x);
 	}
 }

@@ -26,7 +26,7 @@ public abstract class Tile {
 	public static final Tile COBBLESTONE = new TileBase("cobblestone", "cobblestone", new Vector2f(3, 0));
 	public static final Tile SAND = new TileBase("sand", "sand", new Vector2f(4, 0));
 	public static final Tile LAVA = new TileLava("lava", "lava", new Vector2f(2, 1));
-	public static final Tile WATER = new TileBase("water", "water", new Vector2f(1, 1));
+	public static final Tile WATER = new TileLayeredBase("water", "water", new Vector2f(4, 0), new Vector2f(1, 1));
 	public static final Tile SNOW = new TileBase("snow", "snow", new Vector2f(6, 0));
 
 	public static final Tile PLANKS = new TileBase("planks", "planks", new Vector2f(5, 0));

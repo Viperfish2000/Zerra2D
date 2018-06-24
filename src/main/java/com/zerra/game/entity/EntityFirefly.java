@@ -31,8 +31,6 @@ public class EntityFirefly extends EntityMob {
 	public EntityFirefly(float x, float y) {
 		super(x, y);
 		this.random = new Random();
-		this.xa = 1;
-		this.ya = 0;
 
 		this.buttLamp = new Light(new Vector2f(), new Vector4f(0.86f, 0.97f, 0.05f, 5.0f), 10);
 

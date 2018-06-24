@@ -2,6 +2,7 @@ package com.zerra.game.world.map;
 
 import java.util.UUID;
 
+import com.zerra.util.ISerializable;
 import com.zerra.util.data.ByteDataContainer;
 
 /**
@@ -14,8 +15,9 @@ import com.zerra.util.data.ByteDataContainer;
  * 
  * @author Ocelot5836
  */
-public class Chunk {
+public class Chunk implements ISerializable<ByteDataContainer> {
 	
+	private boolean offScreen;
 	private ByteDataContainer tileData;
 	private UUID chunkId;
 	private int gridX;
@@ -62,5 +64,25 @@ public class Chunk {
 	 */
 	public int getGridY() {
 		return gridY;
+	}
+	
+	public boolean isOffScreen() {
+		return offScreen;
+	}
+	
+	public void setOffScreen(boolean offScreen) {
+		this.offScreen = offScreen;
+	}
+
+	@Override
+	public ByteDataContainer serialize() {
+		ByteDataContainer container = new ByteDataContainer();
+		container.setUUID("cn", chunkId);
+		return container;
+	}
+
+	@Override
+	public void deserialize(ByteDataContainer data) {
+		this.chunkId = data.getUUID("cn");
 	}
 }

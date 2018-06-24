@@ -40,7 +40,6 @@ public class World {
 	public void update() {
 		/** Day/Night Cycle **/
 		time = (float) (Math.cos(worldTime) + 0.5);
-		// System.out.println(time);
 		time = (float) Maths.clamp(time, 0.2F, 1.0F);
 		if (time > 1.0F || time < 0.2F) {
 			worldTime += 0.0005F;
@@ -49,11 +48,9 @@ public class World {
 		}
 		if (Display.getMouseButton() == 0) {
 			worldTime += 0.01f;
-			System.out.println(worldTime);
 		}
 		if (Display.getMouseButton() == 1) {
 			worldTime -= 0.01f;
-			System.out.println(worldTime);
 		}
 
 		this.tileMap.update();

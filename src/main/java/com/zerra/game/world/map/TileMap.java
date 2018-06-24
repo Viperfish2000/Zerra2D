@@ -66,6 +66,20 @@ public class TileMap {
 		ICamera camera = Zerra.getInstance().getCamera();
 		filter.updateFrustum(MasterRenderer.getProjectionMatrix(), Maths.createViewMatrix(camera));
 		filter.filterTiles(tiles);
+		filter.filterChunks(chunks);
+
+		for (int i = 0; i < chunks.size(); i++) {
+			Chunk chunk = chunks.get(i);
+			if (chunk.isOffScreen()) {
+				try {
+					this.saveChunkToFile(chunk);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				chunks.remove(chunk);
+				i--;
+			}
+		}
 
 		for (int i = 0; i < tiles.size(); i++) {
 			TileEntry tile = tiles.get(i);
@@ -85,55 +99,6 @@ public class TileMap {
 					this.worldGenerator.generateTile(x * 16, y * 16);
 			}
 		}
-
-		// if (hasRemovedTiles) {
-		// Vector3f cameraDirection = camera.getDirection();
-		// float x = camera.getPosition().x;
-		// float y = camera.getPosition().y;
-		// if (cameraDirection.x < 0) {
-		// for (int tileX = 1; tileX < 5; tileX++) {
-		// for (int tileY = -1; tileY < height + 1; tileY++) {
-		// int xPos = (int) (tileX + (Math.ceil(x - 64) / 16));
-		// int yPos = (int) (y / 16 + tileY);
-		// if (getTile(xPos * 16, yPos * 16) == null)
-		// this.worldGenerator.generateTile(xPos * 16, yPos * 16);
-		// }
-		// }
-		// }
-		//
-		// if (cameraDirection.x > 0) {
-		// for (int tileX = 4; tileX < 7; tileX++) {
-		// for (int tileY = -1; tileY < height + 1; tileY++) {
-		// int xPos = (int) (tileX + width + (Math.ceil(x - 64) / 16));
-		// int yPos = (int) (y / 16 + tileY);
-		// if (getTile(xPos * 16, yPos * 16) == null)
-		// this.worldGenerator.generateTile(xPos * 16, yPos * 16);
-		// }
-		// }
-		// }
-		//
-		// if (cameraDirection.y < 0) {
-		// for (int tileX = -1; tileX < width + 1; tileX++) {
-		// for (int tileY = -2; tileY < 0; tileY++) {
-		// int xPos = (int) (x / 16 + tileX);
-		// int yPos = (int) Math.ceil(tileY + y / 16);
-		// if (getTile(xPos * 16, yPos * 16) == null)
-		// this.worldGenerator.generateTile(xPos * 16, yPos * 16);
-		// }
-		// }
-		// }
-		//
-		// if (cameraDirection.y > 0) {
-		// for (int tileX = -1; tileX < width + 1; tileX++) {
-		// for (int tileY = 1; tileY < 3; tileY++) {
-		// int xPos = (int) (x / 16 + tileX);
-		// int yPos = (int) Math.floor(tileY + height + y / 16);
-		// if (getTile(xPos * 16, yPos * 16) == null)
-		// this.worldGenerator.generateTile(xPos * 16, yPos * 16);
-		// }
-		// }
-		// }
-		// }
 	}
 
 	/**
@@ -168,34 +133,16 @@ public class TileMap {
 		if (!worldFolder.exists()) {
 			worldFolder.mkdirs();
 		}
-		/** Creates the tile data file and clears it if it already exists */
+
 		tileDataFile.createNewFile();
-		/** Creates a new index file */
 		tileIndexFile.createNewFile();
 
-		/** This is used to write the position and id of the chunks */
-		ByteDataContainer chunks = new ByteDataContainer();
 		for (Chunk chunk : this.chunks) {
-			/** The id is used as the file name for the chunk */
-			UUID chunkName = chunk.getId();
-			/** The chunk data is used to specify chunk specific data */
-			ByteDataContainer chunkData = new ByteDataContainer();
-			/** Sets the name of the chunk file and associates it with a position */
-			chunkData.setUUID("chunkName", chunkName);
-			/** Creates the chunk file and folder if they don't exist */
-			File file = new File(worldFolder, "chunks/" + chunkName.toString());
-			if (!file.getParentFile().exists()) {
-				file.getParentFile().mkdirs();
-			}
-			/** Sets the chunk data to the chunk pos */
-			chunks.setTag(chunk.getGridX() + "," + chunk.getGridY(), chunkData);
-			/** Writes the chunk tile data to file */
-			DataOutputStream tileStream = new DataOutputStream(new FileOutputStream(file));
-			chunk.getTileData().write(tileStream);
+			this.saveChunkToFile(chunk);
 		}
 		/** Writes the chunk identifiers to file */
 		DataOutputStream tileStream = new DataOutputStream(new FileOutputStream(tileDataFile));
-		chunks.write(tileStream);
+		chunksList.write(tileStream);
 
 		ByteDataContainer tileIndex = new ByteDataContainer();
 		tileIndex.setLong("randomSeed", worldGenerator.getRandomSeed());
@@ -218,7 +165,6 @@ public class TileMap {
 	 *             Potentially thrown due to world files not being found.
 	 */
 	public void load(File saveFolder, String worldName) throws IOException {
-
 		worldFolder = new File(saveFolder, worldName);
 		File tileDataFile = new File(worldFolder, "tiles.bit");
 		File tileIndexFile = new File(worldFolder, "index.bit");
@@ -252,7 +198,7 @@ public class TileMap {
 	public Tile getTile(int x, int y) {
 		for (int i = 0; i < tiles.size(); i++) {
 			TileEntry tile = tiles.get(i);
-			if ((int)Math.floor(tile.getX()) == x && (int)Math.floor(tile.getY()) == y) {
+			if ((int) Math.floor(tile.getX()) == x && (int) Math.floor(tile.getY()) == y) {
 				return tile.getTile();
 			}
 		}
@@ -334,19 +280,49 @@ public class TileMap {
 	private Chunk tryLoadingChunk(int gridX, int gridY) throws IOException {
 		ByteDataContainer container = chunksList.getByteContainer(gridX + "," + gridY);
 		if (container != null) {
-			UUID chunkId = container.getUUID("chunkName");
+			UUID chunkId = container.getUUID("cn");
 			if (chunkId != null) {
 				File chunkFile = new File(worldFolder, "chunks/" + chunkId);
+				Zerra.logger().info("Attempting to load chunk at x: " + gridX + " y: " + gridY);
 				if (chunkFile.exists()) {
 					Chunk chunk = new Chunk(chunkId, gridX, gridY);
 					DataInputStream stream = new DataInputStream(new FileInputStream(chunkFile));
 					chunk.getTileData().read(stream);
-					Zerra.logger().info("Attempting to load chunk at x: " + gridX + " y: " + gridY);
+					Zerra.logger().info("Chunk at x: " + gridX + " y: " + gridY + " was successfully loaded");
 					return chunk;
 				}
 				Zerra.logger().error("Unable to find chunk file!");
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Saves a chunk to file.
+	 * 
+	 * @param chunk
+	 *            The chunk to save
+	 * @throws IOException
+	 *             If the chunk file could not be created or there was an issue with the byte data
+	 */
+	private void saveChunkToFile(Chunk chunk) throws IOException {
+		Zerra.logger().info("Saving chunk at x: " + chunk.getGridX() + " y: " + chunk.getGridY() + " to file.");
+
+		UUID chunkName = chunk.getId();
+
+		/** The chunk data is used to specify chunk specific data */
+		ByteDataContainer chunkData = new ByteDataContainer();
+		chunkData.setUUID("cn", chunkName);
+
+		File file = new File(worldFolder, "chunks/" + chunkName.toString());
+		if (!file.getParentFile().exists()) {
+			file.getParentFile().mkdirs();
+		}
+
+		/** Sets the chunk data to the chunk pos */
+		chunksList.setTag(chunk.getGridX() + "," + chunk.getGridY(), chunkData);
+
+		DataOutputStream tileStream = new DataOutputStream(new FileOutputStream(file));
+		chunk.getTileData().write(tileStream);
 	}
 }
