@@ -5,7 +5,6 @@ import org.lwjgl.glfw.GLFW;
 
 import com.zerra.Zerra;
 import com.zerra.game.inventory.PlayerInventory;
-import com.zerra.gfx.renderer.EntityRenderer;
 import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.util.AxisAlignedBB;
 import com.zerra.util.Display;
@@ -59,9 +58,24 @@ public class EntityPlayer extends EntityLiving {
 
 		x += dx;
 		y += dy;
-				
+
 		Zerra.getInstance().getCamera().move(dx, dy, 0);
-		Zerra.getInstance().getCamera().setPosition(x + 16 - Display.getWidth() / MasterRenderer.SCALE / 2, y + 16 - Display.getHeight() / MasterRenderer.SCALE / 2, 0);
+		Zerra.getInstance().getCamera().setPosition(x - Display.getWidth() / MasterRenderer.SCALE / 2, y - Display.getHeight() / MasterRenderer.SCALE / 2, 0);
+	}
+	
+	@Override
+	public float getPartialRenderX(float partialTicks) {
+		return x;
+	}
+	
+	@Override
+	public float getPartialRenderY(float partialTicks) {
+		return y;
+	}
+	
+	@Override
+	public Vector2f getRenderOffset() {
+		return new Vector2f(-8, -8);
 	}
 
 	public int getExp() {

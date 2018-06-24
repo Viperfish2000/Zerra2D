@@ -3,6 +3,7 @@ package com.zerra.gfx.renderer;
 import java.util.List;
 import java.util.Map;
 
+import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
@@ -51,7 +52,8 @@ public class EntityRenderer {
 			shader.loadViewMatrix(camera);
 			List<Entity> batch = entities.get(texture);
 			for (Entity entity : batch) {
-				shader.loadTransformationMatrix(Maths.createTransformationMatrix(entity.getPartialRenderX(partialTicks), entity.getPartialRenderY(partialTicks), entity.getRotation(), 32 * entity.getScale()));
+				Vector2f renderOffset = entity.getRenderOffset();
+				shader.loadTransformationMatrix(Maths.createTransformationMatrix(entity.getPartialRenderX(partialTicks) + (renderOffset != null ? renderOffset.x * entity.getScale() : 0), entity.getPartialRenderY(partialTicks) + (renderOffset != null ? renderOffset.y * entity.getScale() : 0), entity.getRotation(), 32 * entity.getScale()));
 				shader.loadTextureOffset(entity.getTextureOffset().x / (float) entity.getTextureWidth(), entity.getTextureOffset().y / (float) entity.getTextureWidth());
 				shader.loadNumberOfRows(entity.getTextureWidth());
 				entity.render(Zerra.getInstance().getRenderer(), this, partialTicks);

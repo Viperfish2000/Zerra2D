@@ -1,5 +1,8 @@
 package com.zerra.game.entity;
 
+import javax.annotation.Nullable;
+
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import com.zerra.game.GameObject;
@@ -52,6 +55,11 @@ public abstract class Entity extends GameObject {
 	}
 
 	public void onRemove() {
+	}
+	
+	@Nullable
+	public Vector2f getRenderOffset() {
+		return null;
 	}
 
 	public EntityType getType() {
