@@ -16,13 +16,7 @@ public abstract class EntityMob extends Entity {
 	}
 
 	@Override
-	public void update() {
-		super.update();
-
-	}
-
-	@Override
-	public void render(MasterRenderer renderer, EntityRenderer entityRenderer) {
+	public void render(MasterRenderer renderer, EntityRenderer entityRenderer, float partialTicks) {
 		/*
 		 * if(this.getY() < Zerra.HEIGHT - 32 && this.getY() > 0 - 32 && this.getX() < Zerra.WIDTH && this.getX() > 0 - 32) { g.setColor(Color.RED); g.fillRect(this.getX(), this.getY(), 16, 16); }
 		 */

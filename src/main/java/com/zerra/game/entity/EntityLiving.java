@@ -2,14 +2,14 @@ package com.zerra.game.entity;
 
 public abstract class EntityLiving extends Entity {
 
-	private int health = 0;
-	private int maxHealth = 0;
-	private int stamina = 0;
-	private int maxStamina = 0;
-	private int mana = 0;
-	private int maxMana = 0;
-	private int armor = 0;
-	private int speed = 0;
+	protected int health = 0;
+	protected int maxHealth = 0;
+	protected int stamina = 0;
+	protected int maxStamina = 0;
+	protected int mana = 0;
+	protected int maxMana = 0;
+	protected int armor = 0;
+	protected float speed = 0;
 
 	public EntityLiving() {
 		super(0, 0, EntityType.NEUTRAL);
@@ -75,7 +75,7 @@ public abstract class EntityLiving extends Entity {
 		this.armor = armor;
 	}
 
-	public int getSpeed() {
+	public float getSpeed() {
 		return speed;
 	}
 

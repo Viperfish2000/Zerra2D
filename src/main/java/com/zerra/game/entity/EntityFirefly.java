@@ -63,9 +63,9 @@ public class EntityFirefly extends EntityMob {
 	}
 
 	@Override
-	public void render(MasterRenderer renderer, EntityRenderer entityRenderer) {
-		this.buttLamp.getPosition().x = x + 3.75f;
-		this.buttLamp.getPosition().y = y + 6f;
+	public void render(MasterRenderer renderer, EntityRenderer entityRenderer, float partialTicks) {
+		this.buttLamp.getPosition().x = this.getPartialRenderX(partialTicks) + 3.75f;
+		this.buttLamp.getPosition().y = this.getPartialRenderY(partialTicks) + 6f;
 		renderer.renderLights(buttLamp);
 
 		this.dayAnimation.update();
