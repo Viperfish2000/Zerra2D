@@ -18,7 +18,7 @@ public class TileBase extends Tile {
 	@Override
 	public void update() {
 	}
-	
+
 	@Override
 	public Vector2f getTextureCoords(int layer) {
 		return layer == 0 ? textureCoords : null;

@@ -92,9 +92,8 @@ public class Zerra implements Runnable {
 
 		EntityRegistry.register("player", EntityPlayer.class);
 		EntityRegistry.register("firefly", EntityFirefly.class);
-		
+
 		world = new World();
-		world.add(new EntityFirefly());
 		world.add(new EntityPlayer());
 
 		logger.info("Loading game...");
@@ -116,35 +115,43 @@ public class Zerra implements Runnable {
 		long timer = System.currentTimeMillis();
 		int frames = 0;
 
-		while (running) {
-			if (!Display.isCloseRequested())
-				Display.update();
-			else
-				running = false;
-
-			TIMER.updateTimer();
-
-			for (int i = 0; i < Math.min(10, TIMER.elapsedTicks); ++i) {
-				update();
-			}
-
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			render();
-			frames++;
-
-			if (System.currentTimeMillis() - timer > 1000) {
-				timer += 1000;
-				// logger.info("World Finished Loading: " + Game.worldFinishedLoading + " --- fps: " + frames);
-				Display.setTitle("Zerra | fps: " + frames);
-				frames = 0;
-			}
+		while (true) {
 			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
+				while (running) {
+					if (!Display.isCloseRequested())
+						Display.update();
+					else
+						running = false;
+
+					TIMER.updateTimer();
+
+					for (int i = 0; i < Math.min(10, TIMER.elapsedTicks); ++i) {
+						update();
+					}
+
+					GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+					render();
+					frames++;
+
+					if (System.currentTimeMillis() - timer > 1000) {
+						timer += 1000;
+						// logger.info("World Finished Loading: " + Game.worldFinishedLoading + " --- fps: " + frames);
+						Display.setTitle("Zerra | fps: " + frames);
+						frames = 0;
+					}
+					try {
+						Thread.sleep(1);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
+				stop();
 			}
+			cleanUp();
+			break;
 		}
-		cleanUp();
 	}
 
 	/**
@@ -153,6 +160,10 @@ public class Zerra implements Runnable {
 	private void update() {
 		world.update();
 		camera.update();
+
+		if (Display.getMouseButton() == 2) {
+			world.add(new EntityFirefly());
+		}
 	}
 
 	/**

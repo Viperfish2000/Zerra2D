@@ -10,6 +10,8 @@ uniform sampler2D tileTexture;
 uniform sampler2D tileGlowTexture;
 
 void main() {
-	out_Color = texture(tileTexture, pass_TextureCoords);
-	out_BrightColor = texture(tileGlowTexture, pass_TextureCoords);
+	vec4 overlayColor = texture(tileTexture, pass_TextureCoords1);
+	vec4 overlayGlowColor = texture(tileGlowTexture, pass_TextureCoords1);
+	out_Color = mix(texture(tileTexture, pass_TextureCoords), overlayColor,	overlayColor.a);
+	out_BrightColor = mix(texture(tileGlowTexture, pass_TextureCoords),	overlayGlowColor, overlayGlowColor.a);
 }

@@ -29,7 +29,7 @@ public class TileRenderer {
 
 	private static final float[] POSITIONS = new float[] { 0, 0, 0, 1, 1, 0, 1, 1 };
 	private static final int MAX_INSTANCES = 100000;
-	private static final int INSTANCE_DATA_LENGTH = 16 + MAX_TEXTURE_LAYERS * 2;
+	private static final int INSTANCE_DATA_LENGTH = 20;
 
 	private static final FloatBuffer buffer = BufferUtils.createFloatBuffer(MAX_INSTANCES * INSTANCE_DATA_LENGTH);
 
@@ -41,7 +41,7 @@ public class TileRenderer {
 
 	private TileShader shader;
 
-	public TileRenderer(TileShader shader) {//test1
+	public TileRenderer(TileShader shader) {
 		this.shader = shader;
 		this.shader.start();
 		this.shader.connectTextureUnits();
@@ -129,8 +129,8 @@ public class TileRenderer {
 			} else {
 				if (i == 0)
 					throw new IllegalArgumentException("Tile " + tile + " attempted to pass in null texture coords for layer 0. This is invalid and should be fixed immediately.");
-				data[pointer++] = -1;
-				data[pointer++] = -1;
+				data[pointer++] = (numberOfRows - 1) / numberOfRows;
+				data[pointer++] = (numberOfRows - 1) / numberOfRows;
 			}
 		}
 	}
