@@ -22,6 +22,7 @@ public abstract class Entity extends GameObject {
 	protected float scale;
 
 	private boolean dead;
+	private boolean insideFrustum;
 
 	public Entity() {
 		this(0, 0, EntityType.NEUTRAL);
@@ -96,6 +97,10 @@ public abstract class Entity extends GameObject {
 	public boolean isDead() {
 		return dead;
 	}
+	
+	public boolean isInsideFrustum() {
+		return insideFrustum;
+	}
 
 	public void setDead() {
 		this.dead = true;
@@ -103,5 +108,9 @@ public abstract class Entity extends GameObject {
 
 	public void setDead(boolean dead) {
 		this.dead = dead;
+	}
+
+	public void setInsideFrustum(boolean insideFrustum) {
+		this.insideFrustum = insideFrustum;
 	}
 }

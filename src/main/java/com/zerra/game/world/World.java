@@ -9,7 +9,9 @@ import com.zerra.Zerra;
 import com.zerra.game.entity.Entity;
 import com.zerra.game.registry.EntityRegistry;
 import com.zerra.game.world.map.TileMap;
+import com.zerra.gfx.FrustumCullingFilter;
 import com.zerra.gfx.renderer.MasterRenderer;
+import com.zerra.object.ICamera;
 import com.zerra.util.Display;
 import com.zerra.util.Maths;
 
@@ -21,6 +23,7 @@ public class World {
 	private float worldTime;
 	private float time;
 
+	private FrustumCullingFilter filter;
 	private List<Entity> entities;
 
 	public World() {
@@ -30,6 +33,7 @@ public class World {
 		this.worldTime = 0.0F;
 		this.time = 1.0F;
 
+		this.filter = new FrustumCullingFilter();
 		this.entities = new ArrayList<Entity>();
 	}
 
@@ -64,11 +68,15 @@ public class World {
 		}
 	}
 
-	public void render(MasterRenderer renderer, float partialTicks) {
+	public void render(MasterRenderer renderer, ICamera camera, float partialTicks) {
+		this.filter.updateFrustum(MasterRenderer.getProjectionMatrix(), Maths.createViewMatrix(camera));
+		this.filter.filterEntities(entities);
 		renderer.setAmbientLight(time, time, time);
 		this.tileMap.render(renderer);
 		for (int i = 0; i < entities.size(); i++) {
-			renderer.renderEntity(entities.get(i));
+			if (entities.get(i).isInsideFrustum()) {
+				renderer.renderEntity(entities.get(i));
+			}
 		}
 	}
 
@@ -92,7 +100,7 @@ public class World {
 		Zerra.logger().info("Loading World");
 		this.tileMap.load(saveFolder, worldName);
 	}
-	
+
 	public float getTime() {
 		return time;
 	}

@@ -173,7 +173,7 @@ public class Zerra implements Runnable {
 		/** Debug Code */
 		renderer.renderLights(new Light(new Vector2f((float) Display.getMouseX() / MasterRenderer.SCALE + camera.getPosition().x, (float) Display.getMouseY() / MasterRenderer.SCALE + camera.getPosition().y), new Vector4f(1, 1, 1, 50), 25));
 		/** Actual code that will stay */
-		world.render(renderer, TIMER.renderPartialTicks);
+		world.render(renderer, camera, TIMER.renderPartialTicks);
 		renderer.render(camera, TIMER.renderPartialTicks);
 	}
 
