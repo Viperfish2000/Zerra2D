@@ -1,15 +1,26 @@
 package com.zerra.game.world.tile;
 
-import com.zerra.annotation.Review;
 import com.zerra.game.world.map.EnumBiome;
 import com.zerra.util.ISerializable;
 import com.zerra.util.data.ByteDataContainer;
 
+/**
+ * <em><b>Copyright (c) 2018 The Zerra Team.</b></em>
+ * 
+ * <br>
+ * </br>
+ * 
+ * A single tile in a world. It stores data that a static tile instance simple could not.
+ * 
+ * @author Ocelot5836
+ */
 public class TileEntry implements ISerializable<ByteDataContainer> {
 
 	private Tile tile;
 	private EnumBiome biome;
 	private int layer;
+	private float lastX;
+	private float lastY;
 	private float x;
 	private float y;
 	private boolean removed;
@@ -17,6 +28,8 @@ public class TileEntry implements ISerializable<ByteDataContainer> {
 	public TileEntry(Tile tile, EnumBiome biome, int layer, float x, float y) {
 		this.tile = tile;
 		this.biome = biome;
+		this.lastX = x;
+		this.lastY = y;
 		this.x = x;
 		this.y = y;
 		this.removed = false;
@@ -58,9 +71,22 @@ public class TileEntry implements ISerializable<ByteDataContainer> {
 	}
 
 	/**
-	 * @return Whether or not this tile entry is removed.
+	 * @return The last x position of this tile entry.
 	 */
-	@Review(desc = "What does removed mean in this context??")
+	public float getLastX() {
+		return lastX;
+	}
+
+	/**
+	 * @return The last y position of this tile entry.
+	 */
+	public float geLasttY() {
+		return lastY;
+	}
+
+	/**
+	 * @return Whether or not this tile entry is removed. This is used to determine if this tile should be removed from the tile list.
+	 */
 	public boolean isRemoved() {
 		return removed;
 	}
@@ -86,12 +112,11 @@ public class TileEntry implements ISerializable<ByteDataContainer> {
 	}
 
 	/**
-	 * Sets whether or not this tile is removed.
+	 * Sets whether or not this tile is removed. This is used to determine if this tile should be removed from the tile list.
 	 * 
 	 * @param removed
 	 *            Whether or not the tile is removed.
 	 */
-	@Review(desc = "What does removed mean in this context??")
 	public void setRemoved(boolean removed) {
 		this.removed = removed;
 	}

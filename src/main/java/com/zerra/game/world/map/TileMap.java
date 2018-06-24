@@ -15,7 +15,6 @@ import javax.annotation.Nullable;
 import org.joml.Vector3f;
 
 import com.zerra.Zerra;
-import com.zerra.annotation.Review;
 import com.zerra.game.world.tile.Tile;
 import com.zerra.game.world.tile.TileEntry;
 import com.zerra.gfx.FrustumCullingFilter;
@@ -25,6 +24,16 @@ import com.zerra.util.Display;
 import com.zerra.util.Maths;
 import com.zerra.util.data.ByteDataContainer;
 
+/**
+ * <em><b>Copyright (c) 2018 The Zerra Team.</b></em>
+ * 
+ * <br>
+ * </br>
+ * 
+ * Handles all the tiles in a level.
+ * 
+ * @author Ocelot5836, Hypeirochus
+ */
 public class TileMap {
 
 	public static final int CHUNK_SIZE = 100;
@@ -134,9 +143,8 @@ public class TileMap {
 	}
 
 	/**
-	 * Generates tiles.
+	 * Generates the initial tiles to the screen. This is so there is no tearing in the image.
 	 */
-	@Review(desc = "I thought generate would deal with chunks, not tiles.")
 	public void generate() {
 		for (int x = -1; x < width + 2; x++) {
 			for (int y = -1; y < height + 2; y++) {
@@ -258,16 +266,20 @@ public class TileMap {
 	}
 
 	/**
-	 * 
+	 * Places a tile by adding it to the tile list.
 	 * 
 	 * @param tile
+	 *            The tile to add
 	 * @param biome
+	 *            The biome the tile is in
 	 * @param layer
+	 *            The layer of the tile
 	 * @param x
+	 *            The x position of the tile
 	 * @param y
+	 *            The y position of the tile
 	 */
-	@Review(desc = "Not exactly sure what this is. I think it just adds tiles to the tile entry?")
-	protected void addTile(Tile tile, EnumBiome biome, int layer, float x, float y) {
+	protected void addTile(Tile tile, EnumBiome biome, int layer, int x, int y) {
 		TileEntry entry = null;
 		if (this.getChunk(x, y).getTileData().hasKey(x + "," + y, 10)) {
 			entry = TileEntry.fromTag(x, y, layer, this.getChunk(x, y).getTileData().getByteContainer(x + "," + y + "," + layer));

@@ -2,9 +2,18 @@ package com.zerra.game.world.map;
 
 import java.util.Random;
 
-import com.zerra.annotation.Review;
 import com.zerra.util.Maths;
 
+/**
+ * <em><b>Copyright (c) 2018 The Zerra Team.</b></em>
+ * 
+ * <br>
+ * </br>
+ * 
+ * This class uses Perlin Noise to generate random, fairly natural looking terrain.
+ * 
+ * @author Ocelot5836
+ */
 public class HeightGenerator {
 
 	private Random random;
@@ -22,7 +31,21 @@ public class HeightGenerator {
 		this.seed = seed;
 	}
 
-	@Review(desc = "What does this do?")
+	/**
+	 * This generates height based on the values passed in.
+	 * 
+	 * @param x
+	 *            The x position of the tile
+	 * @param y
+	 *            The y position of the tile
+	 * @param amplitude
+	 *            The maximum distance between points
+	 * @param octaves
+	 *            The number of times the terrain is smoothed out
+	 * @param roughness
+	 *            how much detail is lost per octave
+	 * @return The height at that tile
+	 */
 	public float generateHeight(float x, float y, float amplitude, int octaves, float roughness) {
 		float total = 0;
 		float d = (float) Math.pow(2, octaves - 1);
@@ -34,7 +57,15 @@ public class HeightGenerator {
 		return total;
 	}
 
-	@Review(desc = "What does this do?")
+	/**
+	 * This returns an interpolated, interpolated noise based on all the interpolated noises around this tile.
+	 * 
+	 * @param x
+	 *            The x position of the tile
+	 * @param y
+	 *            The y position of the tile
+	 * @return The interpolated, interpolated noise
+	 */
 	private float getInterpolatedNoise(float x, float y) {
 		int intX = (int) x;
 		int intY = (int) y;
@@ -51,7 +82,15 @@ public class HeightGenerator {
 		return Maths.interpolate(i1, i2, fracY);
 	}
 
-	@Review(desc = "What does this do?")
+	/**
+	 * This interpolates the noise of each tile based on the tiles around it. With the tiles closer having more of an effect on the smoothness.
+	 * 
+	 * @param x
+	 *            The x position of the tile
+	 * @param y
+	 *            The y position of the tile
+	 * @return An interpolated version of noise
+	 */
 	private float getSmoothNoise(int x, int y) {
 		float corners = (getNoise(x - 1, y - 1) + getNoise(x + 1, y - 1) + getNoise(x - 1, y + 1) + getNoise(x + 1, y + 1)) / 16f;
 		float sides = (getNoise(x - 1, y) + getNoise(x + 1, y) + getNoise(x, y - 1) + getNoise(x, y + 1)) / 8f;
@@ -59,23 +98,30 @@ public class HeightGenerator {
 		return corners + sides + center;
 	}
 
-	@Review(desc = "What does this do?")
+	/**
+	 * This generates a random number, different from the numbers around it, but also the same for the same coord. Ex. (x=0, y=0, noise=-0.47f, x=1, y=0, noise=0.27)
+	 * 
+	 * @param x
+	 *            The x position of the tile
+	 * @param y
+	 *            The y position of the tile
+	 * @return a value between -1 and 1
+	 */
 	private float getNoise(int x, int y) {
 		random.setSeed(x * 4956132 + y * 125176 + seed);
-		return random.nextFloat();
+		return random.nextFloat() * 2f - 1f;
 	}
 
 	/**
-	 * @return The seed of the world.
+	 * @return The seed for the actual world generation
 	 */
 	public int getSeed() {
 		return seed;
 	}
-	
+
 	/**
-	 * @return The random seed of the world.
+	 * @return The world's random object seed
 	 */
-	@Review(desc = "How is this different from HeightGenerator#getSeed?")
 	public long getRandomSeed() {
 		return randomSeed;
 	}
