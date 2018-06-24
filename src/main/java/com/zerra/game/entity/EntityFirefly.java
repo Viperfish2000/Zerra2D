@@ -14,6 +14,7 @@ import com.zerra.util.ResourceLocation;
 
 public class EntityFirefly extends EntityMob {
 
+	private int time;
 	private Random random;
 	private float xa;
 	private float ya;
@@ -30,6 +31,8 @@ public class EntityFirefly extends EntityMob {
 	public EntityFirefly(float x, float y) {
 		super(x, y);
 		this.random = new Random();
+		this.xa = 1;
+		this.ya = 0;
 
 		this.buttLamp = new Light(new Vector2f(), new Vector4f(0.86f, 0.97f, 0.05f, 5.0f), 10);
 
@@ -44,22 +47,18 @@ public class EntityFirefly extends EntityMob {
 
 	@Override
 	public void update() {
-//		if (random.nextFloat() < 0.75) {
-//			if (random.nextFloat() < 0.5) {
-//				xa = 1;
-//			} else if (random.nextFloat() < 0.75) {
-//				ya = 1;
-//			}else {
-//				xa = -xa;
-//				ya = -ya;
-//			}
-//		} else {
-//			xa = 0;
-//			ya = 0;
-//		}
-//
-//		x += xa;
-//		y += ya;
+		time++;
+		float speed = 0.25f;
+		if (time % (40 + random.nextInt(20)) == 0) {
+			xa = random.nextInt(4) - 2;
+			ya = random.nextInt(4) - 2;
+			if(xa == 0)
+				xa = 1;
+			if(ya == 0)
+				ya = 1;
+		}
+		x += xa * speed;
+		y += ya * speed;
 		super.update();
 	}
 
