@@ -92,8 +92,12 @@ public class World {
 		Zerra.logger().info("Loading World");
 		this.tileMap.load(saveFolder, worldName);
 	}
-
+	
 	public float getTime() {
+		return time;
+	}
+
+	public float getWorldTime() {
 		return worldTime;
 	}
 }

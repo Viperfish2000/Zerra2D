@@ -1,5 +1,7 @@
 package com.zerra.game.entity;
 
+import java.util.Random;
+
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
@@ -12,8 +14,12 @@ import com.zerra.util.ResourceLocation;
 
 public class EntityFirefly extends EntityMob {
 
+	private Random random;
+	private float xa;
+	private float ya;
+
 	private Light buttLamp;
-	
+
 	private Animation<Vector2f> dayAnimation;
 	private Animation<Vector2f> nightAnimation;
 
@@ -23,8 +29,10 @@ public class EntityFirefly extends EntityMob {
 
 	public EntityFirefly(float x, float y) {
 		super(x, y);
+		this.random = new Random();
+
 		this.buttLamp = new Light(new Vector2f(), new Vector4f(0.86f, 0.97f, 0.05f, 5.0f), 10);
-		
+
 		this.dayAnimation = new Animation<Vector2f>();
 		this.dayAnimation.setDelay(75);
 		this.dayAnimation.setFrames(new Vector2f(0, 3), new Vector2f(0, 4));
@@ -35,11 +43,32 @@ public class EntityFirefly extends EntityMob {
 	}
 
 	@Override
+	public void update() {
+//		if (random.nextFloat() < 0.75) {
+//			if (random.nextFloat() < 0.5) {
+//				xa = 1;
+//			} else if (random.nextFloat() < 0.75) {
+//				ya = 1;
+//			}else {
+//				xa = -xa;
+//				ya = -ya;
+//			}
+//		} else {
+//			xa = 0;
+//			ya = 0;
+//		}
+//
+//		x += xa;
+//		y += ya;
+		super.update();
+	}
+
+	@Override
 	public void render(MasterRenderer renderer, EntityRenderer entityRenderer) {
 		this.buttLamp.getPosition().x = x + 3.75f;
-		this.buttLamp.getPosition().y = y + 5.5f;
+		this.buttLamp.getPosition().y = y + 6f;
 		renderer.renderLights(buttLamp);
-		
+
 		this.dayAnimation.update();
 		this.nightAnimation.update();
 	}
@@ -56,8 +85,8 @@ public class EntityFirefly extends EntityMob {
 
 	@Override
 	public Vector2f getTextureOffset() {
-		float worldTime = world.getTime();
-		return worldTime < -1.2 && worldTime > -5 ? nightAnimation.getObject() : dayAnimation.getObject();
+		float time = world.getTime();
+		return time < 0.75f ? nightAnimation.getObject() : dayAnimation.getObject();
 	}
 
 	@Override
