@@ -28,6 +28,16 @@ import com.zerra.util.ResourceLocation;
 import com.zerra.util.Timer;
 import com.zerra.util.thread.ThreadPool;
 
+/**
+ * <em><b>Copyright (c) 2018 The Zerra Team.</b></em>
+ * 
+ * <br>
+ * </br>
+ * 
+ * The main game class. Handles all of the game's functions.
+ * 
+ * @author Ocelot5836, Hypeirochus
+ */
 public class Zerra implements Runnable {
 
 	public static int WIDTH = 1280;

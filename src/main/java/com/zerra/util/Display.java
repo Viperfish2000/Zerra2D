@@ -13,6 +13,16 @@ import org.lwjgl.opengl.GL;
 
 import com.zerra.handler.Keyboard;
 
+/**
+ * <em><b>Copyright (c) 2018 The Zerra Team.</b></em>
+ * 
+ * <br>
+ * </br>
+ * 
+ * Creates and manages a display.
+ * 
+ * @author Ocelot5836
+ */
 public class Display {
 
 	private static String title;
@@ -29,16 +39,36 @@ public class Display {
 	private Display() {
 	}
 
+	/**
+	 * Creates a new window.
+	 * 
+	 * @param title
+	 *            The title of the window
+	 * @param width
+	 *            The width of the window
+	 * @param height
+	 *            The height of the window
+	 */
 	public static void createDisplay(String title, int width, int height) {
 		createDisplay(title, width, height, false);
 	}
 
+	/**
+	 * Creates a new window.
+	 * 
+	 * @param title
+	 *            The title of the window
+	 * @param width
+	 *            The width of the window
+	 * @param height
+	 *            The height of the window
+	 * @param borderless
+	 *            Whether or not to make the window borderless
+	 */
 	private static void createDisplay(String title, int width, int height, boolean borderless) {
-		if (!borderless) {
-			Display.title = title;
-			Display.width = width;
-			Display.height = height;
-		}
+		Display.title = title;
+		Display.width = width;
+		Display.height = height;
 		Display.fullscreen = borderless;
 
 		if (!GLFW.glfwInit()) {
@@ -74,11 +104,17 @@ public class Display {
 		GL.createCapabilities();
 	}
 
+	/**
+	 * Updates the display.
+	 */
 	public static void update() {
 		GLFW.glfwPollEvents();
 		GLFW.glfwSwapBuffers(windowID);
 	}
 
+	/**
+	 * Deletes the display and terminates GLFW.
+	 */
 	public static void destroy() {
 		if (cursorID != NULL) {
 			GLFW.glfwDestroyCursor(cursorID);
@@ -92,10 +128,23 @@ public class Display {
 		GLFW.glfwTerminate();
 	}
 
+	/**
+	 * Closes the display.
+	 */
 	public static void close() {
 		GLFW.glfwSetWindowShouldClose(windowID, true);
 	}
 
+	/**
+	 * Sets the cursor in the display.
+	 * 
+	 * @param image
+	 *            The cursor image
+	 * @param xhot
+	 *            The x position in the image that equals 0,0
+	 * @param yhot
+	 *            The y position in the image that equals 0,0
+	 */
 	public static void setCursor(BufferedImage image, int xhot, int yhot) {
 		GLFWImage cursorImage = GLFWImage.create();
 		cursorImage.width(image.getWidth());
@@ -107,6 +156,12 @@ public class Display {
 		}
 	}
 
+	/**
+	 * Sets the icon for the window.
+	 * 
+	 * @param icon
+	 *            The image that will become the icon
+	 */
 	public static void setIcon(BufferedImage icon) {
 		GLFWImage image = GLFWImage.create();
 		image.width(icon.getWidth());
@@ -115,64 +170,118 @@ public class Display {
 		GLFW.nglfwSetWindowIcon(windowID, 1, image.address());
 	}
 
+	/**
+	 * Makes the display full screen. This does not work yet and crashes the game.
+	 */
 	public static void setFullscreen() {
 		GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
 		destroy();
 		createDisplay(title, vidMode.width(), vidMode.height(), true);
 	}
 
+	/**
+	 * Sets the window to be a moveable window again.
+	 */
 	public static void setWindowed() {
 		destroy();
 		createDisplay(title, width, height);
 	}
 
+	/**
+	 * @return The title of the window
+	 */
 	public static String getTitle() {
 		return title;
 	}
 
+	/**
+	 * @return The width of the window
+	 */
 	public static int getWidth() {
 		return width;
 	}
 
+	/**
+	 * @return The height of the window
+	 */
 	public static int getHeight() {
 		return height;
 	}
 
+	/**
+	 * @return Whether or not the window is in fullscreen
+	 */
 	public static boolean isFullscreen() {
 		return fullscreen;
 	}
 
+	/**
+	 * @return The x position of the mouse
+	 */
 	public static double getMouseX() {
 		GLFW.glfwGetCursorPos(windowID, mouseXBuffer, mouseYBuffer);
 		return mouseXBuffer.get(0);
 	}
 
+	/**
+	 * @return The y position of the mouse
+	 */
 	public static double getMouseY() {
 		GLFW.glfwGetCursorPos(windowID, mouseXBuffer, mouseYBuffer);
 		return mouseYBuffer.get(0);
 	}
 
+	/**
+	 * @return The button currently pressed on the mouse
+	 */
 	public static int getMouseButton() {
 		return GLFW.glfwGetMouseButton(windowID, 0) == GLFW.GLFW_TRUE ? 0 : GLFW.glfwGetMouseButton(windowID, 1) == GLFW.GLFW_TRUE ? 1 : GLFW.glfwGetMouseButton(windowID, 2) == GLFW.GLFW_TRUE ? 2 : -1;
 	}
 
+	/**
+	 * @return Whether or not there is a window on the screen
+	 */
 	public static boolean isCreated() {
 		return windowID != NULL;
 	}
 
+	/**
+	 * @return Whether or not the window wants to close
+	 */
 	public static boolean isCloseRequested() {
 		return GLFW.glfwWindowShouldClose(windowID);
 	}
 
+	/**
+	 * Checks if a key is pressed.
+	 * 
+	 * @param key
+	 *            The key to check
+	 * @return Whether or not that key is pressed
+	 */
 	public static boolean isKeyPressed(int key) {
 		return GLFW.glfwGetKey(windowID, key) == GLFW.GLFW_PRESS;
 	}
 
+	/**
+	 * Sets the title of the window.
+	 * 
+	 * @param title
+	 *            The new title for the window
+	 */
 	public static void setTitle(String title) {
 		GLFW.glfwSetWindowTitle(windowID, title);
 		Display.title = title;
 	}
 
+	/**
+	 * Sets the size of the window.
+	 * 
+	 * @param width
+	 *            The new width for the window
+	 * @param height
+	 *            The new height for the window
+	 */
 	public static void setSize(int width, int height) {
 		GLFW.glfwSetWindowSize(windowID, width, height);
 		Display.width = width;
