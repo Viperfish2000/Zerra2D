@@ -59,10 +59,9 @@ public class EntityPlayer extends EntityLiving {
 
 		x += dx;
 		y += dy;
-		
+				
 		Zerra.getInstance().getCamera().move(dx, dy, 0);
 		Zerra.getInstance().getCamera().setPosition(x + 16 - Display.getWidth() / MasterRenderer.SCALE / 2, y + 16 - Display.getHeight() / MasterRenderer.SCALE / 2, 0);
-		Zerra.getInstance().getCamera().setLastPosition(x + 16 - Display.getWidth() / MasterRenderer.SCALE / 2, y + 16 - Display.getHeight() / MasterRenderer.SCALE / 2, 0);
 	}
 
 	public int getExp() {
