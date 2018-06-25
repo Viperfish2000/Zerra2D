@@ -1,6 +1,7 @@
 package com.zerra.gfx;
 
 import java.util.List;
+import java.util.Map;
 
 import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
@@ -15,16 +16,19 @@ public class FrustumCullingFilter {
 
 	private Matrix4f projectionViewMatrix;
 	private FrustumIntersection frustumIntersection;
+	private FrustumIntersection tileFrustumIntersection;
 
 	public FrustumCullingFilter() {
 		this.projectionViewMatrix = new Matrix4f();
 		this.frustumIntersection = new FrustumIntersection();
+		this.tileFrustumIntersection = new FrustumIntersection();
 	}
 
 	public void updateFrustum(Matrix4f projectionMatrix, Matrix4f viewMatrix) {
 		this.projectionViewMatrix.set(projectionMatrix);
 		this.projectionViewMatrix.mul(viewMatrix);
 		this.frustumIntersection.set(projectionViewMatrix);
+		this.tileFrustumIntersection.set(projectionViewMatrix.scale(1.2f));
 	}
 
 	public boolean insideFrustum(float x, float y, float z, float boundingRadius) {
@@ -37,13 +41,14 @@ public class FrustumCullingFilter {
 
 	public void filterTiles(List<TileEntry> tiles) {
 		for (TileEntry tile : tiles) {
-			tile.setRemoved(!insideFrustum(tile.getX() + 8, tile.getY() + 8, 0, 16));
+			tile.setRemoved(!insideFrustum(tile.getX() + 8, tile.getY() + 8, 0, 32));
 		}
 	}
 
-	public void filterChunks(List<Chunk> chunks) {
-		for (Chunk chunk : chunks) {
-			chunk.setOffScreen(!insideFrustum(chunk.getGridX() * TileMap.CHUNK_SIZE * 16 - TileMap.CHUNK_SIZE / 2, chunk.getGridX() * TileMap.CHUNK_SIZE * 16 - TileMap.CHUNK_SIZE / 2, 0, TileMap.CHUNK_SIZE * 16 * 3));
+	public <T> void filterChunks(Map<T, Chunk> chunks) {
+		for (T key : chunks.keySet()) {
+			Chunk chunk = chunks.get(key);
+			chunk.setOffScreen(!tileFrustumIntersection.testSphere(chunk.getGridX() * TileMap.CHUNK_SIZE * 16 - TileMap.CHUNK_SIZE / 2, chunk.getGridX() * TileMap.CHUNK_SIZE * 16 - TileMap.CHUNK_SIZE / 2, 0, TileMap.CHUNK_SIZE * 16 * 3));
 		}
 	}
 

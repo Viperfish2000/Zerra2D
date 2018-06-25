@@ -7,7 +7,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -43,20 +45,23 @@ public class TileMap {
 	private FrustumCullingFilter filter;
 
 	private ByteDataContainer chunksList;
-	private List<Chunk> chunks;
+	private Map<String, Chunk> chunks;
 	private List<TileEntry> tiles;
 
 	private float width;
 	private float height;
 
+	private boolean refreshTiles;
+
 	public TileMap() {
 		worldGenerator = new WorldGenerationManager(this);
 		filter = new FrustumCullingFilter();
 		chunksList = new ByteDataContainer();
-		chunks = new ArrayList<Chunk>();
+		chunks = new HashMap<String, Chunk>();
 		tiles = new ArrayList<TileEntry>();
 		width = Display.getWidth() / MasterRenderer.scale / 16;
 		height = Display.getHeight() / MasterRenderer.scale / 16;
+		refreshTiles = true;
 	}
 
 	/**
@@ -68,16 +73,15 @@ public class TileMap {
 		filter.filterTiles(tiles);
 		filter.filterChunks(chunks);
 
-		for (int i = 0; i < chunks.size(); i++) {
-			Chunk chunk = chunks.get(i);
+		for (String key : chunks.keySet()) {
+			Chunk chunk = chunks.get(key);
 			if (chunk.isOffScreen()) {
 				try {
 					this.saveChunkToFile(chunk);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				chunks.remove(chunk);
-				i--;
+				chunks.remove(key);
 			}
 		}
 
@@ -89,15 +93,20 @@ public class TileMap {
 				i--;
 				tile.getTile().onTileDestroyed(this, tile.getX(), tile.getY());
 				this.getChunk(tile.getX(), tile.getY()).getTileData().setTag(tile.getX() + "," + tile.getY() + "," + tile.getLayer(), tile.serialize());
+				refreshTiles = true;
 			}
 		}
-
-		Vector3f position = camera.getPosition();
-		for (int x = (int) Math.floor(position.x / 16 - 1); x < position.x / 16 + width + 2; x++) {
-			for (int y = (int) Math.floor(position.y / 16 - 1); y < (int) position.y / 16 + height + 2; y++) {
-				if (getTile(x * 16, y * 16) == null)
-					this.worldGenerator.generateTile(x * 16, y * 16);
+		
+		
+		if (refreshTiles) {
+			Vector3f position = camera.getPosition();
+			for (int x = (int) Math.floor(position.x / 16 - 1); x < position.x / 16 + width + 1; x++) {
+				for (int y = (int) Math.floor(position.y / 16 - 1); y < (int) position.y / 16 + height + 1; y++) {
+					if (getTile(x * 16, y * 16) == null)
+						this.worldGenerator.generateTile(x * 16, y * 16);
+				}
 			}
+			refreshTiles = false;
 		}
 	}
 
@@ -137,8 +146,8 @@ public class TileMap {
 		tileDataFile.createNewFile();
 		tileIndexFile.createNewFile();
 
-		for (Chunk chunk : this.chunks) {
-			this.saveChunkToFile(chunk);
+		for (String key : this.chunks.keySet()) {
+			this.saveChunkToFile(this.chunks.get(key));
 		}
 		/** Writes the chunk identifiers to file */
 		DataOutputStream tileStream = new DataOutputStream(new FileOutputStream(tileDataFile));
@@ -188,7 +197,6 @@ public class TileMap {
 	 * 
 	 * @param x
 	 *            The x position of the tile.
-	 * 
 	 * @param y
 	 *            The y position of the tile.
 	 * 
@@ -200,6 +208,9 @@ public class TileMap {
 			TileEntry tile = tiles.get(i);
 			if ((int) Math.floor(tile.getX()) == x && (int) Math.floor(tile.getY()) == y) {
 				return tile.getTile();
+			}
+			if (this.getChunk(x, y).getTileData().hasKey(x + "," + y, 10)) {
+				return Tile.byName(this.getChunk(x, y).getTileData().getByteContainer(x + "," + y).getString("rn"));
 			}
 		}
 		return null;
@@ -245,9 +256,8 @@ public class TileMap {
 	protected Chunk getChunk(float x, float y) {
 		int gridX = (int) (x / CHUNK_SIZE / 16);
 		int gridY = (int) (y / CHUNK_SIZE / 16);
-		for (Chunk chunk : chunks) {
-			if (chunk.getGridX() == gridX && chunk.getGridY() == gridY)
-				return chunk;
+		if (chunks.containsKey(gridX + "," + gridY)) {
+			return chunks.get(gridX + "," + gridY);
 		}
 		Chunk chunk = null;
 		try {
@@ -259,7 +269,7 @@ public class TileMap {
 			Zerra.logger().info("Created new chunk at " + gridX + "," + gridY);
 			chunk = new Chunk(UUID.randomUUID(), gridX, gridY);
 		}
-		chunks.add(chunk);
+		chunks.put(gridX + "," + gridY, chunk);
 		return chunk;
 	}
 

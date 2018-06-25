@@ -183,7 +183,7 @@ public class Zerra implements Runnable {
 		if (Display.isKeyPressed(GLFW.GLFW_KEY_EQUAL)) {
 			renderer.setScale(MasterRenderer.scale + 1f);
 		}
-		if(MasterRenderer.scale < 3)
+		if (MasterRenderer.scale < 3)
 			renderer.setScale(3);
 	}
 
@@ -241,6 +241,8 @@ public class Zerra implements Runnable {
 			File saveFolder = new File("data/saves");
 			if (saveFolder.exists()) {
 				world.load(saveFolder);
+			} else {
+				saveFolder.mkdirs();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
