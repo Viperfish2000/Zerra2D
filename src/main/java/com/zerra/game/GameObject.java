@@ -22,9 +22,9 @@ import com.zerra.util.ResourceLocation;
 public abstract class GameObject {
 
 	/** The x and y position of the object */
-	protected float x, y;
+	private float x, y;
 	/** The last x and y position of the object */
-	protected float lastX, lastY;
+	private float lastX, lastY;
 	
 	/**
 	 * Updates the object. Called 60 times per second.
@@ -112,6 +112,16 @@ public abstract class GameObject {
 		this.x = x;
 		this.y = y;
 	}
+	
+	/**
+	 * Sets this entity's x position
+	 * 
+	 * @param x
+	 *            The new x position for the entity
+	 */
+	public void setX(float x) {
+		this.x = x;
+	}
 
 	/**
 	 * Sets this entity's y position
@@ -123,13 +133,11 @@ public abstract class GameObject {
 		this.y = y;
 	}
 
-	/**
-	 * Sets this entity's x position
-	 * 
-	 * @param x
-	 *            The new x position for the entity
-	 */
-	public void setX(float x) {
-		this.x = x;
+	public void setLastX(float lastX) {
+		this.lastX = lastX;
+	}
+	
+	public void setLastY(float lastY) {
+		this.lastY = lastY;
 	}
 }

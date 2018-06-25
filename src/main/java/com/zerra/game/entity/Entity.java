@@ -45,9 +45,9 @@ public abstract class Entity extends GameObject {
 
 	@Override
 	public void update() {
-		this.lastX = x;
-		this.lastY = y;
 		this.ticksExisted++;
+		this.setLastX(this.getX());
+		this.setLastY(this.getY());
 	}
 
 	@Override

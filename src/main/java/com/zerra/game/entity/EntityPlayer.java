@@ -56,21 +56,21 @@ public class EntityPlayer extends EntityLiving {
 			dx += speed;
 		}
 
-		x += dx;
-		y += dy;
+		this.setX(this.getX() + dx);
+		this.setY(this.getY() + dy);
 
 		Zerra.getInstance().getCamera().move(dx, dy, 0);
-		Zerra.getInstance().getCamera().setPosition(x - Display.getWidth() / MasterRenderer.scale / 2, y - Display.getHeight() / MasterRenderer.scale / 2, 0);
+		Zerra.getInstance().getCamera().setPosition(this.getX() - Display.getWidth() / MasterRenderer.scale / 2, this.getY() - Display.getHeight() / MasterRenderer.scale / 2, 0);
 	}
 	
 	@Override
 	public float getPartialRenderX(float partialTicks) {
-		return x;
+		return this.getX();
 	}
 	
 	@Override
 	public float getPartialRenderY(float partialTicks) {
-		return y;
+		return this.getY();
 	}
 	
 	@Override

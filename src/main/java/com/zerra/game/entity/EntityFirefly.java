@@ -53,8 +53,8 @@ public class EntityFirefly extends EntityMob {
 			if(ya == 0)
 				ya = 1;
 		}
-		x += xa * speed;
-		y += ya * speed;
+		this.setX(this.getX() + (xa * speed));
+		this.setY(this.getY() + (ya * speed));
 		super.update();
 	}
 
