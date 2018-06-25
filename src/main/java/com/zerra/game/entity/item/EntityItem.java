@@ -7,6 +7,7 @@ import com.zerra.game.entity.EntityPlayer;
 import com.zerra.game.entity.EntityType;
 import com.zerra.game.item.ItemStack;
 import com.zerra.gfx.renderer.MasterRenderer;
+import com.zerra.util.AxisAlignedBB;
 import com.zerra.util.ResourceLocation;
 
 public class EntityItem extends Entity {
@@ -22,7 +23,7 @@ public class EntityItem extends Entity {
 		this.setPosition(x, y);
 		this.setLastPosition(x, y);
 		this.setScale(1f / MasterRenderer.scale);
-		this.setSize(32 * this.getScale(), 32 * this.getScale());
+		this.setSize(4, 4);
 		this.stack = stack;
 	}
 
@@ -30,6 +31,16 @@ public class EntityItem extends Entity {
 	public void update() {
 		super.update();
 		EntityPlayer player = this.getWorld().getPlayer();
+		if(player != null) {
+			AxisAlignedBB playerBox = player.getCollisionBox();
+			if(playerBox.intersects(this.getCollisionBox())) {
+				ItemStack remaining = player.getInventory().addStackToInventory(this.stack);
+				if(remaining.isEmpty()) {
+					this.setDead();
+				}
+				this.stack = remaining;
+			}
+		}
 	}
 
 	@Override

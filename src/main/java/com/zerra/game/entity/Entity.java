@@ -59,9 +59,6 @@ public abstract class Entity extends GameObject {
 
 	@Override
 	public AxisAlignedBB getCollisionBox() {
-		Vector2f renderOffset = this.getRenderOffset();
-		if (renderOffset != null)
-			return new AxisAlignedBB(renderOffset.x + this.getX(), renderOffset.y + this.getY(), width, height);
 		return new AxisAlignedBB(this.getX(), this.getY(), width, height);
 	}
 

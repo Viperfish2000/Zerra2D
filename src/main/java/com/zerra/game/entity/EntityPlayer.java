@@ -6,7 +6,6 @@ import org.lwjgl.glfw.GLFW;
 import com.zerra.Zerra;
 import com.zerra.game.inventory.PlayerInventory;
 import com.zerra.gfx.renderer.MasterRenderer;
-import com.zerra.util.AxisAlignedBB;
 import com.zerra.util.Display;
 import com.zerra.util.ResourceLocation;
 
@@ -29,6 +28,7 @@ public class EntityPlayer extends EntityLiving {
 		super(EntityType.PLAYER);
 		this.setPosition(x, y);
 		this.setLastPosition(x, y);
+		this.setSize(32, 32);
 		this.setSpeed(2f);
 		this.inventory = new PlayerInventory(45);
 	}
@@ -62,25 +62,15 @@ public class EntityPlayer extends EntityLiving {
 		Zerra.getInstance().getCamera().move(dx, dy, 0);
 		Zerra.getInstance().getCamera().setPosition(this.getX() - Display.getWidth() / MasterRenderer.scale / 2, this.getY() - Display.getHeight() / MasterRenderer.scale / 2, 0);
 	}
-	
+
 	@Override
 	public float getRenderX(float partialTicks) {
 		return this.getX();
 	}
-	
+
 	@Override
 	public float getRenderY(float partialTicks) {
 		return this.getY();
-	}
-	
-	@Override
-	public Vector2f getRenderOffset() {
-		return new Vector2f(-16, -16);
-	}
-
-	@Override
-	public AxisAlignedBB getCollisionBox() {
-		return new AxisAlignedBB(this.getX(), this.getY(), 32, 32);
 	}
 
 	@Override
@@ -97,23 +87,23 @@ public class EntityPlayer extends EntityLiving {
 	public int getTextureWidth() {
 		return 8;
 	}
-	
+
 	public int getExp() {
 		return exp;
 	}
-	
+
 	public int getLevel() {
 		return level;
 	}
-	
+
 	public PlayerInventory getInventory() {
 		return inventory;
 	}
-	
+
 	public void setExp(int exp) {
 		this.exp = exp;
 	}
-	
+
 	public void setLevel(int level) {
 		this.level = level;
 	}
