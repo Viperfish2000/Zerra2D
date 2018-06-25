@@ -101,7 +101,7 @@ public class TileMap {
 			float y = camera.getPosition().y;
 			if (direction.x < 0) {
 				for (int tileX = 2; tileX < 3; tileX++) {
-					for (int tileY = -1; tileY < height + 1; tileY++) {
+					for (int tileY = -2; tileY < height + 1; tileY++) {
 						int xPos = (int) (tileX + (Math.ceil(x - 64) / 16));
 						int yPos = (int) (y / 16 + tileY);
 						if (getTile(xPos * 16, yPos * 16) == null)
@@ -111,7 +111,7 @@ public class TileMap {
 			}
 
 			if (direction.x > 0) {
-				for (int tileX = 2; tileX < 3; tileX++) {
+				for (int tileX = 3; tileX < 4; tileX++) {
 					for (int tileY = -1; tileY < height + 1; tileY++) {
 						int xPos = (int) (tileX + width + (Math.ceil(x - 32) / 16));
 						int yPos = (int) (y / 16 + tileY);
@@ -134,7 +134,7 @@ public class TileMap {
 
 			if (direction.y > 0) {
 				for (int tileX = -1; tileX < width + 2; tileX++) {
-					for (int tileY = 0; tileY < 1; tileY++) {
+					for (int tileY = 1; tileY < 2; tileY++) {
 						int xPos = (int) (x / 16 + tileX);
 						int yPos = (int) Math.floor(tileY + height + y / 16);
 						if (getTile(xPos * 16, yPos * 16) == null)
