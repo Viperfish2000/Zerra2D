@@ -41,6 +41,8 @@ public class EntityBat extends EntityMob {
 
 	@Override
 	public void update() {
+		super.update();
+
 		float speed = 0.25f;
 		if (this.getTicksExisted() % (40 + random.nextInt(20)) == 0) {
 			xa = random.nextInt(4) - 2;
@@ -52,8 +54,6 @@ public class EntityBat extends EntityMob {
 		}
 		this.setX(this.getX() + (xa * speed));
 		this.setY(this.getY() + (ya * speed));
-		System.out.println(this.getVelX());
-		super.update();
 	}
 
 	@Override
