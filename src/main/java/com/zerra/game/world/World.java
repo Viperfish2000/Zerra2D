@@ -81,7 +81,7 @@ public class World {
 		Zerra.logger().info("Generating terrain...");
 	}
 
-	public void add(Entity entity) {
+	public void addEntity(Entity entity) {
 		if (entity != null && EntityRegistry.validate(entity)) {
 			entity.init(this);
 			entities.add(entity);

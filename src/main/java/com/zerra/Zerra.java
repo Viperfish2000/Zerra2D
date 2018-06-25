@@ -105,7 +105,7 @@ public class Zerra implements Runnable {
 		EntityRegistry.register("firefly", EntityFirefly.class);
 
 		world = new World();
-		world.add(new EntityPlayer());
+		world.addEntity(new EntityPlayer());
 
 		logger.info("Loading game...");
 		/** This is where game loading is first called. */
@@ -173,7 +173,7 @@ public class Zerra implements Runnable {
 		camera.update();
 
 		if (Display.getMouseButton() == 2) {
-			world.add(new EntityFirefly());
+			world.addEntity(new EntityFirefly());
 		}
 
 		if (Display.isKeyPressed(GLFW.GLFW_KEY_MINUS)) {
