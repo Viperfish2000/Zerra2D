@@ -12,7 +12,6 @@ import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-import com.zerra.game.entity.EntityBat;
 import com.zerra.game.entity.EntityFirefly;
 import com.zerra.game.entity.EntityPlayer;
 import com.zerra.game.entity.item.EntityItem;
@@ -109,11 +108,10 @@ public class Zerra implements Runnable {
 		EntityRegistry.register("player", EntityPlayer.class);
 		EntityRegistry.register("firefly", EntityFirefly.class);
 		EntityRegistry.register("item", EntityItem.class);
-		EntityRegistry.register("bat", EntityBat.class);
 
 		world = new World();
 		world.addEntity(new EntityPlayer());
-		
+
 		int i = 0;
 		for (String registryName : Item.ITEMS.keySet()) {
 			world.addEntity(new EntityItem(new ItemStack(Item.byName(registryName), Item.byName(registryName).getMaxStackSize()), 50 + 25 * i++, 50));

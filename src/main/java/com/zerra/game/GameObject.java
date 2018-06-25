@@ -90,10 +90,8 @@ public abstract class GameObject {
 	}
 
 	/**
-	 * @return This object's rendering y position
 	 * @return This object's last x position
 	 */
-	public float getPartialRenderX(float partialTicks) {
 	public float getLastX() {
 		return lastX;
 	}
@@ -115,7 +113,6 @@ public abstract class GameObject {
 	/**
 	 * @return This object's rendering y position
 	 */
-	public float getPartialRenderY(float partialTicks) {
 	public float getRenderY(float partialTicks) {
 		return lastY + (y - lastY) * partialTicks;
 	}
@@ -178,8 +175,6 @@ public abstract class GameObject {
 	public void setLastX(float lastX) {
 		this.lastX = lastX;
 	}
-
-=======
 	
 	/**
 	 * Sets this entity's last y position.

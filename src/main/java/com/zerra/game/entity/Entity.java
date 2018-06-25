@@ -17,28 +17,24 @@ public abstract class Entity extends GameObject {
 	public static final ResourceLocation ENTITY_TEXTURE_LOCATION = new ResourceLocation("textures/entities.png");
 	public static final ResourceLocation SMALL_ENTITY_TEXTURE_LOCATION = new ResourceLocation("textures/entities_small.png");
 
-	protected World world;
-	protected EntityType type;
-	protected long ticksExisted = 0;
-	protected int velX, velY;
+	private World world;
+	private EntityType type;
+	private long ticksExisted;
+	private float velX; 
+	private float velY;
 
-	protected Vector3f rotation;
-	protected float scale;
+	private Vector3f rotation;
+	private float scale;
 
-	protected float width;
-	protected float height;
+	private float width;
+	private float height;
 
 	private boolean dead;
 	private boolean insideFrustum;
 
-	public Entity() {
-		this(0, 0, EntityType.NEUTRAL);
-	}
-
-	public Entity(float x, float y, EntityType type) {
-		this.setX(x);
-		this.setY(y);
-		this.setType(type);
+	public Entity(EntityType type) {
+		this.type = type;
+		this.ticksExisted = 0;
 		this.rotation = new Vector3f();
 		this.scale = 1;
 	}
@@ -77,63 +73,101 @@ public abstract class Entity extends GameObject {
 	public Vector2f getRenderOffset() {
 		return null;
 	}
-
+	
+	public World getWorld() {
+		return world;
+	}
+	
 	public EntityType getType() {
 		return type;
 	}
-
-	public void setType(EntityType type) {
-		this.type = type;
-	}
-
-	public int getVelX() {
-		return velX;
-	}
-
-	public void setVelX(int velX) {
-		this.velX = velX;
-	}
-
-	public int getVelY() {
-		return velY;
-	}
-
-	public void setVelY(int velY) {
-		this.velY = velY;
-	}
-
+	
 	public long getTicksExisted() {
 		return ticksExisted;
 	}
-
-	public void setTicksExisted(long ticksExisted) {
-		this.ticksExisted = ticksExisted;
+	
+	public float getVelX() {
+		return velX;
 	}
-
+	
+	public float getVelY() {
+		return velY;
+	}
+	
 	public Vector3f getRotation() {
 		return rotation;
 	}
-
+	
 	public float getScale() {
 		return scale;
 	}
-
+	
+	public float getWidth() {
+		return width;
+	}
+	
+	public float getHeight() {
+		return height;
+	}
+	
 	public boolean isDead() {
 		return dead;
 	}
-
+	
 	public boolean isInsideFrustum() {
 		return insideFrustum;
 	}
-
+	
+	protected void setType(EntityType type) {
+		this.type = type;
+	}
+	
+	public void setVel(float velX, float velY) {
+		this.velX = velX;
+		this.velY = velY;
+	}
+	
+	public void setVelX(float velX) {
+		this.velX = velX;
+	}
+	
+	public void setVelY(float velY) {
+		this.velY = velY;
+	}
+	
+	public void setRotation(Vector3f rotation) {
+		this.rotation = rotation;
+	}
+	
+	public void setRotation(float x, float y, float z) {
+		this.rotation.set(x, y, z);
+	}
+	
+	public void setScale(float scale) {
+		this.scale = scale;
+	}
+	
+	public void setSize(float width, float height) {
+		this.width = width;
+		this.height = height;
+	}
+	
+	public void setWidth(float width) {
+		this.width = width;
+	}
+	
+	public void setHeight(float height) {
+		this.height = height;
+	}
+	
 	public void setDead() {
 		this.dead = true;
 	}
-
+	
 	public void setDead(boolean dead) {
 		this.dead = dead;
 	}
-
+	
 	public void setInsideFrustum(boolean insideFrustum) {
 		this.insideFrustum = insideFrustum;
 	}
