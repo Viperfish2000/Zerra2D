@@ -19,7 +19,7 @@ import com.zerra.util.data.ByteDataContainer;
  */
 public class ItemStack implements ISerializable<ByteDataContainer>, Cloneable {
 
-	/** An empty itemstack that the game handles. Used for when a stack should be empty, but not null */
+	/** An empty item stack that the game handles. Used for when a stack should be empty, but not null */
 	public static final ItemStack EMPTY = new ItemStack((Item) null);
 
 	private Item item;
@@ -145,12 +145,17 @@ public class ItemStack implements ISerializable<ByteDataContainer>, Cloneable {
 	protected Object clone() throws CloneNotSupportedException {
 		return this.copy();
 	}
+	
+	@Override
+	public int hashCode() {
+		return this.item.getRegistryName().hashCode();
+	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof ItemStack) {
 			ItemStack stack = (ItemStack) obj;
-			return stack.getItem() != null && stack.getItem().equals(this.getItem());
+			return stack.getItem() != null && stack.getItem() == this.getItem();
 		}
 		return super.equals(obj);
 	}

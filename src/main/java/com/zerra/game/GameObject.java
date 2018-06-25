@@ -25,7 +25,7 @@ public abstract class GameObject {
 	private float x, y;
 	/** The last x and y position of the object */
 	private float lastX, lastY;
-	
+
 	/**
 	 * Updates the object. Called 60 times per second.
 	 */
@@ -70,7 +70,9 @@ public abstract class GameObject {
 	 * 
 	 * @return The width of the texture in tiles
 	 */
-	public abstract int getTextureWidth();
+	public int getTextureWidth() {
+		return 1;
+	}
 
 	/**
 	 * @return This object's x position
@@ -112,7 +114,7 @@ public abstract class GameObject {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	/**
 	 * Sets this entity's x position
 	 * 
@@ -136,7 +138,7 @@ public abstract class GameObject {
 	public void setLastX(float lastX) {
 		this.lastX = lastX;
 	}
-	
+
 	public void setLastY(float lastY) {
 		this.lastY = lastY;
 	}

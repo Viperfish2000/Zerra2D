@@ -85,7 +85,7 @@ public class EntityRenderer {
 		GlWrapper.enableBlend();
 		GlWrapper.enableDepth();
 	}
-	
+
 	public void updateProjectionMatrix(Matrix4f matrix) {
 		this.shader.start();
 		this.shader.loadProjectionMatrix(MasterRenderer.getProjectionMatrix());
