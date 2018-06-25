@@ -14,7 +14,6 @@ import com.zerra.util.ResourceLocation;
 
 public class EntityFirefly extends EntityMob {
 
-	private int time;
 	private Random random;
 	private float xa;
 	private float ya;
@@ -45,9 +44,8 @@ public class EntityFirefly extends EntityMob {
 
 	@Override
 	public void update() {
-		time++;
 		float speed = 0.25f;
-		if (time % (40 + random.nextInt(20)) == 0) {
+		if (this.getTicksExisted() % (40 + random.nextInt(20)) == 0) {
 			xa = random.nextInt(4) - 2;
 			ya = random.nextInt(4) - 2;
 			if(xa == 0)
@@ -72,7 +70,7 @@ public class EntityFirefly extends EntityMob {
 
 	@Override
 	public AxisAlignedBB getCollisionBox() {
-		return new AxisAlignedBB(this.x, this.y, 8, 8);
+		return new AxisAlignedBB(this.getX(), this.getY(), 8, 8);
 	}
 
 	@Override
