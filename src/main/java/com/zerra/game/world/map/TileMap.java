@@ -7,9 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -45,7 +43,7 @@ public class TileMap {
 	private FrustumCullingFilter filter;
 
 	private ByteDataContainer chunksList;
-	private Map<String, Chunk> chunks;
+	private List<Chunk> chunks;
 	private List<TileEntry> tiles;
 
 	private float width;
@@ -55,7 +53,7 @@ public class TileMap {
 		worldGenerator = new WorldGenerationManager(this);
 		filter = new FrustumCullingFilter();
 		chunksList = new ByteDataContainer();
-		chunks = new HashMap<String, Chunk>();
+		chunks = new ArrayList<Chunk>();
 		tiles = new ArrayList<TileEntry>();
 		width = Display.getWidth() / MasterRenderer.scale / 16;
 		height = Display.getHeight() / MasterRenderer.scale / 16;
@@ -70,15 +68,16 @@ public class TileMap {
 		filter.filterTiles(tiles);
 		filter.filterChunks(chunks);
 
-		for (String key : chunks.keySet()) {
-			Chunk chunk = chunks.get(key);
+		for (int i = 0; i < chunks.size(); i++) {
+			Chunk chunk = chunks.get(i);
 			if (chunk.isOffScreen()) {
 				try {
 					this.saveChunkToFile(chunk);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				chunks.remove(key);
+				chunks.remove(i);
+				i--;
 			}
 		}
 
@@ -100,7 +99,7 @@ public class TileMap {
 			float x = camera.getPosition().x;
 			float y = camera.getPosition().y;
 			if (direction.x < 0) {
-				for (int tileX = 2; tileX < 3; tileX++) {
+				for (int tileX = 2; tileX < 4; tileX++) {
 					for (int tileY = -2; tileY < height + 1; tileY++) {
 						int xPos = (int) (tileX + (Math.ceil(x - 64) / 16));
 						int yPos = (int) (y / 16 + tileY);
@@ -193,8 +192,8 @@ public class TileMap {
 		tileDataFile.createNewFile();
 		tileIndexFile.createNewFile();
 
-		for (String key : this.chunks.keySet()) {
-			this.saveChunkToFile(this.chunks.get(key));
+		for (int i = 0; i < chunks.size(); i++) {
+			this.saveChunkToFile(this.chunks.get(i));
 		}
 		/** Writes the chunk identifiers to file */
 		DataOutputStream tileStream = new DataOutputStream(new FileOutputStream(tileDataFile));
@@ -303,8 +302,10 @@ public class TileMap {
 	protected Chunk getChunk(float x, float y) {
 		int gridX = (int) (x / 16 / CHUNK_SIZE);
 		int gridY = (int) (y / 16 / CHUNK_SIZE);
-		if (chunks.containsKey(gridX + "," + gridY)) {
-			return chunks.get(gridX + "," + gridY);
+		for (int i = 0; i < chunks.size(); i++) {
+			Chunk chunk = chunks.get(i);
+			if (chunk.getGridX() == gridX && chunk.getGridY() == gridY)
+				return chunk;
 		}
 		Chunk chunk = null;
 		try {
@@ -316,7 +317,7 @@ public class TileMap {
 			Zerra.logger().info("Created new chunk at " + gridX + "," + gridY);
 			chunk = new Chunk(UUID.randomUUID(), gridX, gridY);
 		}
-		chunks.put(gridX + "," + gridY, chunk);
+		chunks.add(chunk);
 		return chunk;
 	}
 

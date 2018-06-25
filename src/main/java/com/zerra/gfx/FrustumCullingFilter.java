@@ -1,7 +1,6 @@
 package com.zerra.gfx;
 
 import java.util.List;
-import java.util.Map;
 
 import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
@@ -10,6 +9,7 @@ import com.zerra.game.entity.Entity;
 import com.zerra.game.world.map.Chunk;
 import com.zerra.game.world.map.TileMap;
 import com.zerra.game.world.tile.TileEntry;
+import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.util.AxisAlignedBB;
 
 public class FrustumCullingFilter {
@@ -45,10 +45,11 @@ public class FrustumCullingFilter {
 		}
 	}
 
-	public <T> void filterChunks(Map<T, Chunk> chunks) {
-		for (T key : chunks.keySet()) {
-			Chunk chunk = chunks.get(key);
-			chunk.setOffScreen(!tileFrustumIntersection.testSphere(chunk.getGridX() * TileMap.CHUNK_SIZE * 16 - TileMap.CHUNK_SIZE / 2, chunk.getGridX() * TileMap.CHUNK_SIZE * 16 - TileMap.CHUNK_SIZE / 2, 0, TileMap.CHUNK_SIZE * 16 * 3));
+	public void filterChunks(List<Chunk> chunks) {
+		for (Chunk chunk : chunks) {
+			float x = chunk.getGridX() * TileMap.CHUNK_SIZE * 16;
+			float y = chunk.getGridY() * TileMap.CHUNK_SIZE * 16;
+			chunk.setOffScreen(!tileFrustumIntersection.testSphere(x, y, 0, TileMap.CHUNK_SIZE * 16));
 		}
 	}
 
