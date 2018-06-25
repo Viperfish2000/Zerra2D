@@ -24,6 +24,10 @@ public class GameState {
 		
 	}
 	
+	public void onKeyReleased() {
+		
+	}
+	
 	public void onMousePressed() {
 		
 	}
