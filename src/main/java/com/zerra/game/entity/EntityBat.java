@@ -24,7 +24,10 @@ public class EntityBat extends EntityMob {
 	}
 
 	public EntityBat(float x, float y) {
-		super(x, y);
+		super(EntityType.ENEMY);
+		this.setPosition(x, y);
+		this.setLastPosition(x, y);
+		this.setScale(0.75f);
 		this.random = new Random();
 
 		this.frontAnimation = new Animation<Vector2f>();
@@ -34,9 +37,6 @@ public class EntityBat extends EntityMob {
 		this.sideAnimation = new Animation<Vector2f>();
 		this.sideAnimation.setDelay(35);
 		this.sideAnimation.setFrames(new Vector2f(4, 1), new Vector2f(5, 1), new Vector2f(6, 1), new Vector2f(7, 1), new Vector2f(6, 1) ,new Vector2f(5, 1));
-		
-		
-		this.scale = 0.75f;
 	}
 
 	@Override
