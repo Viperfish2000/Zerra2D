@@ -12,6 +12,8 @@ import com.zerra.util.ResourceLocation;
 
 public class EntityPlayer extends EntityLiving {
 
+	private static final Vector2f TEXTURE_COORDS = new Vector2f(0, 0);
+
 	private float dx;
 	private float dy;
 
@@ -19,17 +21,15 @@ public class EntityPlayer extends EntityLiving {
 	private int level = 0;
 	private PlayerInventory inventory;
 
-	private static final Vector2f TEXTURE_COORDS = new Vector2f(0, 0);
-
 	public EntityPlayer() {
 		this(0, 0);
 	}
 
 	public EntityPlayer(float x, float y) {
-		this.speed = 2f;
-		this.setX(x);
-		this.setY(y);
-		this.setType(EntityType.PLAYER);
+		super(EntityType.PLAYER);
+		this.setPosition(x, y);
+		this.setLastPosition(x, y);
+		this.setSpeed(2f);
 		this.inventory = new PlayerInventory(45);
 	}
 
@@ -41,19 +41,19 @@ public class EntityPlayer extends EntityLiving {
 		dy = 0;
 
 		if (Display.isKeyPressed(GLFW.GLFW_KEY_W)) {
-			dy -= speed;
+			dy -= this.getSpeed();
 		}
 
 		if (Display.isKeyPressed(GLFW.GLFW_KEY_S)) {
-			dy += speed;
+			dy += this.getSpeed();
 		}
 
 		if (Display.isKeyPressed(GLFW.GLFW_KEY_A)) {
-			dx -= speed;
+			dx -= this.getSpeed();
 		}
 
 		if (Display.isKeyPressed(GLFW.GLFW_KEY_D)) {
-			dx += speed;
+			dx += this.getSpeed();
 		}
 
 		this.setX(this.getX() + dx);
@@ -64,38 +64,18 @@ public class EntityPlayer extends EntityLiving {
 	}
 	
 	@Override
-	public float getPartialRenderX(float partialTicks) {
+	public float getRenderX(float partialTicks) {
 		return this.getX();
 	}
 	
 	@Override
-	public float getPartialRenderY(float partialTicks) {
+	public float getRenderY(float partialTicks) {
 		return this.getY();
 	}
 	
 	@Override
 	public Vector2f getRenderOffset() {
 		return new Vector2f(-16, -10);
-	}
-
-	public int getExp() {
-		return exp;
-	}
-
-	public void setExp(int exp) {
-		this.exp = exp;
-	}
-
-	public int getLevel() {
-		return level;
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
-	}
-
-	public PlayerInventory getInventory() {
-		return inventory;
 	}
 
 	@Override
@@ -116,5 +96,25 @@ public class EntityPlayer extends EntityLiving {
 	@Override
 	public int getTextureWidth() {
 		return 8;
+	}
+	
+	public int getExp() {
+		return exp;
+	}
+	
+	public int getLevel() {
+		return level;
+	}
+	
+	public PlayerInventory getInventory() {
+		return inventory;
+	}
+	
+	public void setExp(int exp) {
+		this.exp = exp;
+	}
+	
+	public void setLevel(int level) {
+		this.level = level;
 	}
 }

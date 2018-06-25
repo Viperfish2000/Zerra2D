@@ -28,9 +28,11 @@ public class EntityFirefly extends EntityMob {
 	}
 
 	public EntityFirefly(float x, float y) {
-		super(x, y);
+		super(EntityType.NEUTRAL);
+		this.setPosition(x, y);
+		this.setLastPosition(x, y);
+		this.setScale(0.25f);
 		this.random = new Random();
-
 		this.buttLamp = new Light(new Vector2f(), new Vector4f(0.86f, 0.97f, 0.05f, 5.0f), 10);
 
 		this.dayAnimation = new Animation<Vector2f>();
@@ -39,7 +41,6 @@ public class EntityFirefly extends EntityMob {
 		this.nightAnimation = new Animation<Vector2f>();
 		this.nightAnimation.setDelay(75);
 		this.nightAnimation.setFrames(new Vector2f(0, 3), new Vector2f(0, 1), new Vector2f(0, 2), new Vector2f(0, 0), new Vector2f(0, 2), new Vector2f(0, 1));
-		this.scale = 0.25f;
 	}
 
 	@Override
@@ -60,8 +61,8 @@ public class EntityFirefly extends EntityMob {
 
 	@Override
 	public void render(MasterRenderer renderer, EntityRenderer entityRenderer, float partialTicks) {
-		this.buttLamp.getPosition().x = this.getPartialRenderX(partialTicks) + 3.75f;
-		this.buttLamp.getPosition().y = this.getPartialRenderY(partialTicks) + 6f;
+		this.buttLamp.getPosition().x = this.getRenderX(partialTicks) + 3.75f;
+		this.buttLamp.getPosition().y = this.getRenderY(partialTicks) + 6f;
 		renderer.renderLights(buttLamp);
 
 		this.dayAnimation.update();
@@ -80,7 +81,7 @@ public class EntityFirefly extends EntityMob {
 
 	@Override
 	public Vector2f getTextureOffset() {
-		float time = world.getTime();
+		float time = this.getWorld().getTime();
 		return time < 0.75f ? nightAnimation.getObject() : dayAnimation.getObject();
 	}
 
