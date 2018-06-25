@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.zerra.Zerra;
 import com.zerra.game.entity.Entity;
+import com.zerra.game.entity.EntityPlayer;
 import com.zerra.game.registry.EntityRegistry;
 import com.zerra.game.world.map.TileMap;
 import com.zerra.gfx.FrustumCullingFilter;
@@ -105,5 +106,14 @@ public class World {
 
 	public float getWorldTime() {
 		return worldTime;
+	}
+	
+	public EntityPlayer getPlayer() {
+		for(Entity entity: entities) {
+			if(entity instanceof EntityPlayer) {
+				return (EntityPlayer) entity;
+			}
+		}
+		return null;
 	}
 }
