@@ -47,6 +47,7 @@ public class Zerra implements Runnable {
 	private static Logger logger = LogManager.getLogger("Zerra");
 	private static Zerra instance = new Zerra();
 	private static final Timer TIMER = new Timer(60);
+	private static int lastFPS = 0;
 
 	private TextureManager textureManager;
 	private MasterRenderer renderer;
@@ -148,6 +149,10 @@ public class Zerra implements Runnable {
 						timer += 1000;
 						// logger.info("World Finished Loading: " + Game.worldFinishedLoading + " --- fps: " + frames);
 						Display.setTitle("Zerra | fps: " + frames);
+						if(frames - lastFPS < -30) {
+							logger.warn("Lag spike detected in the game!");
+						}
+						Zerra.lastFPS = frames;
 						frames = 0;
 					}
 					try {
