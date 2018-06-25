@@ -17,6 +17,7 @@ import com.zerra.util.ResourceLocation;
  * 
  * A basic, abstract, object that can be added to the game. It has an x and a y position.
  * 
+ * @author Ocelot5836
  * @author Hypeirochus
  */
 public abstract class GameObject {
@@ -25,7 +26,7 @@ public abstract class GameObject {
 	private float x, y;
 	/** The last x and y position of the object */
 	private float lastX, lastY;
-	
+
 	/**
 	 * Updates the object. Called 60 times per second.
 	 */
@@ -128,8 +129,9 @@ public abstract class GameObject {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	/**
+	 * Sets this entity's x position
 	 * Sets this entity's x position.
 	 * 
 	 * @param x
@@ -140,6 +142,7 @@ public abstract class GameObject {
 	}
 
 	/**
+	 * Sets this entity's y position
 	 * Sets this entity's y position.
 	 * 
 	 * @param y
@@ -148,6 +151,7 @@ public abstract class GameObject {
 	public void setY(float y) {
 		this.y = y;
 	}
+
 	
 	/**
 	 * Sets this entity's last position.

@@ -3,7 +3,11 @@ package com.zerra.game.world;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import com.zerra.Zerra;
 import com.zerra.game.entity.Entity;
@@ -17,6 +21,10 @@ import com.zerra.util.Display;
 import com.zerra.util.Maths;
 
 public class World {
+
+	private static final Comparator<Entity> entitySorter = (Entity e1, Entity e2) -> {
+		return e1.getRenderLayer() - e2.getRenderLayer();
+	};
 
 	private TileMap tileMap;
 
@@ -67,9 +75,12 @@ public class World {
 	}
 
 	public void render(MasterRenderer renderer, ICamera camera, float partialTicks) {
+		renderer.setAmbientLight(time, time, time);
+
 		this.filter.updateFrustum(MasterRenderer.getProjectionMatrix(), Maths.createViewMatrix(camera));
 		this.filter.filterEntities(entities);
-		renderer.setAmbientLight(time, time, time);
+		Collections.sort(entities, entitySorter);
+
 		this.tileMap.render(renderer);
 		for (int i = 0; i < entities.size(); i++) {
 			if (entities.get(i).isInsideFrustum()) {
@@ -80,6 +91,7 @@ public class World {
 
 	public void generate() {
 		Zerra.logger().info("Generating terrain...");
+		this.tileMap.generate();
 	}
 
 	public void addEntity(Entity entity) {
@@ -97,7 +109,6 @@ public class World {
 	public void load(File saveFolder) throws IOException {
 		Zerra.logger().info("Loading World");
 		this.tileMap.load(saveFolder, worldName);
-		this.tileMap.generate();
 	}
 
 	public float getTime() {
@@ -107,10 +118,11 @@ public class World {
 	public float getWorldTime() {
 		return worldTime;
 	}
-	
+
+	@Nullable
 	public EntityPlayer getPlayer() {
-		for(Entity entity: entities) {
-			if(entity instanceof EntityPlayer) {
+		for (Entity entity : entities) {
+			if (entity instanceof EntityPlayer) {
 				return (EntityPlayer) entity;
 			}
 		}

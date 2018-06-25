@@ -9,6 +9,7 @@ import com.zerra.game.GameObject;
 import com.zerra.game.world.World;
 import com.zerra.gfx.renderer.EntityRenderer;
 import com.zerra.gfx.renderer.MasterRenderer;
+import com.zerra.util.AxisAlignedBB;
 import com.zerra.util.ResourceLocation;
 
 public abstract class Entity extends GameObject {
@@ -19,22 +20,21 @@ public abstract class Entity extends GameObject {
 	private World world;
 	private EntityType type;
 	private long ticksExisted;
-	/** This is not used anywhere. It needs to be implemented later */
-	private float velX;
-	/** This is not used anywhere. It needs to be implemented later */
+	private float velX; 
 	private float velY;
 
 	private Vector3f rotation;
 	private float scale;
 
+	private float width;
+	private float height;
+
 	private boolean dead;
 	private boolean insideFrustum;
-	
+
 	public Entity(EntityType type) {
 		this.type = type;
 		this.ticksExisted = 0;
-		this.velX = 0;
-		this.velY = 0;
 		this.rotation = new Vector3f();
 		this.scale = 1;
 	}
@@ -57,11 +57,20 @@ public abstract class Entity extends GameObject {
 	public void onRemove() {
 	}
 
+	@Override
+	public AxisAlignedBB getCollisionBox() {
+		return new AxisAlignedBB(this.getX(), this.getY(), width, height);
+	}
+
+	public int getRenderLayer() {
+		return (int) this.getY();
+	}
+
 	@Nullable
 	public Vector2f getRenderOffset() {
 		return null;
 	}
-
+	
 	public World getWorld() {
 		return world;
 	}
@@ -90,6 +99,14 @@ public abstract class Entity extends GameObject {
 		return scale;
 	}
 	
+	public float getWidth() {
+		return width;
+	}
+	
+	public float getHeight() {
+		return height;
+	}
+	
 	public boolean isDead() {
 		return dead;
 	}
@@ -102,29 +119,42 @@ public abstract class Entity extends GameObject {
 		this.type = type;
 	}
 	
-	public void setVelocity(float velX, float velY) {
+	public void setVel(float velX, float velY) {
 		this.velX = velX;
 		this.velY = velY;
 	}
 	
-	public void setVelocityX(float velocityX) {
-		this.velX = velocityX;
+	public void setVelX(float velX) {
+		this.velX = velX;
 	}
 	
-	public void setVelocityY(float velocityY) {
-		this.velY = velocityY;
+	public void setVelY(float velY) {
+		this.velY = velY;
 	}
 	
 	public void setRotation(Vector3f rotation) {
 		this.rotation = rotation;
 	}
 	
-	public void setRotation(float rotationX, float rotationY, float rotationZ) {
-		this.rotation.set(rotationX, rotationY, rotationZ);
+	public void setRotation(float x, float y, float z) {
+		this.rotation.set(x, y, z);
 	}
 	
 	public void setScale(float scale) {
 		this.scale = scale;
+	}
+	
+	public void setSize(float width, float height) {
+		this.width = width;
+		this.height = height;
+	}
+	
+	public void setWidth(float width) {
+		this.width = width;
+	}
+	
+	public void setHeight(float height) {
+		this.height = height;
 	}
 	
 	public void setDead() {

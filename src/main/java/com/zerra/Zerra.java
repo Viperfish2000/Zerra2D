@@ -15,6 +15,9 @@ import org.lwjgl.opengl.GL11;
 import com.zerra.game.entity.EntityBat;
 import com.zerra.game.entity.EntityFirefly;
 import com.zerra.game.entity.EntityPlayer;
+import com.zerra.game.entity.item.EntityItem;
+import com.zerra.game.item.Item;
+import com.zerra.game.item.ItemStack;
 import com.zerra.game.registry.EntityRegistry;
 import com.zerra.game.world.World;
 import com.zerra.gfx.GlWrapper;
@@ -105,10 +108,16 @@ public class Zerra implements Runnable {
 
 		EntityRegistry.register("player", EntityPlayer.class);
 		EntityRegistry.register("firefly", EntityFirefly.class);
+		EntityRegistry.register("item", EntityItem.class);
 		EntityRegistry.register("bat", EntityBat.class);
 
 		world = new World();
 		world.addEntity(new EntityPlayer());
+
+		int i = 0;
+		for (String registryName : Item.ITEMS.keySet()) {
+			world.addEntity(new EntityItem(new ItemStack(Item.byName(registryName), Item.byName(registryName).getMaxStackSize()), 50 + 25 * i++, 50));
+		}
 
 		logger.info("Loading game...");
 		/** This is where game loading is first called. */
@@ -151,7 +160,7 @@ public class Zerra implements Runnable {
 						timer += 1000;
 						// logger.info("World Finished Loading: " + Game.worldFinishedLoading + " --- fps: " + frames);
 						Display.setTitle("Zerra | fps: " + frames);
-						if(frames - lastFPS < -30) {
+						if (frames - lastFPS < -30) {
 							logger.warn("Lag spike detected in the game!");
 						}
 						Zerra.lastFPS = frames;
@@ -180,7 +189,6 @@ public class Zerra implements Runnable {
 		camera.update();
 
 		if (Display.getMouseButton() == 2) {
-			world.addEntity(new EntityBat(world.getPlayer().getX(), world.getPlayer().getY()));
 		}
 
 		if (Display.isKeyPressed(GLFW.GLFW_KEY_MINUS)) {
