@@ -9,7 +9,6 @@ import com.zerra.game.entity.Entity;
 import com.zerra.game.world.map.Chunk;
 import com.zerra.game.world.map.TileMap;
 import com.zerra.game.world.tile.TileEntry;
-import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.util.AxisAlignedBB;
 
 public class FrustumCullingFilter {
