@@ -178,7 +178,7 @@ public class Zerra implements Runnable {
 		camera.update();
 
 		if (Display.getMouseButton() == 2) {
-			world.addEntity(new EntityFirefly());
+			world.addEntity(new EntityFirefly(world.getPlayer().getX(), world.getPlayer().getY()));
 		}
 
 		if (Display.isKeyPressed(GLFW.GLFW_KEY_MINUS)) {
