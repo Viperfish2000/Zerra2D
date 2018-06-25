@@ -25,6 +25,12 @@ public class EntityItem extends Entity {
 	}
 	
 	@Override
+	public void update() {
+		super.update();
+		
+	}
+	
+	@Override
 	public Vector2f getRenderOffset() {
 		return new Vector2f();
 	}

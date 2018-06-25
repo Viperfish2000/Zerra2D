@@ -54,7 +54,7 @@ public class EntityRenderer {
 			List<Entity> batch = entities.get(texture);
 			for (Entity entity : batch) {
 				Vector2f renderOffset = entity.getRenderOffset();
-				shader.loadTransformationMatrix(Maths.createTransformationMatrix(entity.getPartialRenderX(partialTicks) + (renderOffset != null ? renderOffset.x * entity.getScale() : 0), entity.getPartialRenderY(partialTicks) + (renderOffset != null ? renderOffset.y * entity.getScale() : 0), entity.getRotation(), 32 * entity.getScale()));
+				shader.loadTransformationMatrix(Maths.createTransformationMatrix(entity.getRenderX(partialTicks) + (renderOffset != null ? renderOffset.x * entity.getScale() : 0), entity.getRenderY(partialTicks) + (renderOffset != null ? renderOffset.y * entity.getScale() : 0), entity.getRotation(), 32 * entity.getScale()));
 				shader.loadTextureOffset(entity.getTextureOffset().x / (float) entity.getTextureWidth(), entity.getTextureOffset().y / (float) entity.getTextureWidth());
 				shader.loadNumberOfRows(entity.getTextureWidth());
 				entity.render(Zerra.getInstance().getRenderer(), this, partialTicks);

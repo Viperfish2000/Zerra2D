@@ -18,6 +18,7 @@ import com.zerra.util.ResourceLocation;
  * A basic, abstract, object that can be added to the game. It has an x and a y position.
  * 
  * @author Ocelot5836
+ * @author Hypeirochus
  */
 public abstract class GameObject {
 
@@ -90,8 +91,24 @@ public abstract class GameObject {
 
 	/**
 	 * @return This object's rendering y position
+	 * @return This object's last x position
 	 */
 	public float getPartialRenderX(float partialTicks) {
+	public float getLastX() {
+		return lastX;
+	}
+
+	/**
+	 * @return This object's last y position
+	 */
+	public float getLastY() {
+		return lastY;
+	}
+
+	/**
+	 * @return This object's rendering x position
+	 */
+	public float getRenderX(float partialTicks) {
 		return lastX + (x - lastX) * partialTicks;
 	}
 
@@ -99,6 +116,7 @@ public abstract class GameObject {
 	 * @return This object's rendering y position
 	 */
 	public float getPartialRenderY(float partialTicks) {
+	public float getRenderY(float partialTicks) {
 		return lastY + (y - lastY) * partialTicks;
 	}
 
@@ -117,6 +135,7 @@ public abstract class GameObject {
 
 	/**
 	 * Sets this entity's x position
+	 * Sets this entity's x position.
 	 * 
 	 * @param x
 	 *            The new x position for the entity
@@ -127,6 +146,7 @@ public abstract class GameObject {
 
 	/**
 	 * Sets this entity's y position
+	 * Sets this entity's y position.
 	 * 
 	 * @param y
 	 *            The new y position for the entity
@@ -135,10 +155,38 @@ public abstract class GameObject {
 		this.y = y;
 	}
 
+	
+	/**
+	 * Sets this entity's last position.
+	 * 
+	 * @param x
+	 *            The new last x position for the entity
+	 * @param y
+	 *            The new last y position for the entity
+	 */
+	public void setLastPosition(float lastX, float lastY) {
+		this.lastX = lastX;
+		this.lastY = lastY;
+	}
+	
+	/**
+	 * Sets this entity's last x position.
+	 * 
+	 * @param x
+	 *            The new last x position for the entity
+	 */
 	public void setLastX(float lastX) {
 		this.lastX = lastX;
 	}
 
+=======
+	
+	/**
+	 * Sets this entity's last y position.
+	 * 
+	 * @param y
+	 *            The new last y position for the entity
+	 */
 	public void setLastY(float lastY) {
 		this.lastY = lastY;
 	}

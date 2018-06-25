@@ -23,8 +23,6 @@ import com.zerra.util.Maths;
 public class World {
 
 	private static final Comparator<Entity> entitySorter = (Entity e1, Entity e2) -> {
-		if (e1 instanceof EntityPlayer)
-			System.out.println(e1.getRenderLayer() - e2.getRenderLayer());
 		return e1.getRenderLayer() - e2.getRenderLayer();
 	};
 
