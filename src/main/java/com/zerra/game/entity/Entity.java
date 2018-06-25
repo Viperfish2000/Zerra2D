@@ -9,10 +9,11 @@ import com.zerra.game.GameObject;
 import com.zerra.game.world.World;
 import com.zerra.gfx.renderer.EntityRenderer;
 import com.zerra.gfx.renderer.MasterRenderer;
+import com.zerra.util.AxisAlignedBB;
 import com.zerra.util.ResourceLocation;
 
 public abstract class Entity extends GameObject {
-	
+
 	public static final ResourceLocation ENTITY_TEXTURE_LOCATION = new ResourceLocation("textures/entities.png");
 	public static final ResourceLocation SMALL_ENTITY_TEXTURE_LOCATION = new ResourceLocation("textures/entities_small.png");
 
@@ -20,9 +21,12 @@ public abstract class Entity extends GameObject {
 	protected EntityType type;
 	protected long ticksExisted = 0;
 	protected int velX, velY;
-	
+
 	protected Vector3f rotation;
 	protected float scale;
+
+	protected float width;
+	protected float height;
 
 	private boolean dead;
 	private boolean insideFrustum;
@@ -56,7 +60,19 @@ public abstract class Entity extends GameObject {
 
 	public void onRemove() {
 	}
-	
+
+	@Override
+	public AxisAlignedBB getCollisionBox() {
+		Vector2f renderOffset = this.getRenderOffset();
+		if (renderOffset != null)
+			return new AxisAlignedBB(renderOffset.x + this.getX(), renderOffset.y + this.getY(), width, height);
+		return new AxisAlignedBB(this.getX(), this.getY(), width, height);
+	}
+
+	public int getRenderLayer() {
+		return (int) this.getY();
+	}
+
 	@Nullable
 	public Vector2f getRenderOffset() {
 		return null;
@@ -93,11 +109,11 @@ public abstract class Entity extends GameObject {
 	public void setTicksExisted(long ticksExisted) {
 		this.ticksExisted = ticksExisted;
 	}
-	
+
 	public Vector3f getRotation() {
 		return rotation;
 	}
-	
+
 	public float getScale() {
 		return scale;
 	}
@@ -105,7 +121,7 @@ public abstract class Entity extends GameObject {
 	public boolean isDead() {
 		return dead;
 	}
-	
+
 	public boolean isInsideFrustum() {
 		return insideFrustum;
 	}

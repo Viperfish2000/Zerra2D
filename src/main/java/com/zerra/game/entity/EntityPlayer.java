@@ -75,7 +75,7 @@ public class EntityPlayer extends EntityLiving {
 	
 	@Override
 	public Vector2f getRenderOffset() {
-		return new Vector2f(-16, -10);
+		return new Vector2f(-16, -16);
 	}
 
 	public int getExp() {

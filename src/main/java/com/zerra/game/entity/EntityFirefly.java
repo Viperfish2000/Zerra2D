@@ -9,7 +9,6 @@ import com.zerra.gfx.Animation;
 import com.zerra.gfx.light.Light;
 import com.zerra.gfx.renderer.EntityRenderer;
 import com.zerra.gfx.renderer.MasterRenderer;
-import com.zerra.util.AxisAlignedBB;
 import com.zerra.util.ResourceLocation;
 
 public class EntityFirefly extends EntityMob {
@@ -48,9 +47,9 @@ public class EntityFirefly extends EntityMob {
 		if (this.getTicksExisted() % (40 + random.nextInt(20)) == 0) {
 			xa = random.nextInt(4) - 2;
 			ya = random.nextInt(4) - 2;
-			if(xa == 0)
+			if (xa == 0)
 				xa = 1;
-			if(ya == 0)
+			if (ya == 0)
 				ya = 1;
 		}
 		this.setX(this.getX() + (xa * speed));
@@ -66,11 +65,6 @@ public class EntityFirefly extends EntityMob {
 
 		this.dayAnimation.update();
 		this.nightAnimation.update();
-	}
-
-	@Override
-	public AxisAlignedBB getCollisionBox() {
-		return new AxisAlignedBB(this.getX(), this.getY(), 8, 8);
 	}
 
 	@Override
