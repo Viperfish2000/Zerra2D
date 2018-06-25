@@ -10,7 +10,6 @@ import com.zerra.Zerra;
 import com.zerra.gfx.GlWrapper;
 import com.zerra.gfx.shader.QuadShader;
 import com.zerra.model.Model;
-import com.zerra.object.ICamera;
 import com.zerra.object.Quad;
 import com.zerra.util.Loader;
 
@@ -29,7 +28,7 @@ public class QuadRenderer {
 		this.quad = Loader.loadToVAO(POSITIONS, 2);
 	}
 
-	public void render(List<Quad> quads, ICamera camera, float partialTicks) {
+	public void render(List<Quad> quads, float partialTicks) {
 		this.bind();
 		for (Quad quad : quads) {
 			shader.loadColor(quad.getColor());
