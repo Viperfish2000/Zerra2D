@@ -12,9 +12,11 @@ import org.lwjgl.opengl.GL11;
 
 import com.zerra.game.entity.Entity;
 import com.zerra.game.world.tile.TileEntry;
+import com.zerra.gfx.gui.Gui;
 import com.zerra.gfx.light.Light;
 import com.zerra.gfx.post.PostProcessing;
 import com.zerra.gfx.shader.EntityShader;
+import com.zerra.gfx.shader.GuiShader;
 import com.zerra.gfx.shader.LightShader;
 import com.zerra.gfx.shader.QuadShader;
 import com.zerra.gfx.shader.TileShader;
@@ -41,6 +43,9 @@ public class MasterRenderer {
 	private LightShader lightShader;
 	private LightRenderer lightRenderer;
 
+	private GuiShader guiShader;
+	private GuiRenderer guiRenderer;
+
 	private Fbo fbo;
 	private Fbo lightFbo;
 
@@ -48,6 +53,7 @@ public class MasterRenderer {
 	private Map<ResourceLocation, List<Entity>> entities;
 	private List<Quad> quads;
 	private List<Light> lights;
+	private List<Gui> guis;
 
 	private static final Quad LIGHT = new Quad(new Vector3f(0, 0, -2), new Vector3f(), new Vector3f(Display.getWidth(), Display.getHeight(), 1), new Vector4f(0.2f, 0.2f, 0.2f, 1));
 
@@ -60,15 +66,18 @@ public class MasterRenderer {
 		this.quadRenderer = new QuadRenderer(quadShader);
 		this.lightShader = new LightShader();
 		this.lightRenderer = new LightRenderer(lightShader);
+		this.guiShader = new GuiShader();
+		this.guiRenderer = new GuiRenderer(guiShader);
 		this.fbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_RENDER_BUFFER, 2);
 		this.lightFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.NONE);
 		this.tiles = new HashMap<ResourceLocation, List<TileEntry>>();
 		this.entities = new HashMap<ResourceLocation, List<Entity>>();
 		this.quads = new ArrayList<Quad>();
 		this.lights = new ArrayList<Light>();
+		this.guis = new ArrayList<Gui>();
 	}
 
-	public void render(ICamera camera, float partialTicks) {
+	public void render(ICamera camera, double mouseX, double mouseY, float partialTicks) {
 		this.quads.add(LIGHT);
 
 		this.fbo.bindFrameBuffer();
@@ -79,16 +88,19 @@ public class MasterRenderer {
 
 		this.lightFbo.bindFrameBuffer();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		this.quadRenderer.render(this.quads, camera, partialTicks);
+		this.quadRenderer.render(this.quads, partialTicks);
 		this.lightRenderer.render(this.lights, camera, partialTicks);
 		this.lightFbo.unbindFrameBuffer();
 
 		PostProcessing.doPostProcessing(fbo.getColorTexture(0), fbo.getColorTexture(1), lightFbo.getColorTexture());
+		
+		this.guiRenderer.render(this.guis, mouseX, mouseY, partialTicks);
 
 		this.tiles.clear();
 		this.entities.clear();
 		this.quads.clear();
 		this.lights.clear();
+		this.guis.clear();
 	}
 
 	public void cleanUp() {
@@ -129,6 +141,12 @@ public class MasterRenderer {
 	public void renderLights(Light... lights) {
 		for (int i = 0; i < lights.length; i++) {
 			this.lights.add(lights[i]);
+		}
+	}
+
+	public void renderGuis(Gui... guis) {
+		for (int i = 0; i < guis.length; i++) {
+			this.guis.add(guis[i]);
 		}
 	}
 
