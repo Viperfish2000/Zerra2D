@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import com.zerra.Zerra;
 import com.zerra.gfx.GlWrapper;
 import com.zerra.gfx.gui.Gui;
 import com.zerra.gfx.gui.GuiTexture;
@@ -37,7 +38,7 @@ public class GuiRenderer {
 	public void render(List<Gui> guis, double mouseX, double mouseY, float partialTicks) {
 		this.bind();
 		for (Gui gui : guis) {
-			gui.render(mouseX, mouseY, partialTicks);
+			gui.render(Zerra.getInstance().getRenderer(), mouseX, mouseY, partialTicks);
 			for (GuiTexture texture : gui.getTextures()) {
 				shader.loadTransformationMatrix(texture.getTransformation());
 				shader.loadTextureOffsets(texture.getTextureOffsets());

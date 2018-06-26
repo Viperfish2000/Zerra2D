@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import com.zerra.gfx.renderer.GuiRenderer;
+import com.zerra.gfx.renderer.MasterRenderer;
+import com.zerra.object.Quad;
+import com.zerra.util.Display;
 import com.zerra.util.Maths;
 import com.zerra.util.ResourceLocation;
 
@@ -22,7 +26,10 @@ import com.zerra.util.ResourceLocation;
  */
 public class Gui {
 
+	private static final Quad defaultBackgroundQuad = new Quad(new Vector3f(), new Vector3f(), new Vector3f(Display.getWidth() / GuiRenderer.scale), new Vector4f(0, 0, 0, 0.25f));
+
 	private List<GuiTexture> textures;
+	private List<Component> components;
 
 	public Gui() {
 		this.textures = new ArrayList<GuiTexture>();
@@ -32,11 +39,18 @@ public class Gui {
 	 * Updates this gui.
 	 */
 	public void update() {
+		for (Component component : components) {
+			if (component.isVisible()) {
+				component.update();
+			}
+		}
 	}
 
 	/**
 	 * Renders this gui to the screen. Use one of the supplied render methods to render to the screen.
 	 * 
+	 * @param renderer
+	 *            The main game renderer
 	 * @param mouseX
 	 *            The x position of the mouse
 	 * @param mouseY
@@ -44,7 +58,12 @@ public class Gui {
 	 * @param partialTicks
 	 *            The percentage between this update and last update
 	 */
-	public void render(double mouseX, double mouseY, float partialTicks) {
+	public void render(MasterRenderer renderer, double mouseX, double mouseY, float partialTicks) {
+		for (Component component : components) {
+			if (component.isVisible()) {
+				component.render(renderer, mouseX, mouseY, partialTicks);
+			}
+		}
 	}
 
 	/**
@@ -67,8 +86,29 @@ public class Gui {
 	 * @param textureSize
 	 *            The size of the texture. Width and height should be the same since you can only bind square textures
 	 */
-	protected void drawTexturedRect(ResourceLocation texture, float x, float y, float width, float height, float u, float v, float textureSize) {
+	public void drawTexturedRect(ResourceLocation texture, float x, float y, float width, float height, float u, float v, float textureSize) {
 		textures.add(new GuiTexture(texture, new Vector4f(u / textureSize, v / textureSize, width / textureSize, height / textureSize), Maths.createTransformationMatrix(new Vector2f(x, y), new Vector2f(width, height))));
+	}
+
+	/**
+	 * Draws the default background.
+	 * 
+	 * @param renderer
+	 *            The renderer used for the game
+	 */
+	public void drawDefaultBackground(MasterRenderer renderer) {
+		renderer.renderQuads(defaultBackgroundQuad);
+	}
+
+	/**
+	 * Adds the supplied component to this gui
+	 * 
+	 * @param component
+	 *            The component to add
+	 */
+	protected void addComponent(Component component) {
+		component.setParent(this);
+		this.components.add(component);
 	}
 
 	/**

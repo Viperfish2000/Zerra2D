@@ -1,6 +1,7 @@
 package com.zerra.gfx.renderer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,8 +79,6 @@ public class MasterRenderer {
 	}
 
 	public void render(ICamera camera, double mouseX, double mouseY, float partialTicks) {
-		this.quads.add(LIGHT);
-
 		this.fbo.bindFrameBuffer();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		this.tileRenderer.render(this.tiles, camera, partialTicks);
@@ -88,12 +87,13 @@ public class MasterRenderer {
 
 		this.lightFbo.bindFrameBuffer();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		this.quadRenderer.render(this.quads, partialTicks);
+		this.quadRenderer.render(Arrays.asList(new Quad[] { LIGHT }), partialTicks);
 		this.lightRenderer.render(this.lights, camera, partialTicks);
 		this.lightFbo.unbindFrameBuffer();
 
 		PostProcessing.doPostProcessing(fbo.getColorTexture(0), fbo.getColorTexture(1), lightFbo.getColorTexture());
-		
+
+		this.quadRenderer.render(this.quads, partialTicks);
 		this.guiRenderer.render(this.guis, mouseX, mouseY, partialTicks);
 
 		this.tiles.clear();

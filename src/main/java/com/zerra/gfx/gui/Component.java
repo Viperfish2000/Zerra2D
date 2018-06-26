@@ -1,5 +1,8 @@
 package com.zerra.gfx.gui;
 
+import javax.annotation.Nullable;
+
+import com.zerra.gfx.renderer.MasterRenderer;
 import com.zerra.util.ResourceLocation;
 
 /**
@@ -19,12 +22,14 @@ public class Component {
 	private float y;
 	private float width;
 	private float height;
+	private boolean visible;
 
 	public Component(float x, float y, float width, float height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.visible = true;
 	}
 
 	/**
@@ -36,6 +41,8 @@ public class Component {
 	/**
 	 * Renders the component to the screen.
 	 * 
+	 * @param renderer
+	 *            The main game renderer
 	 * @param mouseX
 	 *            The x position of the mouse
 	 * @param mouseY
@@ -43,7 +50,7 @@ public class Component {
 	 * @param partialTicks
 	 *            The percentage between this update and last update
 	 */
-	protected void render(double mouseX, double mouseY, float partialTicks) {
+	protected void render(MasterRenderer renderer, double mouseX, double mouseY, float partialTicks) {
 	}
 
 	/**
@@ -86,6 +93,7 @@ public class Component {
 	/**
 	 * @return The gui that is rendering this component
 	 */
+	@Nullable
 	protected Gui getParent() {
 		return parent;
 	}
@@ -119,6 +127,13 @@ public class Component {
 	}
 
 	/**
+	 * @return Whether or not this component can be seen
+	 */
+	public boolean isVisible() {
+		return visible;
+	}
+
+	/**
 	 * Sets the parent gui. <i><b>THIS SHOULD NEVER BE TOUCHED BY CHILD CLASSES</b></i>
 	 * 
 	 * @param parent
@@ -126,5 +141,15 @@ public class Component {
 	 */
 	protected void setParent(Gui parent) {
 		this.parent = parent;
+	}
+
+	/**
+	 * Sets this component to be visible or not.
+	 * 
+	 * @param visible
+	 *            Whether or not the component is visible
+	 */
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 }
