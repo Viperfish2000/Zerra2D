@@ -93,9 +93,9 @@ public class MasterRenderer {
 
 		PostProcessing.doPostProcessing(fbo.getColorTexture(0), fbo.getColorTexture(1), lightFbo.getColorTexture());
 
-		this.quadRenderer.render(this.quads, partialTicks);
 		this.guiRenderer.render(this.guis, mouseX, mouseY, partialTicks);
-
+		this.quadRenderer.render(this.quads, partialTicks);
+		
 		this.tiles.clear();
 		this.entities.clear();
 		this.quads.clear();

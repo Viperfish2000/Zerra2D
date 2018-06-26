@@ -26,13 +26,15 @@ import com.zerra.util.ResourceLocation;
  */
 public class Gui {
 
-	private static final Quad defaultBackgroundQuad = new Quad(new Vector3f(), new Vector3f(), new Vector3f(Display.getWidth() / GuiRenderer.scale), new Vector4f(0, 0, 0, 0.25f));
+	private Quad defaultBackgroundQuad;
 
 	private List<GuiTexture> textures;
 	private List<Component> components;
 
 	public Gui() {
+		this.defaultBackgroundQuad = new Quad(new Vector3f(), new Vector3f(), new Vector3f(Display.getWidth() / GuiRenderer.scale), new Vector4f(0, 0, 0, 0.25f));
 		this.textures = new ArrayList<GuiTexture>();
+		this.components = new ArrayList<Component>();
 	}
 
 	/**
@@ -87,7 +89,7 @@ public class Gui {
 	 *            The size of the texture. Width and height should be the same since you can only bind square textures
 	 */
 	public void drawTexturedRect(ResourceLocation texture, float x, float y, float width, float height, float u, float v, float textureSize) {
-		textures.add(new GuiTexture(texture, new Vector4f(u / textureSize, v / textureSize, width / textureSize, height / textureSize), Maths.createTransformationMatrix(new Vector2f(x, y), new Vector2f(width, height))));
+		textures.add(new GuiTexture(texture, new Vector4f(u, v, width, height), textureSize, Maths.createTransformationMatrix(new Vector2f(x, y), new Vector2f(width, height))));
 	}
 
 	/**

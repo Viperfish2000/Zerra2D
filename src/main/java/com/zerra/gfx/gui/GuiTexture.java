@@ -21,18 +21,21 @@ public class GuiTexture {
 
 	private ITexture texture;
 	private Vector4f textureOffsets;
+	private float textureSize;
 	private Matrix4f transformation;
 
-	protected GuiTexture(ResourceLocation texture, Vector4f textureOffsets, Matrix4f transformation) {
+	protected GuiTexture(ResourceLocation texture, Vector4f textureOffsets, float textureSize, Matrix4f transformation) {
 		Zerra.getInstance().getTextureManager().bind(texture);
 		this.texture = Zerra.getInstance().getTextureManager().getTexture(texture);
 		this.textureOffsets = textureOffsets;
+		this.textureSize = textureSize;
 		this.transformation = transformation;
 	}
 
-	protected GuiTexture(ITexture texture, Vector4f textureOffsets, Matrix4f transformation) {
+	protected GuiTexture(ITexture texture, Vector4f textureOffsets,float textureSize,  Matrix4f transformation) {
 		this.texture = texture;
 		this.textureOffsets = textureOffsets;
+		this.textureSize = textureSize;
 		this.transformation = transformation;
 	}
 
@@ -48,6 +51,13 @@ public class GuiTexture {
 	 */
 	public Vector4f getTextureOffsets() {
 		return textureOffsets;
+	}
+	
+	/**
+	 * @return The size of the texture
+	 */
+	public float getTextureSize() {
+		return textureSize;
 	}
 
 	/**

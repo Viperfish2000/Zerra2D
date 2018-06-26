@@ -22,7 +22,7 @@ public class GuiRenderer {
 	public static float scale = 3f;
 	private static Matrix4f projectionMatrix = new Matrix4f().ortho(0, Display.getWidth() / scale, Display.getHeight() / scale, 0, 0.3f, 1000f);
 
-	private static final float[] POSITIONS = new float[] { -1, 1, -1, -1, 1, 1, 1, -1 };
+	private static final float[] POSITIONS = new float[] { 0, 1, 0, 0, 1, 1, 1, 0 };
 
 	private GuiShader shader;
 	private Model quad;
@@ -41,11 +41,12 @@ public class GuiRenderer {
 			gui.render(Zerra.getInstance().getRenderer(), mouseX, mouseY, partialTicks);
 			for (GuiTexture texture : gui.getTextures()) {
 				shader.loadTransformationMatrix(texture.getTransformation());
-				shader.loadTextureOffsets(texture.getTextureOffsets());
+				shader.loadTextureData(texture.getTextureOffsets(), texture.getTextureSize());
 				GL13.glActiveTexture(GL13.GL_TEXTURE0);
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTexture().getId());
 				GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, this.quad.getVertexCount());
 			}
+			gui.getTextures().clear();
 		}
 		this.unbind();
 	}

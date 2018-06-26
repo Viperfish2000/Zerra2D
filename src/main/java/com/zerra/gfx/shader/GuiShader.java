@@ -9,6 +9,7 @@ public class GuiShader extends ShaderProgram {
 	private int location_transformationMatrix;
 
 	private int location_textureOffsets;
+	private int location_textureSize;
 
 	public GuiShader() {
 		super("gui");
@@ -25,6 +26,7 @@ public class GuiShader extends ShaderProgram {
 		location_transformationMatrix = super.getUniformLocation("transformationMatrix");
 
 		location_textureOffsets = super.getUniformLocation("textureOffsets");
+		location_textureSize = super.getUniformLocation("textureSize");
 	}
 
 	public void loadProjectionMatrix(Matrix4f matrix) {
@@ -35,7 +37,8 @@ public class GuiShader extends ShaderProgram {
 		super.loadMatrix(location_transformationMatrix, matrix);
 	}
 
-	public void loadTextureOffsets(Vector4f textureOffsets) {
+	public void loadTextureData(Vector4f textureOffsets, float textureSize) {
 		super.loadVector(location_textureOffsets, textureOffsets);
+		super.loadFloat(location_textureSize, textureSize);
 	}
 }
