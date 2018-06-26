@@ -8,6 +8,7 @@ public abstract class GuiContainer extends Gui {
 	
 	public GuiContainer(IInventory inventory) {
 		this.inventory = inventory;
+		this.addSlots(inventory);
 	}
 	
 	public abstract void addSlots(IInventory inventory);

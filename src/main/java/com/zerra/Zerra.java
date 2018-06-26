@@ -21,6 +21,7 @@ import com.zerra.game.item.ItemStack;
 import com.zerra.game.registry.EntityRegistry;
 import com.zerra.game.world.World;
 import com.zerra.gfx.GlWrapper;
+import com.zerra.gfx.gui.GuiPlayerInventory;
 import com.zerra.gfx.light.Light;
 import com.zerra.gfx.post.PostProcessing;
 import com.zerra.gfx.renderer.MasterRenderer;
@@ -57,6 +58,7 @@ public class Zerra implements Runnable {
 	private MasterRenderer renderer;
 	private Camera camera;
 	private ThreadPool pool;
+	private GuiPlayerInventory playerInventoryGui;
 
 	private World world;
 
@@ -113,6 +115,8 @@ public class Zerra implements Runnable {
 
 		world = new World();
 		world.addEntity(new EntityPlayer());
+		
+		playerInventoryGui = new GuiPlayerInventory(world.getPlayer().getInventory());
 
 		int i = 0;
 		for (String registryName : Item.ITEMS.keySet()) {
@@ -187,7 +191,7 @@ public class Zerra implements Runnable {
 	private void update() {
 		world.update();
 		camera.update();
-
+		
 		if (Display.getMouseButton() == 2) {
 		}
 
@@ -200,6 +204,8 @@ public class Zerra implements Runnable {
 		}
 		if (MasterRenderer.scale < 3)
 			renderer.setScale(3);
+		
+		playerInventoryGui.update();
 	}
 
 	/**
@@ -210,6 +216,9 @@ public class Zerra implements Runnable {
 		renderer.renderLights(new Light(new Vector2f((float) Display.getMouseX() / MasterRenderer.scale + camera.getPosition().x, (float) Display.getMouseY() / MasterRenderer.scale + camera.getPosition().y), new Vector4f(1, 1, 1, 50), 25));
 		/** Actual code that will stay */
 		world.render(renderer, camera, TIMER.renderPartialTicks);
+		
+		renderer.renderGuis(playerInventoryGui);
+		
 		renderer.render(camera, Display.getMouseX() / MasterRenderer.scale, Display.getMouseY() / MasterRenderer.scale, TIMER.renderPartialTicks);
 	}
 
@@ -325,7 +334,7 @@ public class Zerra implements Runnable {
 	 */
 	public static void main(String[] args) {
 		logger.info("Setting up game...");
-		new Thread(Zerra.getInstance()).start();
+		new Thread(Zerra.getInstance(), "main").start();
 		Zerra.getInstance().start();
 	}
 }

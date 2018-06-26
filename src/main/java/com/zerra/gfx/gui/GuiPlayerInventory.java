@@ -16,11 +16,10 @@ public class GuiPlayerInventory extends GuiContainer {
 			this.addComponent(new ComponentInventorySlot(inventory, i, i * 20, 0));
 		}
 	}
-	
+
 	@Override
 	public void render(MasterRenderer renderer, double mouseX, double mouseY, float partialTicks) {
 		super.drawDefaultBackground(renderer);
-		
 		super.render(renderer, mouseX, mouseY, partialTicks);
 	}
 }

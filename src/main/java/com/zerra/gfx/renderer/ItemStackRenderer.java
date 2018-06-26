@@ -17,7 +17,9 @@ public class ItemStackRenderer {
 		if (!stack.isEmpty()) {
 			for (int i = 0; i < 2; i++) {
 				Vector2f textureCoords = item.getTextureCoords(i);
-				gui.drawTexturedRect(item.getTexture(), xPos, yPos, 16, 16, textureCoords.x * item.getTextureWidth() * 16, textureCoords.y * item.getTextureWidth() * 16, item.getTextureWidth() * 16);
+				if (textureCoords != null) {
+					gui.drawTexturedRect(item.getTexture(), xPos, yPos, 16, 16, textureCoords.x * 16, textureCoords.y * 16, item.getTextureWidth() * 16);
+				}
 			}
 		}
 	}
