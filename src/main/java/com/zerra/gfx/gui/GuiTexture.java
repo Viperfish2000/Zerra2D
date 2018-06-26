@@ -7,6 +7,16 @@ import com.zerra.Zerra;
 import com.zerra.gfx.texture.ITexture;
 import com.zerra.util.ResourceLocation;
 
+/**
+ * <em><b>Copyright (c) 2018 The Zerra Team.</b></em>
+ * 
+ * <br>
+ * </br>
+ * 
+ * A texture that is used to represent a single quad in a gui.
+ * 
+ * @author Ocelot5836
+ */
 public class GuiTexture {
 
 	private ITexture texture;
@@ -26,14 +36,23 @@ public class GuiTexture {
 		this.transformation = transformation;
 	}
 
+	/**
+	 * @return The actual texture of this quad. {@link ITexture} is used so you can render an image that is created in opengl if you wish
+	 */
 	public ITexture getTexture() {
 		return texture;
 	}
 	
+	/**
+	 * @return The offsets used in the shaders when rendering the quad
+	 */
 	public Vector4f getTextureOffsets() {
 		return textureOffsets;
 	}
 
+	/**
+	 * @return The transformation matrix for this quad
+	 */
 	public Matrix4f getTransformation() {
 		return transformation;
 	}
