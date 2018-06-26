@@ -29,7 +29,7 @@ public class GuiRenderer {
 	public GuiRenderer(GuiShader shader) {
 		this.shader = shader;
 		this.shader.start();
-		this.shader.loadProjectionMatrix(MasterRenderer.getProjectionMatrix());
+		this.shader.loadProjectionMatrix(projectionMatrix);
 		this.shader.stop();
 		this.quad = Loader.loadToVAO(POSITIONS, 2);
 	}
@@ -37,6 +37,7 @@ public class GuiRenderer {
 	public void render(List<Gui> guis, double mouseX, double mouseY, float partialTicks) {
 		this.bind();
 		for (Gui gui : guis) {
+			gui.render(mouseX, mouseY, partialTicks);
 			for (GuiTexture texture : gui.getTextures()) {
 				shader.loadTransformationMatrix(texture.getTransformation());
 				shader.loadTextureOffsets(texture.getTextureOffsets());
@@ -70,6 +71,9 @@ public class GuiRenderer {
 	public void setScale(float scale) {
 		GuiRenderer.scale = scale;
 		GuiRenderer.projectionMatrix = new Matrix4f().ortho(0, Display.getWidth() / scale, Display.getHeight() / scale, 0, 0.3f, 1000f);
+		this.shader.start();
+		this.shader.loadProjectionMatrix(projectionMatrix);
+		this.shader.stop();
 	}
 
 	public static Matrix4f getProjectionMatrix() {
